@@ -1,0 +1,4 @@
+spritePacks
+*.xcodeproj
+*.xcodeproj/*
+PigPopper.xcodeproj/project.pbxproj

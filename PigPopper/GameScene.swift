@@ -12,8 +12,7 @@ import GameplayKit
 class GameScene: SKScene {
    
     let pig = SKSpriteNode(imageNamed: "Jetpack_000")
-    let fork = SKSpriteNode(imageNamed: "Dessert_fork")
-    let homeButton = SKSpriteNode(color: .cyan, size: CGSize(width: 50, height: 50))
+    let fork: SKSpriteNode
     
     let jetpackAnimation: SKAction
     let explosionAnimation: SKAction
@@ -58,6 +57,8 @@ class GameScene: SKScene {
         let center = SKAction.moveTo(x: size.width / 2, duration: 1)
         flyAnimation = SKAction.sequence([right, flipLeft, left, flipRight, center])
         forkLaunchPosition = CGPoint(x: size.width / 2, y: 100)
+        
+        fork = SpriteFactory.getSelectedWeaponSprite()
                 
         super.init(size: size)
     }
@@ -69,17 +70,18 @@ class GameScene: SKScene {
     
     override func didMove(to view: SKView) {
         backgroundColor = .white
-        pig.position = CGPoint(x: size.width / 2, y: size.height - 75)
+        
+        let backgroundSprite = SpriteFactory.getBackgroundSprite(size: size)
+        backgroundSprite.xScale = -1 // flip so the transition looks nice
+        addChild(backgroundSprite)
+        
         pig.zPosition = 10
         pig.size = CGSize(width: 90, height: 90)
         addChild(pig)
-        startJetpackAnimation()
-        startFlyAnimation()
+        resetPig()
         
         fork.position = forkLaunchPosition
         fork.zPosition = 5
-        fork.name = "fork"
-        fork.size = CGSize(width: 10, height: 80)
         addChild(fork)
         
         scoreLabel.fontSize = 50
@@ -101,15 +103,16 @@ class GameScene: SKScene {
         updateHighScoreLabel()
         addChild(highScoreLabel)
         
-        let homeButton = SKSpriteNode(color: .cyan, size: CGSize(width: 50, height: 50))
-        homeButton.position = CGPoint(x: 50, y: 50)
-        let homeButtonLabel = SKLabelNode(text: "🏠")
-        homeButtonLabel.horizontalAlignmentMode = .center
-        homeButtonLabel.verticalAlignmentMode = .center
-        homeButton.addChild(homeButtonLabel)
-        homeButton.name = "home"
+        let homeButton = SpriteFactory.getHomeSprite()
         addChild(homeButton)
         
+    }
+    
+    func resetPig() {
+        pig.position = CGPoint(x: size.width / 2, y: size.height - 75)
+        pig.xScale = 1
+        startJetpackAnimation()
+        startFlyAnimation()
     }
     
     func updateScoreLabel() {
@@ -133,28 +136,23 @@ class GameScene: SKScene {
     
     func startFlyAnimation() {
         if pig.action(forKey: flyAnimationKey) == nil {
-            pig.run(SKAction.repeatForever(flyAnimation))
+            pig.run(SKAction.repeatForever(flyAnimation), withKey: flyAnimationKey)
         }
     }
     
     func stopFlyAnimation() {
-        if pig.action(forKey: flyAnimationKey) == nil {
+        if pig.action(forKey: flyAnimationKey) != nil {
             pig.removeAction(forKey: flyAnimationKey)
         }
     }
     
     func startExplosionAnimation() {
         if pig.action(forKey: explosionAnimationKey) == nil {
-            print("here")
-            let actions = SKAction.sequence([
-                SKAction.run { [weak self] in self?.stopFlyAnimation() },
+            let action = SKAction.sequence([
                 explosionAnimation,
-                SKAction.run {[weak self] in self?.pig.isHidden = true },
-                SKAction.wait(forDuration: 0.4),
-                SKAction.run {[weak self] in self?.pig.isHidden = false },
-                SKAction.run() { [weak self] in self?.startFlyAnimation()}
+                SKAction.run { [weak self] in self?.resetPig() }
             ])
-            pig.run(actions, withKey: explosionAnimationKey)
+            pig.run(action)
         }
     }
     
@@ -165,6 +163,9 @@ class GameScene: SKScene {
     }
     
     func handlePigHit() {
+        print("hit")
+        stopFlyAnimation()
+        stopJetpackAnimation()
         startExplosionAnimation()
         score += 1
         if score > highScore {
@@ -185,7 +186,7 @@ class GameScene: SKScene {
     func handleHomeTapped() {
         let menuScene = MainMenuScene(size: size)
         menuScene.scaleMode = scaleMode
-        let transition = SKTransition.reveal(with: .right, duration: 0.1)
+        let transition = SKTransition.push(with: .right, duration: 1.0)
         view?.presentScene(menuScene, transition: transition)
     }
     
