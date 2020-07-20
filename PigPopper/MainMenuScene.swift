@@ -48,6 +48,7 @@ class MainMenuScene: SKScene {
     
     
     override func didMove(to view: SKView) {
+        playBackgroundMusic(filename: "background_music.mp3")
         backgroundColor = .blue
         
         let backgroundSprite = SpriteFactory.getBackgroundSprite(size: size)

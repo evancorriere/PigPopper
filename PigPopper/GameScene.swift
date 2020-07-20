@@ -14,6 +14,9 @@ class GameScene: SKScene {
     let pig = SKSpriteNode(imageNamed: "Jetpack_000")
     let fork: SKSpriteNode
     
+    let explosionSound: SKAction = SKAction.playSoundFileNamed("explosion.wav", waitForCompletion: false)
+    let shootSound: SKAction = SKAction.playSoundFileNamed("shoot.wav", waitForCompletion: false)
+    
     let jetpackAnimation: SKAction
     let explosionAnimation: SKAction
     let flyAnimation: SKAction
@@ -82,6 +85,7 @@ class GameScene: SKScene {
         
         fork.position = forkLaunchPosition
         fork.zPosition = 5
+        fork.zRotation = 0.0
         addChild(fork)
         
         scoreLabel.fontSize = 50
@@ -164,6 +168,7 @@ class GameScene: SKScene {
     
     func handlePigHit() {
         print("hit")
+        run(explosionSound)
         stopFlyAnimation()
         stopJetpackAnimation()
         startExplosionAnimation()
@@ -199,24 +204,33 @@ class GameScene: SKScene {
         }
     }
     
-    func handleForkSwiped() {
+    func handleSwipe() {
         let touchedNodes = self.nodes(at: initialTouchLocation)
         for touchedNode in touchedNodes {
-            if touchedNode.name == "fork" && fork.position == forkLaunchPosition {
-                let dt = finalTouchTime - initialTouchTime
-                let swipeVector = CGVector(dx: finalTouchLocation.x - initialTouchLocation.x, dy: finalTouchLocation.y - initialTouchLocation.y)
-                let theta = atan2(swipeVector.dy, swipeVector.dx)
-                
-                if theta >= 0 && theta <= CGFloat.pi {
-                    fork.zRotation = theta - CGFloat.pi / 2
-                    print("Theta: \(theta)")
-                    
-                    let moveBySwipe = SKAction.move(by: swipeVector, duration: dt)
-                    fork.run(SKAction.repeatForever(moveBySwipe), withKey: forkMoveAnimationKey)
-                }
-            } else if touchedNode.name == "home" {
+            if touchedNode.name == "home" {
                 handleHomeTapped()
+                return
             }
+        }
+        
+        
+        if fork.position == forkLaunchPosition {
+            handleForkSwiped()
+        }
+    }
+    
+    func handleForkSwiped() {
+        let dt = finalTouchTime - initialTouchTime
+        let swipeVector = CGVector(dx: finalTouchLocation.x - initialTouchLocation.x, dy: finalTouchLocation.y - initialTouchLocation.y)
+        let theta = atan2(swipeVector.dy, swipeVector.dx)
+        
+        if theta >= 0 && theta <= CGFloat.pi {
+            fork.zRotation = theta - CGFloat.pi / 2
+            print("Theta: \(theta)")
+            
+            let moveBySwipe = SKAction.move(by: swipeVector, duration: dt)
+            run(shootSound)
+            fork.run(SKAction.repeatForever(moveBySwipe), withKey: forkMoveAnimationKey)
         }
     }
     
@@ -225,6 +239,15 @@ class GameScene: SKScene {
         initialTouchLocation = touches.first!.location(in: view)
         initialTouchLocation = CGPoint(x: initialTouchLocation.x, y: view!.bounds.height - initialTouchLocation.y)
         initialTouchTime = touches.first!.timestamp
+        
+        let touchedNodes = self.nodes(at: initialTouchLocation)
+        for touchedNode in touchedNodes {
+            if touchedNode.name == "home" {
+                handleHomeTapped()
+                return
+            }
+        }
+        
         print("initial touch location: \(initialTouchLocation!)")
     }
 
