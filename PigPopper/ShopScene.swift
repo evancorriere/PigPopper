@@ -13,6 +13,7 @@ class ShopScene: SKScene {
   
     let coinsLabel = SKLabelNode(text: "Coins: 0")
     let whiteStrip = SKSpriteNode(color: .white, size: CGSize(width: 100, height: 20))
+    let homeButton = SpriteFactory.getHomeButton()
     
     var coins = 0
     var index = 0
@@ -37,16 +38,15 @@ class ShopScene: SKScene {
         labelNode.horizontalAlignmentMode = .center
         addChild(labelNode)
         
-        let homeSprite = SpriteFactory.getHomeSprite()
-        addChild(homeSprite)
+       
+        addChild(homeButton)
+        addChild(SpriteFactory.getHomeLabel())
         
         whiteStrip.size = CGSize(width: size.width, height: 150)
         whiteStrip.zPosition = 0
         whiteStrip.position = CGPoint(x: size.width / 2, y: size.height / 2)
         addChild(whiteStrip)
         
-        
-        UserDefaults.standard.set(555, forKey: "coins")
         coins = UserDefaults.standard.integer(forKey: "coins")
         updateCoinLabel()
         coinsLabel.position = CGPoint(x: view.bounds.width / 2, y: view.bounds.height / 2 + 100)
@@ -83,16 +83,23 @@ class ShopScene: SKScene {
         coinsLabel.text = "Coins: \(coins)"
     }
     
+    func handleHomeTapped() {
+        let menuScene = MainMenuScene(size: size)
+        menuScene.scaleMode = scaleMode
+        let transition = SKTransition.fade(withDuration: 0.1)
+        view?.presentScene(menuScene, transition: transition)
+    }
+    
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         let location = touches.first!.location(in: self)
+        
+        if homeButton.contains(location) {
+            handleHomeTapped()
+        }
+        
         let touchedNodes = nodes(at: location)
         for node in touchedNodes {
-            if node.name == "home" {
-                let menuScene = MainMenuScene(size: size)
-                menuScene.scaleMode = scaleMode
-                let transition = SKTransition.fade(withDuration: 0.1)
-                view?.presentScene(menuScene, transition: transition)
-            } else if node.name?.starts(with: "buy_") ?? false {
+            if node.name?.starts(with: "buy_") ?? false {
                 let index = node.name!.index(node.name!.startIndex, offsetBy: 4)
                 let nameSubstring = node.name![index..<node.name!.endIndex]
                 let weaponName = String(nameSubstring)

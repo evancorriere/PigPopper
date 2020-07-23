@@ -21,16 +21,28 @@ class SpriteFactory {
         "spear": 60,
         "gold_sword": 90
     ]
+    static let homeButtonName = "homeButton"
     
-    static func getHomeSprite() -> SKSpriteNode {
-        let homeButton = SKSpriteNode(color: .cyan, size: CGSize(width: 50, height: 50))
+    static func getHomeSprites() -> [SKNode] {
+        return [getHomeButton(), getHomeLabel()]
+    }
+    
+    
+    
+    static func getHomeButton() -> SKSpriteNode {
+        let homeButton = SKSpriteNode(color: .white, size: CGSize(width: 50, height: 50))
         homeButton.position = CGPoint(x: 50, y: 50)
+        homeButton.isHidden = true
+        homeButton.name = homeButtonName
+        return homeButton
+    }
+    
+    static func getHomeLabel() -> SKLabelNode {
         let homeButtonLabel = SKLabelNode(text: "🏠")
         homeButtonLabel.horizontalAlignmentMode = .center
         homeButtonLabel.verticalAlignmentMode = .center
-        homeButton.addChild(homeButtonLabel)
-        homeButton.name = "home"
-        return homeButton
+        homeButtonLabel.position = CGPoint(x: 50, y: 50)
+        return homeButtonLabel
     }
     
     static func getForkSprite() -> SKSpriteNode {

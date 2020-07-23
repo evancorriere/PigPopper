@@ -27,6 +27,7 @@ func playBackgroundMusic(filename: String) {
     try backgroundMusicPlayer =
       AVAudioPlayer(contentsOf: url)
     backgroundMusicPlayer.numberOfLoops = -1
+    backgroundMusicPlayer.volume = 0.5
     backgroundMusicPlayer.prepareToPlay()
     backgroundMusicPlayer.play()
     playing = true

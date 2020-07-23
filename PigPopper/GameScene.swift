@@ -14,8 +14,8 @@ class GameScene: SKScene {
     let pig = SKSpriteNode(imageNamed: "Jetpack_000")
     let fork: SKSpriteNode
     
-    let explosionSound: SKAction = SKAction.playSoundFileNamed("explosion.wav", waitForCompletion: false)
-    let shootSound: SKAction = SKAction.playSoundFileNamed("shoot.wav", waitForCompletion: false)
+    let explosionSound: SKAction = SKAction.playSoundFileNamed("explosion2.wav", waitForCompletion: false)
+    let shootSound: SKAction = SKAction.playSoundFileNamed("shoot2.wav", waitForCompletion: false)
     
     let jetpackAnimation: SKAction
     let explosionAnimation: SKAction
@@ -25,11 +25,16 @@ class GameScene: SKScene {
     let forkMoveAnimationKey = "forkMoveAnimationKey"
     let explosionAnimationKey = "explosionAnimationKey"
     let forkLaunchPosition: CGPoint!
+    let homeButton: SKSpriteNode
     
     let scoreLabel = SKLabelNode()
+    let coinsLabel = SKLabelNode()
     let highScoreLabel = SKLabelNode()
+    let totalCoinsLabel = SKLabelNode()
     var score = 0
     var highScore = 0
+    var coins = 0
+    var totalCoins = 0
     
     var initialTouchLocation: CGPoint!
     var initialTouchTime: TimeInterval!
@@ -62,6 +67,7 @@ class GameScene: SKScene {
         forkLaunchPosition = CGPoint(x: size.width / 2, y: 100)
         
         fork = SpriteFactory.getSelectedWeaponSprite()
+        homeButton = SpriteFactory.getHomeButton()
                 
         super.init(size: size)
     }
@@ -88,32 +94,55 @@ class GameScene: SKScene {
         fork.zRotation = 0.0
         addChild(fork)
         
+        setupLabels()
+        
+        addChild(homeButton)
+        addChild(SpriteFactory.getHomeLabel())
+    }
+    
+    func setupLabels() {
         scoreLabel.fontSize = 50
         scoreLabel.zPosition = 3
         scoreLabel.horizontalAlignmentMode = .center
         scoreLabel.verticalAlignmentMode = .bottom
-        scoreLabel.position = CGPoint(x: size.width / 2, y: size.height / 2)
+        scoreLabel.position = CGPoint(x: size.width / 2, y: size.height / 2 + 20)
         scoreLabel.fontColor = .black
         updateScoreLabel()
         addChild(scoreLabel)
         
-        highScoreLabel.fontSize = 50
+        coinsLabel.fontSize = 50
+        coinsLabel.zPosition = 3
+        coinsLabel.horizontalAlignmentMode = .center
+        coinsLabel.verticalAlignmentMode = .top
+        coinsLabel.position = CGPoint(x: size.width / 2, y: size.height / 2)
+        coinsLabel.fontColor = .black
+        updateCoinsLabel()
+        addChild(coinsLabel)
+        
+        highScoreLabel.fontSize = 25
         highScoreLabel.zPosition = 3
         highScoreLabel.verticalAlignmentMode = .center
-        highScoreLabel.horizontalAlignmentMode = .center
-        highScoreLabel.position = CGPoint(x: size.width / 2, y: size.height / 2 - 70)
+        highScoreLabel.horizontalAlignmentMode = .left
+        highScoreLabel.position = CGPoint(x: 20, y: size.height - 30)
         highScoreLabel.fontColor = .black
         highScore = UserDefaults.standard.integer(forKey: "highScore")
         updateHighScoreLabel()
         addChild(highScoreLabel)
         
-        let homeButton = SpriteFactory.getHomeSprite()
-        addChild(homeButton)
+        totalCoinsLabel.fontSize = 25
+        totalCoinsLabel.zPosition = 3
+        totalCoinsLabel.verticalAlignmentMode = .center
+        totalCoinsLabel.horizontalAlignmentMode = .right
+        totalCoinsLabel.fontColor = .black
+        totalCoinsLabel.position = CGPoint(x: size.width - 20, y: size.height - 30)
+        totalCoins = UserDefaults.standard.integer(forKey: "coins")
+        updateTotalCoinsLabel()
+        addChild(totalCoinsLabel)
         
     }
     
     func resetPig() {
-        pig.position = CGPoint(x: size.width / 2, y: size.height - 75)
+        pig.position = CGPoint(x: size.width / 2, y: size.height - 85)
         pig.xScale = 1
         startJetpackAnimation()
         startFlyAnimation()
@@ -125,6 +154,14 @@ class GameScene: SKScene {
     
     func updateHighScoreLabel() {
         highScoreLabel.text = "BEST: \(highScore)"
+    }
+    
+    func updateCoinsLabel() {
+        coinsLabel.text = "🥓: \(coins)"
+    }
+    
+    func updateTotalCoinsLabel() {
+        totalCoinsLabel.text = "TOTAL 🥓: \(totalCoins)"
     }
     
     func startJetpackAnimation() {
@@ -172,20 +209,30 @@ class GameScene: SKScene {
         stopFlyAnimation()
         stopJetpackAnimation()
         startExplosionAnimation()
+        let coinValue = score / 3 + 1
         score += 1
+        coins += coinValue
         if score > highScore {
             highScore = score
             UserDefaults.standard.set(highScore, forKey: "highScore")
             updateHighScoreLabel()
         }
         updateScoreLabel()
+        updateCoinsLabel()
         resetFork()
     }
     
     func handleForkOffScreen() {
         resetFork()
         score = 0
+        totalCoins += coins
+        coins = 0
+        
+        UserDefaults.standard.set(totalCoins, forKey: "coins")
+        
         updateScoreLabel()
+        updateCoinsLabel()
+        updateTotalCoinsLabel()
     }
     
     func handleHomeTapped() {
@@ -204,26 +251,23 @@ class GameScene: SKScene {
         }
     }
     
-    func handleSwipe() {
-        let touchedNodes = self.nodes(at: initialTouchLocation)
-        for touchedNode in touchedNodes {
-            if touchedNode.name == "home" {
-                handleHomeTapped()
-                return
-            }
-        }
-        
-        
-        if fork.position == forkLaunchPosition {
-            handleForkSwiped()
-        }
+    func validSwipe(swipe: CGVector, time: Double) -> Bool {
+        let magnitude = sqrt(pow(swipe.dx, 2) + pow(swipe.dy, 2))
+        let scaledMagnitude = Double(magnitude) / time
+        return scaledMagnitude > 600
     }
     
     func handleForkSwiped() {
+        if fork.position != forkLaunchPosition {
+            return
+        }
+        
         let dt = finalTouchTime - initialTouchTime
         let swipeVector = CGVector(dx: finalTouchLocation.x - initialTouchLocation.x, dy: finalTouchLocation.y - initialTouchLocation.y)
-        let theta = atan2(swipeVector.dy, swipeVector.dx)
         
+        if !validSwipe(swipe: swipeVector, time: dt) { return }
+        
+        let theta = atan2(swipeVector.dy, swipeVector.dx)
         if theta >= 0 && theta <= CGFloat.pi {
             fork.zRotation = theta - CGFloat.pi / 2
             print("Theta: \(theta)")
@@ -240,12 +284,8 @@ class GameScene: SKScene {
         initialTouchLocation = CGPoint(x: initialTouchLocation.x, y: view!.bounds.height - initialTouchLocation.y)
         initialTouchTime = touches.first!.timestamp
         
-        let touchedNodes = self.nodes(at: initialTouchLocation)
-        for touchedNode in touchedNodes {
-            if touchedNode.name == "home" {
-                handleHomeTapped()
-                return
-            }
+        if homeButton.contains(initialTouchLocation) {
+            handleHomeTapped()
         }
         
         print("initial touch location: \(initialTouchLocation!)")
@@ -269,11 +309,11 @@ class GameScene: SKScene {
         handleForkSwiped()
     }
     
-    override func update(_ currentTime: TimeInterval) {
-        // Called before each frame is rendered
-        
-        
-    }
+//    override func update(_ currentTime: TimeInterval) {
+//        // Called before each frame is rendered
+//
+//
+//    }
     
     override func didEvaluateActions() {
         checkCollisions()
