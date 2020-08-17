@@ -19,9 +19,7 @@ class GameScene: SKScene {
     
     let jetpackAnimation: SKAction
     let explosionAnimation: SKAction
-    let flyAnimation: SKAction
     let jetpackAnimationKey = "jetpackAnimation"
-    let flyAnimationKey = "flyAnimation"
     let forkMoveAnimationKey = "forkMoveAnimationKey"
     let explosionAnimationKey = "explosionAnimationKey"
     let forkLaunchPosition: CGPoint!
@@ -42,6 +40,13 @@ class GameScene: SKScene {
     var finalTouchLocation:CGPoint!
     var finalTouchTime: TimeInterval!
     
+    // Pig movement - update loop
+    var dt: TimeInterval = 0
+    var lastUpdateTime: TimeInterval = 0
+    var velocity = CGPoint.zero
+    var velocityMultiplier: CGFloat = 1.0
+    let pigBoundingBox: CGRect!
+    
    
     override init(size: CGSize) {
         var jetpackTextures:[SKTexture] = []
@@ -57,18 +62,15 @@ class GameScene: SKScene {
             explosionTextures.append(SKTexture(imageNamed: "EXPLOSIONS\(i)"))
         }
         explosionAnimation = SKAction.animate(with: explosionTextures, timePerFrame: 0.1)
-        
-        let right = SKAction.moveTo(x: size.width, duration: 1)
-        let flipLeft = SKAction.scaleX(to: -1, duration: 0)
-        let left = SKAction.moveTo(x: 0, duration: 2)
-        let flipRight = SKAction.scaleX(to: 1, duration: 0)
-        let center = SKAction.moveTo(x: size.width / 2, duration: 1)
-        flyAnimation = SKAction.sequence([right, flipLeft, left, flipRight, center])
         forkLaunchPosition = CGPoint(x: size.width / 2, y: 100)
         
         fork = SpriteFactory.getSelectedWeaponSprite()
         homeButton = SpriteFactory.getHomeButton()
-                
+        
+        // setup pig bounding box - full width, ~60 % height
+        let minY = size.height * 0.40
+        pigBoundingBox = CGRect(x: 0, y: minY, width: size.width, height: size.height * 0.60)
+        
         super.init(size: size)
     }
     
@@ -123,7 +125,10 @@ class GameScene: SKScene {
         highScoreLabel.zPosition = 3
         highScoreLabel.verticalAlignmentMode = .center
         highScoreLabel.horizontalAlignmentMode = .left
-        highScoreLabel.position = CGPoint(x: 20, y: size.height - 30)
+        print("safe top: \(view!.safeAreaInsets.top)")
+        print("safe bottom: \(view!.safeAreaInsets.bottom)")
+        print("normal top: \(size.height)")
+        highScoreLabel.position = CGPoint(x: view!.safeAreaInsets.left + 10, y: size.height - view!.safeAreaInsets.top - 10)
         highScoreLabel.fontColor = .black
         highScore = UserDefaults.standard.integer(forKey: "highScore")
         updateHighScoreLabel()
@@ -142,10 +147,9 @@ class GameScene: SKScene {
     }
     
     func resetPig() {
-        pig.position = CGPoint(x: size.width / 2, y: size.height - 85)
-        pig.xScale = 1
+        pig.position = getPigStartPosition()
+        velocity = getRandomVelocity()
         startJetpackAnimation()
-        startFlyAnimation()
     }
     
     func updateScoreLabel() {
@@ -174,19 +178,6 @@ class GameScene: SKScene {
         pig.removeAction(forKey: jetpackAnimationKey)
     }
     
-    
-    func startFlyAnimation() {
-        if pig.action(forKey: flyAnimationKey) == nil {
-            pig.run(SKAction.repeatForever(flyAnimation), withKey: flyAnimationKey)
-        }
-    }
-    
-    func stopFlyAnimation() {
-        if pig.action(forKey: flyAnimationKey) != nil {
-            pig.removeAction(forKey: flyAnimationKey)
-        }
-    }
-    
     func startExplosionAnimation() {
         if pig.action(forKey: explosionAnimationKey) == nil {
             let action = SKAction.sequence([
@@ -197,6 +188,31 @@ class GameScene: SKScene {
         }
     }
     
+    func getPigStartPosition() -> CGPoint {
+        let validPerimeter = pigBoundingBox.height * 2 + pigBoundingBox.width
+        let randomLocation = CGFloat.random(min: 0, max: validPerimeter)
+        
+        // left side, top, right side
+        var position: CGPoint
+        if randomLocation < pigBoundingBox.height {
+            position = CGPoint(x: 0, y: pigBoundingBox.minY + randomLocation)
+        } else if randomLocation < pigBoundingBox.height + pigBoundingBox.width {
+            let x = randomLocation - pigBoundingBox.height
+            position = CGPoint(x: x, y: pigBoundingBox.maxY)
+        } else {
+            let y = pigBoundingBox.minY + (validPerimeter - randomLocation)
+            position = CGPoint(x: pigBoundingBox.maxX, y: y)
+        }
+        
+        return position
+    }
+    
+    func getRandomVelocity() -> CGPoint {
+        let randomAngle = CGFloat.random(min: 0, max: 2 * CGFloat.pi)
+        let unitVelocity = vectorFromAngle(angle: randomAngle)
+        return unitVelocity * 200
+    }
+    
     func resetFork() {
         fork.removeAction(forKey: forkMoveAnimationKey)
         fork.position = forkLaunchPosition
@@ -204,11 +220,11 @@ class GameScene: SKScene {
     }
     
     func handlePigHit() {
-        print("hit")
         run(explosionSound)
-        stopFlyAnimation()
+        velocity = CGPoint.zero
         stopJetpackAnimation()
         startExplosionAnimation()
+        velocityMultiplier += 0.1
         let coinValue = score / 3 + 1
         score += 1
         coins += coinValue
@@ -225,6 +241,7 @@ class GameScene: SKScene {
     func handleForkOffScreen() {
         resetFork()
         score = 0
+        velocityMultiplier = 1.0
         totalCoins += coins
         coins = 0
         
@@ -309,11 +326,60 @@ class GameScene: SKScene {
         handleForkSwiped()
     }
     
-//    override func update(_ currentTime: TimeInterval) {
-//        // Called before each frame is rendered
-//
-//
-//    }
+    func movePig() {
+        let adjustedVelocity = velocity * velocityMultiplier
+        let amountToMove = adjustedVelocity * CGFloat(dt)
+        pig.position += amountToMove
+    }
+    
+    func rotatePig() {
+        if velocity.x > 0 {
+            pig.xScale = 1
+        } else {
+            pig.xScale = -1
+        }
+        
+    }
+    
+    func boundsCheckPig() {
+        let bottomLeft = CGPoint(x: pigBoundingBox.minX, y: pigBoundingBox.minY)
+          let topRight = CGPoint(x: pigBoundingBox.maxX, y: pigBoundingBox.maxY)
+          
+          if pig.position.x <= bottomLeft.x {
+              pig.position.x = bottomLeft.x
+              velocity.x = abs(velocity.x)
+          }
+        
+          if pig.position.x >= topRight.x {
+              pig.position.x = topRight.x
+              velocity.x = -velocity.x
+          }
+        
+          if pig.position.y <= bottomLeft.y {
+              pig.position.y = bottomLeft.y
+              velocity.y = -velocity.y
+          }
+          
+          if pig.position.y >= topRight.y {
+              pig.position.y = topRight.y
+              velocity.y = -velocity.y
+          }
+    }
+    
+    override func update(_ currentTime: TimeInterval) {
+        // Called before each frame is rendered
+        if lastUpdateTime > 0 {
+            dt = currentTime - lastUpdateTime
+        } else {
+            dt = 0
+        }
+        lastUpdateTime = currentTime
+        
+        movePig()
+        boundsCheckPig()
+        rotatePig()
+
+    }
     
     override func didEvaluateActions() {
         checkCollisions()
