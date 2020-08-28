@@ -11,6 +11,8 @@ import SpriteKit
 
 class ShopScene: SKScene {
   
+    weak var viewController: GameViewController?
+    
     let coinsLabel = SKLabelNode(text: "Coins: 0")
     let whiteStrip = SKSpriteNode(color: .white, size: CGSize(width: 100, height: 20))
     let homeButton = SpriteFactory.getHomeButton()
@@ -38,6 +40,12 @@ class ShopScene: SKScene {
         labelNode.horizontalAlignmentMode = .center
         addChild(labelNode)
         
+        let swipeLabel = SKLabelNode(text: "Swipe left or right to view more options")
+        swipeLabel.position = CGPoint(x: view.bounds.width / 2, y: view.bounds.height * 0.3)
+        swipeLabel.verticalAlignmentMode = .center
+        swipeLabel.horizontalAlignmentMode = .center
+        swipeLabel.fontSize = 22
+        addChild(swipeLabel)
        
         addChild(homeButton)
         addChild(SpriteFactory.getHomeLabel())
@@ -85,8 +93,9 @@ class ShopScene: SKScene {
     
     func handleHomeTapped() {
         let menuScene = MainMenuScene(size: size)
+        menuScene.viewController = self.viewController
         menuScene.scaleMode = scaleMode
-        let transition = SKTransition.fade(withDuration: 0.1)
+        let transition = SKTransition.push(with: .down, duration: 0.7)
         view?.presentScene(menuScene, transition: transition)
     }
     

@@ -11,8 +11,10 @@ import GameplayKit
 
 class GameScene: SKScene {
    
+    weak var viewController: GameViewController?
     let pig = SKSpriteNode(imageNamed: "Jetpack_000")
     let fork: SKSpriteNode
+    let woodSign = SignNode()
     
     let explosionSound: SKAction = SKAction.playSoundFileNamed("explosion2.wav", waitForCompletion: false)
     let shootSound: SKAction = SKAction.playSoundFileNamed("shoot2.wav", waitForCompletion: false)
@@ -22,11 +24,10 @@ class GameScene: SKScene {
     let jetpackAnimationKey = "jetpackAnimation"
     let forkMoveAnimationKey = "forkMoveAnimationKey"
     let explosionAnimationKey = "explosionAnimationKey"
+    let defaultFont = "AmericanTypewriter"
     let forkLaunchPosition: CGPoint!
     let homeButton: SKSpriteNode
     
-    let scoreLabel = SKLabelNode()
-    let coinsLabel = SKLabelNode()
     let highScoreLabel = SKLabelNode()
     let totalCoinsLabel = SKLabelNode()
     var score = 0
@@ -96,6 +97,12 @@ class GameScene: SKScene {
         fork.zRotation = 0.0
         addChild(fork)
         
+        woodSign.position = CGPoint(x: size.width * 0.05, y: size.height * 0.13)
+        woodSign.size = CGSize(width: 150, height: 150)
+        addChild(woodSign)
+        
+        
+        
         setupLabels()
         
         addChild(homeButton)
@@ -103,31 +110,11 @@ class GameScene: SKScene {
     }
     
     func setupLabels() {
-        scoreLabel.fontSize = 50
-        scoreLabel.zPosition = 3
-        scoreLabel.horizontalAlignmentMode = .center
-        scoreLabel.verticalAlignmentMode = .bottom
-        scoreLabel.position = CGPoint(x: size.width / 2, y: size.height / 2 + 20)
-        scoreLabel.fontColor = .black
-        updateScoreLabel()
-        addChild(scoreLabel)
-        
-        coinsLabel.fontSize = 50
-        coinsLabel.zPosition = 3
-        coinsLabel.horizontalAlignmentMode = .center
-        coinsLabel.verticalAlignmentMode = .top
-        coinsLabel.position = CGPoint(x: size.width / 2, y: size.height / 2)
-        coinsLabel.fontColor = .black
-        updateCoinsLabel()
-        addChild(coinsLabel)
-        
         highScoreLabel.fontSize = 25
         highScoreLabel.zPosition = 3
         highScoreLabel.verticalAlignmentMode = .center
         highScoreLabel.horizontalAlignmentMode = .left
-        print("safe top: \(view!.safeAreaInsets.top)")
-        print("safe bottom: \(view!.safeAreaInsets.bottom)")
-        print("normal top: \(size.height)")
+        highScoreLabel.fontName = defaultFont
         highScoreLabel.position = CGPoint(x: view!.safeAreaInsets.left + 10, y: size.height - view!.safeAreaInsets.top - 10)
         highScoreLabel.fontColor = .black
         highScore = UserDefaults.standard.integer(forKey: "highScore")
@@ -136,10 +123,11 @@ class GameScene: SKScene {
         
         totalCoinsLabel.fontSize = 25
         totalCoinsLabel.zPosition = 3
+        totalCoinsLabel.fontName = defaultFont
         totalCoinsLabel.verticalAlignmentMode = .center
         totalCoinsLabel.horizontalAlignmentMode = .right
         totalCoinsLabel.fontColor = .black
-        totalCoinsLabel.position = CGPoint(x: size.width - 20, y: size.height - 30)
+        totalCoinsLabel.position = CGPoint(x: size.width - view!.safeAreaInsets.right - 10, y: size.height - view!.safeAreaInsets.top - 10)
         totalCoins = UserDefaults.standard.integer(forKey: "coins")
         updateTotalCoinsLabel()
         addChild(totalCoinsLabel)
@@ -153,7 +141,7 @@ class GameScene: SKScene {
     }
     
     func updateScoreLabel() {
-        scoreLabel.text = "SCORE: \(score)"
+        woodSign.updateScore(score: score)
     }
     
     func updateHighScoreLabel() {
@@ -161,11 +149,11 @@ class GameScene: SKScene {
     }
     
     func updateCoinsLabel() {
-        coinsLabel.text = "🥓: \(coins)"
+        woodSign.updateCoins(coins: coins)
     }
     
     func updateTotalCoinsLabel() {
-        totalCoinsLabel.text = "TOTAL 🥓: \(totalCoins)"
+        totalCoinsLabel.text = "TOTAL BACON: \(totalCoins)"
     }
     
     func startJetpackAnimation() {
@@ -231,7 +219,6 @@ class GameScene: SKScene {
         if score > highScore {
             highScore = score
             UserDefaults.standard.set(highScore, forKey: "highScore")
-            updateHighScoreLabel()
         }
         updateScoreLabel()
         updateCoinsLabel()
@@ -247,13 +234,16 @@ class GameScene: SKScene {
         
         UserDefaults.standard.set(totalCoins, forKey: "coins")
         
+        
         updateScoreLabel()
         updateCoinsLabel()
         updateTotalCoinsLabel()
+        updateHighScoreLabel()
     }
     
     func handleHomeTapped() {
         let menuScene = MainMenuScene(size: size)
+        menuScene.viewController = self.viewController
         menuScene.scaleMode = scaleMode
         let transition = SKTransition.push(with: .right, duration: 1.0)
         view?.presentScene(menuScene, transition: transition)

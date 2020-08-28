@@ -8,14 +8,21 @@
 
 import Foundation
 import SpriteKit
+import DynamoDB
 
 class MainMenuScene: SKScene {
+    
+    
+    weak var viewController: GameViewController?
     
     let startButton = SKSpriteNode(color: .gray, size: CGSize(width: 200, height: 70))
     let startLabel = SKLabelNode()
     
     let shopButton = SKSpriteNode(color: .gray, size: CGSize(width: 200, height: 70))
     let shopButtonLabel = SKLabelNode()
+    
+    let leaderboardButton = SKSpriteNode(color: .gray, size: CGSize(width: 200, height: 70))
+    let leaderboardLabel = SKLabelNode()
     
     let highScoreLabel = SKLabelNode(text: "High Score: 0")
     
@@ -74,6 +81,17 @@ class MainMenuScene: SKScene {
         addChild(shopButton)
         shopButton.addChild(shopButtonLabel)
         
+        leaderboardButton.position = CGPoint(x: size.width / 2, y: size.height / 2 - 225)
+        leaderboardButton.name = "leaderboard"
+        leaderboardLabel.text = "Leaderboard"
+        leaderboardLabel.fontName = defaultFont
+        leaderboardLabel.fontSize = 24
+        leaderboardLabel.fontColor = .white
+        leaderboardLabel.verticalAlignmentMode = .center
+        addChild(leaderboardButton)
+        leaderboardButton.addChild(leaderboardLabel)
+        
+        
         highScoreLabel.position = CGPoint(x: size.width / 2, y: size.height / 2 + 100)
         highScoreLabel.fontColor = .white
         highScoreLabel.fontName = "AmericanTypewriter-Bold"
@@ -119,15 +137,13 @@ class MainMenuScene: SKScene {
         super.touchesBegan(touches, with: event)
         let touchLocation = touches.first!.location(in: self)
         let touchedNodes = self.nodes(at: touchLocation)
-        print("touch")
-        print("Count: \(touchedNodes.count)")
         for touchedNode in touchedNodes {
             if touchedNode.name == startButton.name {
-                print("start touched")
                 handleStartTapped()
             } else if touchedNode.name == shopButton.name {
-                print("shop touched")
                 handleShopTapped()
+            } else if touchedNode.name == leaderboardButton.name {
+                handleLeaderboardTapped()
             }
         }
     }
@@ -140,23 +156,72 @@ class MainMenuScene: SKScene {
     func handleStartTapped() {
         let gameScene = GameScene(size: size)
         gameScene.scaleMode = scaleMode
+        gameScene.viewController = self.viewController
         let transition = SKTransition.push(with: .left, duration: 1.0)
         view?.presentScene(gameScene, transition: transition)
     }
     
     func handleShopTapped() {
-        let shopScene = ShopScene(size: size)
-        shopScene.scaleMode = scaleMode
-        let transition = SKTransition.push(with: .up, duration: 1.5)
-        view?.presentScene(shopScene, transition: transition)
+        viewController?.performSegue(withIdentifier: "shopSegue", sender: nil)
+//        let shopScene = ShopScene(size: size)
+//        shopScene.scaleMode = scaleMode
+//        shopScene.viewController = self.viewController
+//        let transition = SKTransition.push(with: .up, duration: 1.5)
+//        view?.presentScene(shopScene, transition: transition)
     }
     
-    func sceneTapped() {
-        let gameScene = GameScene(size: size)
-        gameScene.scaleMode = scaleMode
-        let transition = SKTransition.push(with: .up, duration: 1.5)
-        view?.presentScene(gameScene, transition: transition)
+    func handleLeaderboardTapped() {
+        let username = UserDefaults.standard.string(forKey: "username")
+        if username != nil {
+            viewController?.performSegue(withIdentifier: "leaderboardSegue", sender: nil)
+        } else {
+            showUsernamePrompt(isRetry: false)
+        }
     }
+    
+    func showUsernamePrompt(isRetry: Bool) {
+        let message = isRetry ? "Invalid username. Please try again" : "Select a unique username to be used in the global leaderboard"
+        
+        let alertController = UIAlertController(title: "Create a username", message: message, preferredStyle: .alert)
+        alertController.addTextField { (textField) in
+            textField.text = "Username..."
+        }
+        alertController.addAction(UIAlertAction(title: "Cancel", style: .cancel))
+        alertController.addAction(UIAlertAction(title: "Submit", style: .default, handler: { (action) in
+            guard let text = alertController.textFields?.first else { return }
+            if self.validateUsername(username: text.text) {
+                self.handleLeaderboardTapped()
+            } else {
+                self.showUsernamePrompt(isRetry: true)
+            }
+        }))
+        self.viewController?.present(alertController, animated: true)
+    }
+    
+    func validateUsername(username: String?) -> Bool {
+        guard let username = username else {
+            return false
+        }
+        
+        let highscore = UserDefaults.standard.integer(forKey: "highScore")
+        let leaderboardItem = LeaderboardItem(username: username, highscore: highscore).dynamoDBItem()
+        
+        let accessKey = "AKIAZDPKIW43E5RR3A7S" // TODO: remove
+        let secretKey = "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"
+        let tableName = "leaderboard"
+        let dynamoDB = DynamoDB(accessKeyId: accessKey, secretAccessKey: secretKey, region: .uswest1)
+        
+        let putInput = DynamoDB.PutItemInput(conditionExpression: "attribute_not_exists(username)", item: leaderboardItem, tableName: tableName)
+        do {
+            let _ = try dynamoDB.putItem(putInput).wait()
+            UserDefaults.standard.set(username, forKey: "username")
+        } catch {
+            print("error with db")
+            return false
+        }
+        return true
+    }
+    
     
     func addTitleNode() {
         let pigLabel = SKLabelNode(text: "Pig")

@@ -10,6 +10,7 @@ import Foundation
 import SpriteKit
 
 class SpriteFactory {
+    static let targetHeight = CGFloat(80)
     static let forkSize = CGSize(width: 10, height: 80)
     static let selectedWeaponKey = "selectedWeapon"
     static let priceLabelName = "priceLabelName"
@@ -37,12 +38,11 @@ class SpriteFactory {
         return homeButton
     }
     
-    static func getHomeLabel() -> SKLabelNode {
-        let homeButtonLabel = SKLabelNode(text: "🏠")
-        homeButtonLabel.horizontalAlignmentMode = .center
-        homeButtonLabel.verticalAlignmentMode = .center
-        homeButtonLabel.position = CGPoint(x: 50, y: 50)
-        return homeButtonLabel
+    static func getHomeLabel() -> SKSpriteNode {
+        let homeButton = SKSpriteNode(imageNamed: "barn")
+        homeButton.position = CGPoint(x: 50, y: 50)
+        homeButton.size = CGSize(width: 60, height: 60)
+        return homeButton
     }
     
     static func getForkSprite() -> SKSpriteNode {
@@ -70,8 +70,18 @@ class SpriteFactory {
     static func getSelectedWeaponSprite() -> SKSpriteNode{
         let weaponName = UserDefaults.standard.string(forKey: selectedWeaponKey)
         let weapon = SKSpriteNode(imageNamed: weaponName ?? defaultWeapon)
-        weapon.name = "fork"
-        weapon.size = forkSize
+        
+        let h = weapon.size.height
+        let w = weapon.size.width
+        
+        let ratio = targetHeight / h
+        weapon.size = CGSize(width: w * ratio, height: targetHeight)
+        
+        let hitbox = SKSpriteNode(color: .red, size: forkSize)
+        hitbox.name = "fork"
+        hitbox.alpha = 0
+        weapon.addChild(hitbox)
+//        weapon.size = forkSize
         return weapon
     }
     
