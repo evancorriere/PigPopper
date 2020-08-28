@@ -81,7 +81,6 @@ class SpriteFactory {
         hitbox.name = "fork"
         hitbox.alpha = 0
         weapon.addChild(hitbox)
-//        weapon.size = forkSize
         return weapon
     }
     
@@ -91,6 +90,19 @@ class SpriteFactory {
     
     static func getPriceBox(forIndex i: Int) -> SKSpriteNode {
         return getPriceBox(weaponName: availableWeapons[i])
+    }
+    
+    static func getShield() -> SKNode {
+        let shieldSprite = SKSpriteNode(imageNamed: "shield")
+        shieldSprite.size = CGSize(width: 100, height: 100)
+        
+        let spriteHitbox = SKShapeNode(rect: CGRect(x: -50, y: -50, width: 100, height: 100))
+//        spriteHitbox.alpha = 0
+        spriteHitbox.name = "shield"
+        
+        shieldSprite.addChild(spriteHitbox)
+        shieldSprite.name = "shield"
+        return shieldSprite
     }
     
     static func getPriceBox(weaponName: String) -> SKSpriteNode {

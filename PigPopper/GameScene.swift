@@ -15,10 +15,10 @@ class GameScene: SKScene {
     let pig = SKSpriteNode(imageNamed: "Jetpack_000")
     let fork: SKSpriteNode
     let woodSign = SignNode()
+    var shields: [SKNode] = []
     
     let explosionSound: SKAction = SKAction.playSoundFileNamed("explosion2.wav", waitForCompletion: false)
     let shootSound: SKAction = SKAction.playSoundFileNamed("shoot2.wav", waitForCompletion: false)
-    
     let jetpackAnimation: SKAction
     let explosionAnimation: SKAction
     let jetpackAnimationKey = "jetpackAnimation"
@@ -107,6 +107,13 @@ class GameScene: SKScene {
         
         addChild(homeButton)
         addChild(SpriteFactory.getHomeLabel())
+        
+        
+        
+        let shield = SpriteFactory.getShield()
+        shield.position = CGPoint(x: size.width / 2, y: size.height / 2)
+        shields.append(shield)
+        addChild(shield)
     }
     
     func setupLabels() {
@@ -225,7 +232,7 @@ class GameScene: SKScene {
         resetFork()
     }
     
-    func handleForkOffScreen() {
+    func gameOver() {
         resetFork()
         score = 0
         velocityMultiplier = 1.0
@@ -241,6 +248,14 @@ class GameScene: SKScene {
         updateHighScoreLabel()
     }
     
+    func handleForkOffScreen() {
+        gameOver()
+    }
+    
+    func handleShieldHit() {
+        gameOver()
+    }
+    
     func handleHomeTapped() {
         let menuScene = MainMenuScene(size: size)
         menuScene.viewController = self.viewController
@@ -250,9 +265,22 @@ class GameScene: SKScene {
     }
     
     
+    func shieldHit() -> Bool {
+        var hit = false
+        enumerateChildNodes(withName: "shield") { shield, _ in
+            if self.fork.frame.intersects(shield.frame) {
+                hit = true
+            }
+        }
+        return hit
+    }
+    
     func checkCollisions() {
         if fork.frame.intersects(pig.frame) {
             handlePigHit()
+        } else if shieldHit() {
+            print("Shield hit")
+            handleShieldHit()
         } else if !intersects(fork) {
             handleForkOffScreen()
         }
@@ -277,8 +305,6 @@ class GameScene: SKScene {
         let theta = atan2(swipeVector.dy, swipeVector.dx)
         if theta >= 0 && theta <= CGFloat.pi {
             fork.zRotation = theta - CGFloat.pi / 2
-            print("Theta: \(theta)")
-            
             let moveBySwipe = SKAction.move(by: swipeVector, duration: dt)
             run(shootSound)
             fork.run(SKAction.repeatForever(moveBySwipe), withKey: forkMoveAnimationKey)
@@ -294,8 +320,6 @@ class GameScene: SKScene {
         if homeButton.contains(initialTouchLocation) {
             handleHomeTapped()
         }
-        
-        print("initial touch location: \(initialTouchLocation!)")
     }
 
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
@@ -303,7 +327,6 @@ class GameScene: SKScene {
         finalTouchLocation = touches.first!.location(in: view)
         finalTouchLocation = CGPoint(x: finalTouchLocation.x, y: view!.bounds.height - finalTouchLocation.y)
         finalTouchTime = touches.first!.timestamp
-        print("final touch location: \(finalTouchLocation!)")
         handleForkSwiped()
     }
     
@@ -312,7 +335,6 @@ class GameScene: SKScene {
         finalTouchLocation = touches.first!.location(in: view)
         finalTouchLocation = CGPoint(x: finalTouchLocation.x, y: view!.bounds.height - finalTouchLocation.y)
         finalTouchTime = touches.first!.timestamp
-        print("canceled touch location: \(finalTouchLocation!)")
         handleForkSwiped()
     }
     
