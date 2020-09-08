@@ -12,7 +12,7 @@ import GameplayKit
 class GameScene: SKScene {
    
     weak var viewController: GameViewController?
-    let pig = SKSpriteNode(imageNamed: "Jetpack_000")
+    let pig: Pig = SpriteFactory.getPig()
     let fork: SKSpriteNode
     let woodSign = SignNode()
     var shields: [SKNode] = []
@@ -23,17 +23,25 @@ class GameScene: SKScene {
     let explosionAnimation: SKAction
     let jetpackAnimationKey = "jetpackAnimation"
     let forkMoveAnimationKey = "forkMoveAnimationKey"
-    let explosionAnimationKey = "explosionAnimationKey"
     let defaultFont = "AmericanTypewriter"
     let forkLaunchPosition: CGPoint!
     let homeButton: SKSpriteNode
+    let hitMessages = ["Great Shot!", "Nice!", "Perfect", "HIT", "BOOM", "Five Stars!"]
     
     let highScoreLabel = SKLabelNode()
     let totalCoinsLabel = SKLabelNode()
+    let hitMessageLabel = SKLabelNode()
+    let levelUpLabel = SKLabelNode()
+    let gameOverLabel = SKLabelNode()
     var score = 0
     var highScore = 0
     var coins = 0
     var totalCoins = 0
+    var hitValue = 1
+    var shouldResetFork = false
+    var shouldResetPig = false
+    var forkLaunchable = true
+    var forkHitObject = false
     
     var initialTouchLocation: CGPoint!
     var initialTouchTime: TimeInterval!
@@ -73,6 +81,8 @@ class GameScene: SKScene {
         pigBoundingBox = CGRect(x: 0, y: minY, width: size.width, height: size.height * 0.60)
         
         super.init(size: size)
+        
+        pig.gameScene = self
     }
     
     required init(coder aDecoder: NSCoder) {
@@ -81,14 +91,13 @@ class GameScene: SKScene {
     
     
     override func didMove(to view: SKView) {
+        physicsWorld.contactDelegate = self
         backgroundColor = .white
         
         let backgroundSprite = SpriteFactory.getBackgroundSprite(size: size)
         backgroundSprite.xScale = -1 // flip so the transition looks nice
         addChild(backgroundSprite)
         
-        pig.zPosition = 10
-        pig.size = CGSize(width: 90, height: 90)
         addChild(pig)
         resetPig()
         
@@ -97,7 +106,7 @@ class GameScene: SKScene {
         fork.zRotation = 0.0
         addChild(fork)
         
-        woodSign.position = CGPoint(x: size.width * 0.05, y: size.height * 0.13)
+        woodSign.position = CGPoint(x: size.width * 0.05, y: size.height * 0.1)
         woodSign.size = CGSize(width: 150, height: 150)
         addChild(woodSign)
         
@@ -107,19 +116,12 @@ class GameScene: SKScene {
         
         addChild(homeButton)
         addChild(SpriteFactory.getHomeLabel())
-        
-        
-        
-        let shield = SpriteFactory.getShield()
-        shield.position = CGPoint(x: size.width / 2, y: size.height / 2)
-        shields.append(shield)
-        addChild(shield)
     }
     
     func setupLabels() {
         highScoreLabel.fontSize = 25
-        highScoreLabel.zPosition = 3
-        highScoreLabel.verticalAlignmentMode = .center
+        highScoreLabel.zPosition = 20
+        highScoreLabel.verticalAlignmentMode = .top
         highScoreLabel.horizontalAlignmentMode = .left
         highScoreLabel.fontName = defaultFont
         highScoreLabel.position = CGPoint(x: view!.safeAreaInsets.left + 10, y: size.height - view!.safeAreaInsets.top - 10)
@@ -129,9 +131,9 @@ class GameScene: SKScene {
         addChild(highScoreLabel)
         
         totalCoinsLabel.fontSize = 25
-        totalCoinsLabel.zPosition = 3
+        totalCoinsLabel.zPosition = 20
         totalCoinsLabel.fontName = defaultFont
-        totalCoinsLabel.verticalAlignmentMode = .center
+        totalCoinsLabel.verticalAlignmentMode = .top
         totalCoinsLabel.horizontalAlignmentMode = .right
         totalCoinsLabel.fontColor = .black
         totalCoinsLabel.position = CGPoint(x: size.width - view!.safeAreaInsets.right - 10, y: size.height - view!.safeAreaInsets.top - 10)
@@ -139,12 +141,31 @@ class GameScene: SKScene {
         updateTotalCoinsLabel()
         addChild(totalCoinsLabel)
         
+        
+        hitMessageLabel.fontSize = 20
+        hitMessageLabel.zPosition = 20
+        hitMessageLabel.fontName = defaultFont
+        hitMessageLabel.verticalAlignmentMode = .top
+        hitMessageLabel.horizontalAlignmentMode = .center
+        hitMessageLabel.fontColor = .orange
+        hitMessageLabel.setScale(0.0)
+        
+        levelUpLabel.fontSize = 21
+        levelUpLabel.fontName = defaultFont
+        levelUpLabel.fontColor = .white
+        levelUpLabel.zPosition = 25
+        levelUpLabel.verticalAlignmentMode = .center
+        levelUpLabel.horizontalAlignmentMode = .left
+        levelUpLabel.text = "Level up!"
     }
     
     func resetPig() {
+        pig.isHidden = true
         pig.position = getPigStartPosition()
         velocity = getRandomVelocity()
-        startJetpackAnimation()
+        pig.startJetpackAnimation()
+        pig.isHidden = false
+        forkLaunchable = true
     }
     
     func updateScoreLabel() {
@@ -163,24 +184,8 @@ class GameScene: SKScene {
         totalCoinsLabel.text = "TOTAL BACON: \(totalCoins)"
     }
     
-    func startJetpackAnimation() {
-        if pig.action(forKey: jetpackAnimationKey) == nil {
-            pig.run(SKAction.repeatForever(jetpackAnimation), withKey: jetpackAnimationKey)
-        }
-    }
-    
-    func stopJetpackAnimation() {
-        pig.removeAction(forKey: jetpackAnimationKey)
-    }
-    
     func startExplosionAnimation() {
-        if pig.action(forKey: explosionAnimationKey) == nil {
-            let action = SKAction.sequence([
-                explosionAnimation,
-                SKAction.run { [weak self] in self?.resetPig() }
-            ])
-            pig.run(action)
-        }
+        pig.explode()
     }
     
     func getPigStartPosition() -> CGPoint {
@@ -211,41 +216,118 @@ class GameScene: SKScene {
     func resetFork() {
         fork.removeAction(forKey: forkMoveAnimationKey)
         fork.position = forkLaunchPosition
+        fork.physicsBody?.velocity = .zero
         fork.zRotation = 0.0
+        forkHitObject = false
     }
     
     func handlePigHit() {
+        
+        runHitMessage()
+        
         run(explosionSound)
+        self.shouldResetFork = true
+        self.shouldResetPig = true
+        
         velocity = CGPoint.zero
-        stopJetpackAnimation()
-        startExplosionAnimation()
+        pig.stopJetpackAnimation()
         velocityMultiplier += 0.1
-        let coinValue = score / 3 + 1
         score += 1
-        coins += coinValue
+        coins += hitValue
+        totalCoins += hitValue
+        UserDefaults.standard.set(totalCoins, forKey: "coins")
         if score > highScore {
             highScore = score
             UserDefaults.standard.set(highScore, forKey: "highScore")
+            updateHighScoreLabel()
         }
         updateScoreLabel()
         updateCoinsLabel()
+        updateTotalCoinsLabel()
+        
+        if score % 3 == 0 {
+            levelUp()
+        }
+        
         resetFork()
     }
     
+    func runHitMessage() {
+        hitMessageLabel.text = hitMessages.randomElement()
+        hitMessageLabel.position = CGPoint(x: pig.position.x, y: pig.position.y - 50)
+        
+        
+        let displayAction = SKAction.sequence([
+            SKAction.scale(to: 1.0, duration: 0.5),
+            SKAction.scale(to: 0, duration: 0.5),
+            SKAction.removeFromParent()
+        ])
+        
+        addChild(hitMessageLabel)
+        hitMessageLabel.run(displayAction)
+    }
+    
+    func runLevelUpMessage() {
+        levelUpLabel.position = CGPoint(x: -70, y: size.height * 0.35)
+        let acrossAction = SKAction.sequence([
+            SKAction.moveTo(x: 10, duration: 0.2),
+            SKAction.wait(forDuration: 0.9),
+            SKAction.moveTo(x: -70, duration: 0.2),
+            SKAction.removeFromParent()
+        ])
+        addChild(levelUpLabel)
+        levelUpLabel.run(acrossAction)
+    }
+    
+    func levelUp() {
+        runLevelUpMessage()
+        
+        hitValue += 1
+    
+        for shield in shields {
+            let newPos = getRandomShieldPosition()
+            shield.position = newPos
+            shield.run(SKAction.move(to: newPos, duration: 0.5))
+        }
+    
+        if score == 3 || score == 12 || score == 25 {
+            addShield()
+        }
+    }
+    
+    func addShield() {
+        let shield = SpriteFactory.getShield()
+        shield.position = getRandomShieldPosition()
+        shields.append(shield)
+        addChild(shield)
+    }
+    
+    func getRandomShieldPosition() -> CGPoint {
+        let x = CGFloat.random(min: pigBoundingBox.minX + 25, max: pigBoundingBox.maxX - 25)
+        let y = CGFloat.random(min: pigBoundingBox.minY + 50, max: pigBoundingBox.maxY - 25)
+        return CGPoint(x: x, y: y)
+    }
+    
     func gameOver() {
+        self.shouldResetFork = true
+        print("game over")
         resetFork()
         score = 0
         velocityMultiplier = 1.0
-        totalCoins += coins
+        hitValue = 1
         coins = 0
         
-        UserDefaults.standard.set(totalCoins, forKey: "coins")
+        for shield in shields {
+            shield.removeFromParent()
+        }
         
+        shields = []
         
         updateScoreLabel()
         updateCoinsLabel()
         updateTotalCoinsLabel()
         updateHighScoreLabel()
+        forkLaunchable = true
     }
     
     func handleForkOffScreen() {
@@ -275,13 +357,8 @@ class GameScene: SKScene {
         return hit
     }
     
-    func checkCollisions() {
-        if fork.frame.intersects(pig.frame) {
-            handlePigHit()
-        } else if shieldHit() {
-            print("Shield hit")
-            handleShieldHit()
-        } else if !intersects(fork) {
+    func checkNonPhysicsCollisions() {
+        if !intersects(fork) {
             handleForkOffScreen()
         }
     }
@@ -293,19 +370,23 @@ class GameScene: SKScene {
     }
     
     func handleForkSwiped() {
-        if fork.position != forkLaunchPosition {
+        if !forkLaunchable {
             return
         }
         
         let dt = finalTouchTime - initialTouchTime
         let swipeVector = CGVector(dx: finalTouchLocation.x - initialTouchLocation.x, dy: finalTouchLocation.y - initialTouchLocation.y)
         
-        if !validSwipe(swipe: swipeVector, time: dt) { return }
+        if !validSwipe(swipe: swipeVector, time: dt) {
+            return
+            
+        }
         
         let theta = atan2(swipeVector.dy, swipeVector.dx)
         if theta >= 0 && theta <= CGFloat.pi {
             fork.zRotation = theta - CGFloat.pi / 2
             let moveBySwipe = SKAction.move(by: swipeVector, duration: dt)
+            forkLaunchable = false
             run(shootSound)
             fork.run(SKAction.repeatForever(moveBySwipe), withKey: forkMoveAnimationKey)
         }
@@ -346,9 +427,10 @@ class GameScene: SKScene {
     
     func rotatePig() {
         if velocity.x > 0 {
-            pig.xScale = 1
+            pig.flipRight()
         } else {
-            pig.xScale = -1
+            pig.flipLeft()
+            
         }
         
     }
@@ -394,7 +476,44 @@ class GameScene: SKScene {
     }
     
     override func didEvaluateActions() {
-        checkCollisions()
+        checkNonPhysicsCollisions()
     }
     
+    override func didSimulatePhysics() {
+        if self.shouldResetFork {
+            resetFork()
+            self.shouldResetFork = false
+        }
+        if self.shouldResetPig {
+            startExplosionAnimation()
+            self.shouldResetPig = false
+        }
+    }
+    
+}
+
+extension GameScene: SKPhysicsContactDelegate {
+    func didBegin(_ contact: SKPhysicsContact) {
+        let nodeA = contact.bodyA.node!
+        let nodeB = contact.bodyB.node!
+        
+        if nodeA.name == fork.name || nodeB.name == fork.name {
+            if forkHitObject {
+                return
+            } else {
+                forkHitObject = true
+            }
+            
+            
+            let otherNode = nodeA.name == fork.name ? nodeB : nodeA
+            
+            if otherNode.name == "shield" {
+                print("hit shield")
+                handleShieldHit()
+            } else if otherNode.name == pig.name {
+                print("hit pig")
+                handlePigHit()
+            }
+        }
+    }
 }

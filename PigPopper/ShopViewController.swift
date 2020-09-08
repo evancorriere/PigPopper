@@ -11,23 +11,29 @@ import UIKit
 class ShopViewController: UIViewController {
 
     let items = [ ShopItem(name: "dessert_fork", price: 0),
-                  ShopItem(name: "cook_fork", price: 30),
-                  ShopItem(name: "spear", price: 60),
-                  ShopItem(name: "gold_sword", price: 90),
-                  ShopItem(name: "arrow", price: 100),
-                  ShopItem(name: "axe", price: 110),
-                  ShopItem(name: "bullet", price: 120),
-                  ShopItem(name: "bread_knife", price: 130),
-                  ShopItem(name: "chainsaw", price: 140),
-                  ShopItem(name: "utility_knife", price: 150),
-                  ShopItem(name: "rolling_pin", price: 160),
-                  ShopItem(name: "screwdriver", price: 170),
-                  ShopItem(name: "shovel", price: 180),
-                  ShopItem(name: "sniper", price: 190),
-                  ShopItem(name: "axe_gold", price: 200),
-                  ShopItem(name: "whisk", price: 210),
-                  ShopItem(name: "dagger", price: 300),
-                  ShopItem(name: "trident", price: 500),
+                  ShopItem(name: "cook_fork", price: 50),
+                  ShopItem(name: "bread_knife", price: 100),
+                  ShopItem(name: "whisk", price: 150),
+                  ShopItem(name: "rolling_pin", price: 200),
+                  ShopItem(name: "utility_knife", price: 250),
+                  
+                  
+                  ShopItem(name: "screwdriver", price: 500),
+                  ShopItem(name: "shovel", price: 550),
+                  ShopItem(name: "chainsaw", price: 600),
+                  
+                  
+                  ShopItem(name: "arrow", price: 750),
+                  ShopItem(name: "sniper", price: 800),
+                  ShopItem(name: "bullet", price: 850),
+                  
+                  
+                  ShopItem(name: "spear", price: 1000),
+                  ShopItem(name: "axe", price: 1500),
+                  ShopItem(name: "axe_gold", price: 2000),
+                  ShopItem(name: "gold_sword", price: 3000),
+                  ShopItem(name: "dagger", price: 4000),
+                  ShopItem(name: "trident", price: 5000),
                   
     ]
     

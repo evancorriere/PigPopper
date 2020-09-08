@@ -32,7 +32,7 @@ class SpriteFactory {
     
     static func getHomeButton() -> SKSpriteNode {
         let homeButton = SKSpriteNode(color: .white, size: CGSize(width: 50, height: 50))
-        homeButton.position = CGPoint(x: 50, y: 50)
+        homeButton.position = CGPoint(x: 50, y: 40)
         homeButton.isHidden = true
         homeButton.name = homeButtonName
         return homeButton
@@ -40,7 +40,7 @@ class SpriteFactory {
     
     static func getHomeLabel() -> SKSpriteNode {
         let homeButton = SKSpriteNode(imageNamed: "barn")
-        homeButton.position = CGPoint(x: 50, y: 50)
+        homeButton.position = CGPoint(x: 40, y: 40)
         homeButton.size = CGSize(width: 60, height: 60)
         return homeButton
     }
@@ -76,12 +76,21 @@ class SpriteFactory {
         
         let ratio = targetHeight / h
         weapon.size = CGSize(width: w * ratio, height: targetHeight)
+        weapon.name = "fork"
         
-        let hitbox = SKSpriteNode(color: .red, size: forkSize)
-        hitbox.name = "fork"
-        hitbox.alpha = 0
-        weapon.addChild(hitbox)
+        // setup physics body to be a hitboxSize rect
+        weapon.physicsBody = SKPhysicsBody(rectangleOf: forkSize)
+        weapon.physicsBody?.categoryBitMask = CollisionTypes.fork.rawValue
+        weapon.physicsBody?.collisionBitMask = CollisionTypes.pig.rawValue | CollisionTypes.shield.rawValue
+        weapon.physicsBody?.contactTestBitMask = CollisionTypes.pig.rawValue | CollisionTypes.shield.rawValue
+        weapon.physicsBody?.affectedByGravity = false
+        weapon.physicsBody?.allowsRotation = false
+        
         return weapon
+    }
+    
+    static func getPig() -> Pig {
+        return Pig()
     }
     
     static func getWeaponSprite(forIndex i: Int) -> SKSpriteNode {
@@ -92,17 +101,17 @@ class SpriteFactory {
         return getPriceBox(weaponName: availableWeapons[i])
     }
     
-    static func getShield() -> SKNode {
-        let shieldSprite = SKSpriteNode(imageNamed: "shield")
-        shieldSprite.size = CGSize(width: 100, height: 100)
-        
-        let spriteHitbox = SKShapeNode(rect: CGRect(x: -50, y: -50, width: 100, height: 100))
-//        spriteHitbox.alpha = 0
-        spriteHitbox.name = "shield"
-        
-        shieldSprite.addChild(spriteHitbox)
-        shieldSprite.name = "shield"
-        return shieldSprite
+    static func getShield() -> SKSpriteNode {
+        let shield = SKSpriteNode(imageNamed: "shield")
+        shield.size = CGSize(width: 100, height: 100)
+        shield.physicsBody = SKPhysicsBody(circleOfRadius: 50)
+        shield.physicsBody?.isDynamic = false
+        shield.physicsBody?.categoryBitMask = CollisionTypes.shield.rawValue
+        shield.physicsBody?.collisionBitMask = CollisionTypes.fork.rawValue
+        shield.physicsBody?.contactTestBitMask = CollisionTypes.fork.rawValue
+        shield.name = "shield"
+        shield.zPosition = 10
+        return shield
     }
     
     static func getPriceBox(weaponName: String) -> SKSpriteNode {

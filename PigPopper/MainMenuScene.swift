@@ -63,6 +63,13 @@ class MainMenuScene: SKScene {
         
         
         
+        if !UserDefaults.standard.bool(forKey: "setupDone") {
+            UserDefaults.standard.set(true, forKey: "owns_\(SpriteFactory.defaultWeapon)")
+            UserDefaults.standard.set(SpriteFactory.defaultWeapon, forKey: SpriteFactory.selectedWeaponKey)
+            UserDefaults.standard.set(true, forKey: "setupDone")
+        }
+        
+        
         startButton.position = CGPoint(x: size.width / 2, y: size.height / 2 - 35)
         startButton.name = "start"
         startLabel.text = "Start!"
@@ -92,7 +99,7 @@ class MainMenuScene: SKScene {
         leaderboardButton.addChild(leaderboardLabel)
         
         
-        highScoreLabel.position = CGPoint(x: size.width / 2, y: size.height / 2 + 100)
+        highScoreLabel.position = CGPoint(x: size.width / 2, y: size.height / 2 + 75)
         highScoreLabel.fontColor = .white
         highScoreLabel.fontName = "AmericanTypewriter-Bold"
         highScoreLabel.verticalAlignmentMode = .center
@@ -103,6 +110,7 @@ class MainMenuScene: SKScene {
         //TODO: add to spriteFactiory (pig factory?)
         pig.size = CGSize(width: 80, height: 80)
         pig.position = CGPoint(x: 30, y: 80)
+        pig.zPosition = 25
         addChild(pig)
         startPigAnimation()
         
@@ -233,7 +241,7 @@ class MainMenuScene: SKScene {
         pigLabel.horizontalAlignmentMode = .center
         pigLabel.verticalAlignmentMode = .bottom
         pigLabel.position = CGPoint(x: size.width / 2, y: size.height * 0.75)
-        pigLabel.zPosition = 5
+        pigLabel.zPosition = 20
         
         popperLabel.fontColor = .black
         popperLabel.fontName = defaultFont
@@ -241,7 +249,7 @@ class MainMenuScene: SKScene {
         popperLabel.horizontalAlignmentMode = .center
         popperLabel.verticalAlignmentMode = .top
         popperLabel.position = CGPoint(x: size.width / 2, y: size.height * 0.75)
-        popperLabel.zPosition = 5
+        popperLabel.zPosition = 20
         
         addChild(pigLabel)
         addChild(popperLabel)

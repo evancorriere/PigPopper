@@ -17,6 +17,8 @@
 		1E5FAA8324F2FE7D00F0BF5E /* ShopCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E5FAA8224F2FE7D00F0BF5E /* ShopCell.swift */; };
 		1E5FAA8924F30D8100F0BF5E /* ShopItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E5FAA8824F30D8100F0BF5E /* ShopItem.swift */; };
 		1E5FAA8D24F3654700F0BF5E /* ShopViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E5FAA8C24F3654700F0BF5E /* ShopViewController.swift */; };
+		1E5FAA8F24F9804700F0BF5E /* PhysicsValues.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E5FAA8E24F9804700F0BF5E /* PhysicsValues.swift */; };
+		1E5FAA9124FAE39C00F0BF5E /* Pig.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E5FAA9024FAE39B00F0BF5E /* Pig.swift */; };
 		1EB323D324A32659008BEAF8 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EB323D224A32659008BEAF8 /* AppDelegate.swift */; };
 		1EB323D924A3265A008BEAF8 /* GameScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EB323D824A3265A008BEAF8 /* GameScene.swift */; };
 		1EB323DB24A3265A008BEAF8 /* GameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EB323DA24A3265A008BEAF8 /* GameViewController.swift */; };
@@ -42,6 +44,8 @@
 		1E5FAA8224F2FE7D00F0BF5E /* ShopCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShopCell.swift; sourceTree = "<group>"; };
 		1E5FAA8824F30D8100F0BF5E /* ShopItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShopItem.swift; sourceTree = "<group>"; };
 		1E5FAA8C24F3654700F0BF5E /* ShopViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShopViewController.swift; sourceTree = "<group>"; };
+		1E5FAA8E24F9804700F0BF5E /* PhysicsValues.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhysicsValues.swift; sourceTree = "<group>"; };
+		1E5FAA9024FAE39B00F0BF5E /* Pig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Pig.swift; sourceTree = "<group>"; };
 		1EB323CF24A32659008BEAF8 /* PigPopper.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PigPopper.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		1EB323D224A32659008BEAF8 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		1EB323D824A3265A008BEAF8 /* GameScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameScene.swift; sourceTree = "<group>"; };
@@ -109,6 +113,8 @@
 				1E5FAA8224F2FE7D00F0BF5E /* ShopCell.swift */,
 				1E5FAA8824F30D8100F0BF5E /* ShopItem.swift */,
 				1E5FAA8C24F3654700F0BF5E /* ShopViewController.swift */,
+				1E5FAA8E24F9804700F0BF5E /* PhysicsValues.swift */,
+				1E5FAA9024FAE39B00F0BF5E /* Pig.swift */,
 			);
 			path = PigPopper;
 			sourceTree = "<group>";
@@ -211,6 +217,7 @@
 				1EEFF97E24C19DD9006791EE /* MyUtil.swift in Sources */,
 				1E5FAA8924F30D8100F0BF5E /* ShopItem.swift in Sources */,
 				1EB323F424AC4DC9008BEAF8 /* SpriteFactory.swift in Sources */,
+				1E5FAA9124FAE39C00F0BF5E /* Pig.swift in Sources */,
 				1E5FAA7A24EB481900F0BF5E /* ScoreboardCell.swift in Sources */,
 				1E5FAA7C24EBA46A00F0BF5E /* SignNode.swift in Sources */,
 				1E5FAA7824EB104B00F0BF5E /* TableViewController.swift in Sources */,
@@ -219,6 +226,7 @@
 				1E5FAA8124ED158C00F0BF5E /* LeaderboardItem.swift in Sources */,
 				1EB323ED24A3277A008BEAF8 /* MainMenuScene.swift in Sources */,
 				1EB323F224A884E5008BEAF8 /* ShopScene.swift in Sources */,
+				1E5FAA8F24F9804700F0BF5E /* PhysicsValues.swift in Sources */,
 				1E5FAA8D24F3654700F0BF5E /* ShopViewController.swift in Sources */,
 				1EB323D324A32659008BEAF8 /* AppDelegate.swift in Sources */,
 			);
@@ -374,7 +382,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.evancorriere.PigPopper;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = 1;
+				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
 		};
@@ -392,7 +400,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.evancorriere.PigPopper;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = 1;
+				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;
 		};
