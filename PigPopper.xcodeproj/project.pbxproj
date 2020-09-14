@@ -7,9 +7,19 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		1E1047E2250A21610016E508 /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E1047E1250A21610016E508 /* SettingsViewController.swift */; };
+		1E1047E4250A21EC0016E508 /* SwitchCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E1047E3250A21EC0016E508 /* SwitchCell.swift */; };
+		1E1047EA250B289E0016E508 /* ButtonCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E1047E9250B289E0016E508 /* ButtonCell.swift */; };
+		1E1047EC250B2CAD0016E508 /* AchievementsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E1047EB250B2CAD0016E508 /* AchievementsViewController.swift */; };
+		1E1047EE250B30D70016E508 /* AchievementCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E1047ED250B30D70016E508 /* AchievementCell.swift */; };
+		1E1047F1250B32600016E508 /* Achievement.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E1047F0250B32600016E508 /* Achievement.swift */; };
+		1E1047F4250DB2120016E508 /* MenuButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E1047F3250DB2120016E508 /* MenuButton.swift */; };
+		1E1047F6250DB70B0016E508 /* MenuLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E1047F5250DB70B0016E508 /* MenuLabel.swift */; };
+		1E1047F8250DD1240016E508 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1E1047F7250DD1240016E508 /* Main.storyboard */; };
+		1E1047FA250F4A800016E508 /* GameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E1047F9250F4A7F0016E508 /* GameViewController.swift */; };
 		1E5FAA7424C54F5E00F0BF5E /* shoot2.wav in Resources */ = {isa = PBXBuildFile; fileRef = 1E5FAA7324C54F5E00F0BF5E /* shoot2.wav */; };
 		1E5FAA7624C54FB600F0BF5E /* explosion2.wav in Resources */ = {isa = PBXBuildFile; fileRef = 1E5FAA7524C54FB600F0BF5E /* explosion2.wav */; };
-		1E5FAA7824EB104B00F0BF5E /* TableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E5FAA7724EB104B00F0BF5E /* TableViewController.swift */; };
+		1E5FAA7824EB104B00F0BF5E /* LeaderboardViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E5FAA7724EB104B00F0BF5E /* LeaderboardViewController.swift */; };
 		1E5FAA7A24EB481900F0BF5E /* ScoreboardCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E5FAA7924EB481900F0BF5E /* ScoreboardCell.swift */; };
 		1E5FAA7C24EBA46A00F0BF5E /* SignNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E5FAA7B24EBA46A00F0BF5E /* SignNode.swift */; };
 		1E5FAA7F24ED0CE100F0BF5E /* DynamoDB in Frameworks */ = {isa = PBXBuildFile; productRef = 1E5FAA7E24ED0CE100F0BF5E /* DynamoDB */; };
@@ -21,8 +31,7 @@
 		1E5FAA9124FAE39C00F0BF5E /* Pig.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E5FAA9024FAE39B00F0BF5E /* Pig.swift */; };
 		1EB323D324A32659008BEAF8 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EB323D224A32659008BEAF8 /* AppDelegate.swift */; };
 		1EB323D924A3265A008BEAF8 /* GameScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EB323D824A3265A008BEAF8 /* GameScene.swift */; };
-		1EB323DB24A3265A008BEAF8 /* GameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EB323DA24A3265A008BEAF8 /* GameViewController.swift */; };
-		1EB323DE24A3265A008BEAF8 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1EB323DC24A3265A008BEAF8 /* Main.storyboard */; };
+		1EB323DB24A3265A008BEAF8 /* MainMenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EB323DA24A3265A008BEAF8 /* MainMenuViewController.swift */; };
 		1EB323E024A3265F008BEAF8 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1EB323DF24A3265F008BEAF8 /* Assets.xcassets */; };
 		1EB323E324A3265F008BEAF8 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1EB323E124A3265F008BEAF8 /* LaunchScreen.storyboard */; };
 		1EB323ED24A3277A008BEAF8 /* MainMenuScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EB323EC24A3277A008BEAF8 /* MainMenuScene.swift */; };
@@ -35,9 +44,19 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		1E1047E1250A21610016E508 /* SettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = SettingsViewController.swift; path = PigPopper/ViewControllers/SettingsViewController.swift; sourceTree = SOURCE_ROOT; };
+		1E1047E3250A21EC0016E508 /* SwitchCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwitchCell.swift; sourceTree = "<group>"; };
+		1E1047E9250B289E0016E508 /* ButtonCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ButtonCell.swift; sourceTree = "<group>"; };
+		1E1047EB250B2CAD0016E508 /* AchievementsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AchievementsViewController.swift; sourceTree = "<group>"; };
+		1E1047ED250B30D70016E508 /* AchievementCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AchievementCell.swift; sourceTree = "<group>"; };
+		1E1047F0250B32600016E508 /* Achievement.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Achievement.swift; sourceTree = "<group>"; };
+		1E1047F3250DB2120016E508 /* MenuButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuButton.swift; sourceTree = "<group>"; };
+		1E1047F5250DB70B0016E508 /* MenuLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuLabel.swift; sourceTree = "<group>"; };
+		1E1047F7250DD1240016E508 /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
+		1E1047F9250F4A7F0016E508 /* GameViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameViewController.swift; sourceTree = "<group>"; };
 		1E5FAA7324C54F5E00F0BF5E /* shoot2.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; name = shoot2.wav; path = audio/shoot2.wav; sourceTree = SOURCE_ROOT; };
 		1E5FAA7524C54FB600F0BF5E /* explosion2.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; name = explosion2.wav; path = audio/explosion2.wav; sourceTree = SOURCE_ROOT; };
-		1E5FAA7724EB104B00F0BF5E /* TableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableViewController.swift; sourceTree = "<group>"; };
+		1E5FAA7724EB104B00F0BF5E /* LeaderboardViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LeaderboardViewController.swift; sourceTree = "<group>"; };
 		1E5FAA7924EB481900F0BF5E /* ScoreboardCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScoreboardCell.swift; sourceTree = "<group>"; };
 		1E5FAA7B24EBA46A00F0BF5E /* SignNode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignNode.swift; sourceTree = "<group>"; };
 		1E5FAA8024ED158C00F0BF5E /* LeaderboardItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LeaderboardItem.swift; sourceTree = "<group>"; };
@@ -49,8 +68,7 @@
 		1EB323CF24A32659008BEAF8 /* PigPopper.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PigPopper.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		1EB323D224A32659008BEAF8 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		1EB323D824A3265A008BEAF8 /* GameScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameScene.swift; sourceTree = "<group>"; };
-		1EB323DA24A3265A008BEAF8 /* GameViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameViewController.swift; sourceTree = "<group>"; };
-		1EB323DD24A3265A008BEAF8 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		1EB323DA24A3265A008BEAF8 /* MainMenuViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainMenuViewController.swift; sourceTree = "<group>"; };
 		1EB323DF24A3265F008BEAF8 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		1EB323E224A3265F008BEAF8 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		1EB323E424A3265F008BEAF8 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -75,6 +93,70 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		1E1047E5250B24E50016E508 /* Cells */ = {
+			isa = PBXGroup;
+			children = (
+				1E1047E3250A21EC0016E508 /* SwitchCell.swift */,
+				1E5FAA8224F2FE7D00F0BF5E /* ShopCell.swift */,
+				1E5FAA7924EB481900F0BF5E /* ScoreboardCell.swift */,
+				1E1047E9250B289E0016E508 /* ButtonCell.swift */,
+				1E1047ED250B30D70016E508 /* AchievementCell.swift */,
+			);
+			path = Cells;
+			sourceTree = "<group>";
+		};
+		1E1047E6250B24FC0016E508 /* Sprites */ = {
+			isa = PBXGroup;
+			children = (
+				1EB323F324AC4DC9008BEAF8 /* SpriteFactory.swift */,
+				1E5FAA9024FAE39B00F0BF5E /* Pig.swift */,
+				1E5FAA7B24EBA46A00F0BF5E /* SignNode.swift */,
+			);
+			path = Sprites;
+			sourceTree = "<group>";
+		};
+		1E1047E7250B250B0016E508 /* ViewControllers */ = {
+			isa = PBXGroup;
+			children = (
+				1EB323DA24A3265A008BEAF8 /* MainMenuViewController.swift */,
+				1E5FAA8C24F3654700F0BF5E /* ShopViewController.swift */,
+				1E5FAA7724EB104B00F0BF5E /* LeaderboardViewController.swift */,
+				1E1047E1250A21610016E508 /* SettingsViewController.swift */,
+				1E1047EB250B2CAD0016E508 /* AchievementsViewController.swift */,
+				1E1047F9250F4A7F0016E508 /* GameViewController.swift */,
+			);
+			path = ViewControllers;
+			sourceTree = "<group>";
+		};
+		1E1047E8250B25330016E508 /* Scenes */ = {
+			isa = PBXGroup;
+			children = (
+				1EB323F124A884E5008BEAF8 /* ShopScene.swift */,
+				1EB323EC24A3277A008BEAF8 /* MainMenuScene.swift */,
+				1EB323D824A3265A008BEAF8 /* GameScene.swift */,
+			);
+			name = Scenes;
+			sourceTree = "<group>";
+		};
+		1E1047EF250B32290016E508 /* DataObjects */ = {
+			isa = PBXGroup;
+			children = (
+				1E5FAA8024ED158C00F0BF5E /* LeaderboardItem.swift */,
+				1E5FAA8824F30D8100F0BF5E /* ShopItem.swift */,
+				1E1047F0250B32600016E508 /* Achievement.swift */,
+			);
+			path = DataObjects;
+			sourceTree = "<group>";
+		};
+		1E1047F2250DB1D10016E508 /* UIElements */ = {
+			isa = PBXGroup;
+			children = (
+				1E1047F3250DB2120016E508 /* MenuButton.swift */,
+				1E1047F5250DB70B0016E508 /* MenuLabel.swift */,
+			);
+			path = UIElements;
+			sourceTree = "<group>";
+		};
 		1EB323C624A32659008BEAF8 = {
 			isa = PBXGroup;
 			children = (
@@ -94,27 +176,20 @@
 		1EB323D124A32659008BEAF8 /* PigPopper */ = {
 			isa = PBXGroup;
 			children = (
-				1EEFF97424C183BF006791EE /* sounds */,
-				1EB323D224A32659008BEAF8 /* AppDelegate.swift */,
-				1EB323D824A3265A008BEAF8 /* GameScene.swift */,
-				1EB323DA24A3265A008BEAF8 /* GameViewController.swift */,
-				1EB323DC24A3265A008BEAF8 /* Main.storyboard */,
 				1EB323DF24A3265F008BEAF8 /* Assets.xcassets */,
+				1EEFF97424C183BF006791EE /* sounds */,
+				1E1047E8250B25330016E508 /* Scenes */,
+				1E1047E7250B250B0016E508 /* ViewControllers */,
+				1E1047F2250DB1D10016E508 /* UIElements */,
+				1E1047E6250B24FC0016E508 /* Sprites */,
+				1E1047E5250B24E50016E508 /* Cells */,
+				1EB323D224A32659008BEAF8 /* AppDelegate.swift */,
+				1E1047EF250B32290016E508 /* DataObjects */,
 				1EB323E124A3265F008BEAF8 /* LaunchScreen.storyboard */,
+				1E1047F7250DD1240016E508 /* Main.storyboard */,
 				1EB323E424A3265F008BEAF8 /* Info.plist */,
-				1EB323EC24A3277A008BEAF8 /* MainMenuScene.swift */,
-				1EB323F124A884E5008BEAF8 /* ShopScene.swift */,
-				1EB323F324AC4DC9008BEAF8 /* SpriteFactory.swift */,
 				1EEFF97D24C19DD9006791EE /* MyUtil.swift */,
-				1E5FAA7724EB104B00F0BF5E /* TableViewController.swift */,
-				1E5FAA7924EB481900F0BF5E /* ScoreboardCell.swift */,
-				1E5FAA7B24EBA46A00F0BF5E /* SignNode.swift */,
-				1E5FAA8024ED158C00F0BF5E /* LeaderboardItem.swift */,
-				1E5FAA8224F2FE7D00F0BF5E /* ShopCell.swift */,
-				1E5FAA8824F30D8100F0BF5E /* ShopItem.swift */,
-				1E5FAA8C24F3654700F0BF5E /* ShopViewController.swift */,
 				1E5FAA8E24F9804700F0BF5E /* PhysicsValues.swift */,
-				1E5FAA9024FAE39B00F0BF5E /* Pig.swift */,
 			);
 			path = PigPopper;
 			sourceTree = "<group>";
@@ -195,10 +270,10 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				1EB323DE24A3265A008BEAF8 /* Main.storyboard in Resources */,
 				1EB323E024A3265F008BEAF8 /* Assets.xcassets in Resources */,
 				1EEFF97C24C19DA6006791EE /* background_music.mp3 in Resources */,
 				1E5FAA7424C54F5E00F0BF5E /* shoot2.wav in Resources */,
+				1E1047F8250DD1240016E508 /* Main.storyboard in Resources */,
 				1EEFF97624C183E3006791EE /* explosion.wav in Resources */,
 				1E5FAA7624C54FB600F0BF5E /* explosion2.wav in Resources */,
 				1EEFF97824C1854F006791EE /* shoot.wav in Resources */,
@@ -213,36 +288,37 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1E1047F4250DB2120016E508 /* MenuButton.swift in Sources */,
+				1E1047EA250B289E0016E508 /* ButtonCell.swift in Sources */,
 				1EB323D924A3265A008BEAF8 /* GameScene.swift in Sources */,
 				1EEFF97E24C19DD9006791EE /* MyUtil.swift in Sources */,
 				1E5FAA8924F30D8100F0BF5E /* ShopItem.swift in Sources */,
+				1E1047FA250F4A800016E508 /* GameViewController.swift in Sources */,
+				1E1047EC250B2CAD0016E508 /* AchievementsViewController.swift in Sources */,
+				1E1047F1250B32600016E508 /* Achievement.swift in Sources */,
+				1E1047E4250A21EC0016E508 /* SwitchCell.swift in Sources */,
 				1EB323F424AC4DC9008BEAF8 /* SpriteFactory.swift in Sources */,
 				1E5FAA9124FAE39C00F0BF5E /* Pig.swift in Sources */,
 				1E5FAA7A24EB481900F0BF5E /* ScoreboardCell.swift in Sources */,
 				1E5FAA7C24EBA46A00F0BF5E /* SignNode.swift in Sources */,
-				1E5FAA7824EB104B00F0BF5E /* TableViewController.swift in Sources */,
-				1EB323DB24A3265A008BEAF8 /* GameViewController.swift in Sources */,
+				1E5FAA7824EB104B00F0BF5E /* LeaderboardViewController.swift in Sources */,
+				1EB323DB24A3265A008BEAF8 /* MainMenuViewController.swift in Sources */,
 				1E5FAA8324F2FE7D00F0BF5E /* ShopCell.swift in Sources */,
+				1E1047EE250B30D70016E508 /* AchievementCell.swift in Sources */,
 				1E5FAA8124ED158C00F0BF5E /* LeaderboardItem.swift in Sources */,
 				1EB323ED24A3277A008BEAF8 /* MainMenuScene.swift in Sources */,
+				1E1047E2250A21610016E508 /* SettingsViewController.swift in Sources */,
 				1EB323F224A884E5008BEAF8 /* ShopScene.swift in Sources */,
 				1E5FAA8F24F9804700F0BF5E /* PhysicsValues.swift in Sources */,
 				1E5FAA8D24F3654700F0BF5E /* ShopViewController.swift in Sources */,
 				1EB323D324A32659008BEAF8 /* AppDelegate.swift in Sources */,
+				1E1047F6250DB70B0016E508 /* MenuLabel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXVariantGroup section */
-		1EB323DC24A3265A008BEAF8 /* Main.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				1EB323DD24A3265A008BEAF8 /* Base */,
-			);
-			name = Main.storyboard;
-			sourceTree = "<group>";
-		};
 		1EB323E124A3265F008BEAF8 /* LaunchScreen.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
@@ -373,12 +449,14 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 2;
 				DEVELOPMENT_TEAM = 3X32246G59;
 				INFOPLIST_FILE = PigPopper/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
+				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.evancorriere.PigPopper;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
@@ -391,12 +469,14 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 2;
 				DEVELOPMENT_TEAM = 3X32246G59;
 				INFOPLIST_FILE = PigPopper/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
+				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.evancorriere.PigPopper;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;

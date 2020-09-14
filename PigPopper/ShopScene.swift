@@ -11,7 +11,7 @@ import SpriteKit
 
 class ShopScene: SKScene {
   
-    weak var viewController: GameViewController?
+    weak var viewController: MainMenuViewController?
     
     let coinsLabel = SKLabelNode(text: "Coins: 0")
     let whiteStrip = SKSpriteNode(color: .white, size: CGSize(width: 100, height: 20))

@@ -339,11 +339,10 @@ class GameScene: SKScene {
     }
     
     func handleHomeTapped() {
-        let menuScene = MainMenuScene(size: size)
-        menuScene.viewController = self.viewController
-        menuScene.scaleMode = scaleMode
-        let transition = SKTransition.push(with: .right, duration: 1.0)
-        view?.presentScene(menuScene, transition: transition)
+        guard let controller = viewController else {
+            return
+        }
+        controller.dismiss(animated: true, completion: nil)
     }
     
     

@@ -9,7 +9,7 @@
 import UIKit
 import SpriteKit
 
-class GameViewController: UIViewController {
+class MainMenuViewController: UIViewController {
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
@@ -41,15 +41,22 @@ class GameViewController: UIViewController {
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "pageView" {
-            if let view = segue.destination as? TableViewController {
+            if let view = segue.destination as? LeaderboardViewController {
                 view.preferredContentSize = CGSize(width: self.view.bounds.width * 0.80, height: self.view.bounds.width * 0.80)
                 view.modalPresentationStyle = .overCurrentContext
             }
         }
     }
+    
+    
+    @IBAction func muteTapped(_ sender: Any) {
+        print("mute")
+    }
+    
+    
 }
 
-extension GameViewController: UIPopoverPresentationControllerDelegate {
+extension MainMenuViewController: UIPopoverPresentationControllerDelegate {
     func adaptivePresentationStyle(for controller: UIPresentationController) -> UIModalPresentationStyle {
         return .none
     }

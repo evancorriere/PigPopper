@@ -10,7 +10,7 @@ import UIKit
 import DynamoDB
 import NIO
 
-class TableViewController: UIViewController {
+class LeaderboardViewController: UIViewController {
 
     let accessKey = "AKIAZDPKIW43E5RR3A7S"
     let secretKey = "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"
@@ -24,6 +24,11 @@ class TableViewController: UIViewController {
     @IBOutlet weak var doneButton: UIButton!
     
     var data: [[String]] = []
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        self.navigationController?.setNavigationBarHidden(false, animated: false)
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -80,14 +85,14 @@ class TableViewController: UIViewController {
     }
 }
 
-extension TableViewController: UITableViewDelegate {
+extension LeaderboardViewController: UITableViewDelegate {
     func numberOfSections(in tableView: UITableView) -> Int {
         1
     }
     
 }
 
-extension TableViewController: UITableViewDataSource {
+extension LeaderboardViewController: UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return data.count
