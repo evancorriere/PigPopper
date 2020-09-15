@@ -11,34 +11,48 @@ import SpriteKit
 
 class GameViewController: UIViewController {
 
+    
+    @IBOutlet weak var highscoreLabel: UILabel!
+    @IBOutlet weak var highscoreLabelView: UIView!
+    @IBOutlet weak var baconLabel: UILabel!
+    @IBOutlet weak var baconLabelView: UIView!
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+  
+        
 
-//        let scene = GameScene(size: view.bounds.size)
-//        scene.viewController = self
-//
-//
-//        let skView = self.view as! SKView
-//
-                
-        //        skView.showsNodeCount = true
-//        //        skView.showsFPS = true
-//        //        skView.showsPhysics = true
-//                
-//                skView.ignoresSiblingOrder = true
-//                scene.scaleMode = .aspectFill
-//                skView.presentScene(scene)
+        let scene = GameScene(size: view.bounds.size)
+        scene.viewController = self
+        scene.scaleMode = .aspectFill
+      
+        let skView = self.view as! SKView
+        skView.presentScene(scene)
+        
+        highscoreLabelView.layer.masksToBounds = true
+        highscoreLabelView.layer.cornerRadius = 10
+        highscoreLabelView.backgroundColor = UIColor.darkGray.withAlphaComponent(0.80)
+        baconLabelView.layer.masksToBounds = true
+        baconLabelView.layer.cornerRadius = 10
+        baconLabelView.backgroundColor = UIColor.darkGray.withAlphaComponent(0.80)
+        
     }
     
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
+    func updateBacon(bacon: Int) {
+        baconLabel.text = "Bacon: \(bacon)"
     }
-    */
+    
+    func updateHighscore(highscore: Int) {
+        highscoreLabel.text = "Highscore: \(highscore)"
+    }
+    
+    override var shouldAutorotate: Bool {
+        return false
+    }
+
+    override var prefersStatusBarHidden: Bool {
+        return true
+    }
+    
 
 }

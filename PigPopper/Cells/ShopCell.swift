@@ -36,7 +36,7 @@ class ShopCell: UITableViewCell {
             return
         }
         
-        let coins = UserDefaults.standard.integer(forKey: "coins")
+        let coins = DataHelper.getBacon()
         
         if item.isOwned() {
             item.select()
@@ -44,7 +44,7 @@ class ShopCell: UITableViewCell {
             shopViewController?.tableView.reloadData()
         } else if item.isAffordable(totalCoins: coins) {
             item.markOwned()
-            UserDefaults.standard.set(coins - item.price, forKey: "coins")
+            DataHelper.setBacon(bacon: coins - item.price)
             statusLabel.text = "Owned"
             shopViewController?.updateLabels()
             actionButton.setTitle("Equip", for: .normal)

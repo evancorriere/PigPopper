@@ -45,7 +45,7 @@ class ShopViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        coins = UserDefaults.standard.integer(forKey: "coins")
+        coins = DataHelper.getBacon()
         updateLabels()
         
         
@@ -64,7 +64,7 @@ class ShopViewController: UIViewController {
     }
     
     func updateLabels() {
-        coins = UserDefaults.standard.integer(forKey: "coins")
+        coins = DataHelper.getBacon()
         coinsLabel.text = "Bacon: \(self.coins)"
     }
     

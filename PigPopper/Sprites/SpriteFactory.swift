@@ -68,8 +68,8 @@ class SpriteFactory {
     }
     
     static func getSelectedWeaponSprite() -> SKSpriteNode{
-        let weaponName = UserDefaults.standard.string(forKey: selectedWeaponKey)
-        let weapon = SKSpriteNode(imageNamed: weaponName ?? defaultWeapon)
+        let weaponName = DataHelper.getSelectedWeapon()
+        let weapon = SKSpriteNode(imageNamed: weaponName)
         
         let h = weapon.size.height
         let w = weapon.size.width
@@ -96,11 +96,7 @@ class SpriteFactory {
     static func getWeaponSprite(forIndex i: Int) -> SKSpriteNode {
         return getWeaponSprite(weaponName: availableWeapons[i])
     }
-    
-    static func getPriceBox(forIndex i: Int) -> SKSpriteNode {
-        return getPriceBox(weaponName: availableWeapons[i])
-    }
-    
+
     static func getShield() -> SKSpriteNode {
         let shield = SKSpriteNode(imageNamed: "shield")
         shield.size = CGSize(width: 100, height: 100)
@@ -112,39 +108,6 @@ class SpriteFactory {
         shield.name = "shield"
         shield.zPosition = 10
         return shield
-    }
-    
-    static func getPriceBox(weaponName: String) -> SKSpriteNode {
-        if !availableWeapons.contains(weaponName) {
-            return SKSpriteNode()
-        }
-        
-        let priceBox = SKSpriteNode(color: .white, size: CGSize(width: 80, height: 40))
-        priceBox.name = "buy_" + weaponName
-        
-        let priceLabel = SKLabelNode()
-        
-        let ownsWeapon = UserDefaults.standard.bool(forKey: "owns_" + weaponName)
-        if ownsWeapon {
-            let selected = UserDefaults.standard.string(forKey: selectedWeaponKey) ?? defaultWeapon
-            if weaponName == selected {
-                priceLabel.text = "selected"
-            } else {
-                priceLabel.text = "owned"
-            }
-        } else {
-            let weaponPrice = prices[weaponName]!
-            priceLabel.text = "Price: \(weaponPrice) 🥓"
-        }
-        
-        priceLabel.verticalAlignmentMode = .center
-        priceLabel.horizontalAlignmentMode = .center
-        priceLabel.fontColor = .black
-        priceLabel.fontSize = 13
-        priceLabel.name = priceLabelName
-        priceBox.addChild(priceLabel)
-        
-        return priceBox
     }
     
     static func getBackgroundSprite(size: CGSize) -> SKSpriteNode {

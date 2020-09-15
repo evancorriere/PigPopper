@@ -119,28 +119,11 @@ class GameScene: SKScene {
     }
     
     func setupLabels() {
-        highScoreLabel.fontSize = 25
-        highScoreLabel.zPosition = 20
-        highScoreLabel.verticalAlignmentMode = .top
-        highScoreLabel.horizontalAlignmentMode = .left
-        highScoreLabel.fontName = defaultFont
-        highScoreLabel.position = CGPoint(x: view!.safeAreaInsets.left + 10, y: size.height - view!.safeAreaInsets.top - 10)
-        highScoreLabel.fontColor = .black
-        highScore = UserDefaults.standard.integer(forKey: "highScore")
+        highScore = DataHelper.getHighscore()
         updateHighScoreLabel()
-        addChild(highScoreLabel)
         
-        totalCoinsLabel.fontSize = 25
-        totalCoinsLabel.zPosition = 20
-        totalCoinsLabel.fontName = defaultFont
-        totalCoinsLabel.verticalAlignmentMode = .top
-        totalCoinsLabel.horizontalAlignmentMode = .right
-        totalCoinsLabel.fontColor = .black
-        totalCoinsLabel.position = CGPoint(x: size.width - view!.safeAreaInsets.right - 10, y: size.height - view!.safeAreaInsets.top - 10)
-        totalCoins = UserDefaults.standard.integer(forKey: "coins")
+        totalCoins = DataHelper.getBacon()
         updateTotalCoinsLabel()
-        addChild(totalCoinsLabel)
-        
         
         hitMessageLabel.fontSize = 20
         hitMessageLabel.zPosition = 20
@@ -173,7 +156,7 @@ class GameScene: SKScene {
     }
     
     func updateHighScoreLabel() {
-        highScoreLabel.text = "BEST: \(highScore)"
+        viewController?.updateHighscore(highscore: highScore)
     }
     
     func updateCoinsLabel() {
@@ -181,7 +164,7 @@ class GameScene: SKScene {
     }
     
     func updateTotalCoinsLabel() {
-        totalCoinsLabel.text = "TOTAL BACON: \(totalCoins)"
+        viewController?.updateBacon(bacon: totalCoins)
     }
     
     func startExplosionAnimation() {
@@ -235,10 +218,10 @@ class GameScene: SKScene {
         score += 1
         coins += hitValue
         totalCoins += hitValue
-        UserDefaults.standard.set(totalCoins, forKey: "coins")
+        DataHelper.setBacon(bacon: totalCoins)
         if score > highScore {
             highScore = score
-            UserDefaults.standard.set(highScore, forKey: "highScore")
+            DataHelper.setHighscore(highscore: highScore)
             updateHighScoreLabel()
         }
         updateScoreLabel()
