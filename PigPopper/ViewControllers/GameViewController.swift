@@ -16,18 +16,24 @@ class GameViewController: UIViewController {
     @IBOutlet weak var highscoreLabelView: UIView!
     @IBOutlet weak var baconLabel: UILabel!
     @IBOutlet weak var baconLabelView: UIView!
+    
+    var gameScene: GameScene?
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
   
         
 
-        let scene = GameScene(size: view.bounds.size)
-        scene.viewController = self
-        scene.scaleMode = .aspectFill
+        gameScene = GameScene(size: view.bounds.size)
+        gameScene?.viewController = self
+        
+        gameScene?.scaleMode = .aspectFill
       
         let skView = self.view as! SKView
-        skView.presentScene(scene)
+        skView.showsPhysics = true
+        skView.presentScene(gameScene!)
+        
         
         highscoreLabelView.layer.masksToBounds = true
         highscoreLabelView.layer.cornerRadius = 10
@@ -44,6 +50,10 @@ class GameViewController: UIViewController {
     
     func updateHighscore(highscore: Int) {
         highscoreLabel.text = "Highscore: \(highscore)"
+    }
+    
+    override func viewSafeAreaInsetsDidChange() {
+        gameScene?.viewSafeAreaInsetsDidChange()
     }
     
     override var shouldAutorotate: Bool {

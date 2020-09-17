@@ -8,37 +8,51 @@
 
 import UIKit
 
+enum SettingsSwitch: CaseIterable {
+    case music
+    case notifications
+}
+
+
 class SwitchCell: UITableViewCell {
 
     
     @IBOutlet weak var label: UILabel!
     @IBOutlet weak var selection: UISwitch!
     
-    var key: String?
+    var switchType: SettingsSwitch?
     
     
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
+        selection.addTarget(self, action: #selector(toggle), for: .valueChanged)
     }
 
     override func setSelected(_ selected: Bool, animated: Bool) {
-        super.setSelected(selected, animated: animated)
-
         // Configure the view for the selected state
     }
+
     
-    func initWithKey(key: String) {
-        self.key = key
-        selection.addTarget(self, action: #selector(toggle), for: .valueChanged)
+    func setupWith(switchType: SettingsSwitch) {
+        self.switchType = switchType
+        
+        switch switchType {
+        case .music:
+            label.text = "Music"
+        case .notifications:
+            label.text = "Notifications"
+            
+        }
+    
         // TODO
-        self.selection.setOn(true, animated: false)
+//        self.selection.setOn(true, animated: false)
         
     }
 
     @objc func toggle(_ sender: UISwitch) {
         // TODO
-        print("")
+        print("toggled")
     }
 
     

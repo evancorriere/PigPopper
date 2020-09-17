@@ -18,9 +18,10 @@ class AchievementsViewController: UIViewController {
     let achievements: [Achievement] = [ Achievement(rank: "Rookie", score: 5, reward: "one"),
                                         Achievement(rank: "Piggy", score: 10, reward: "two"),
                                         Achievement(rank: "Oinker", score: 15, reward: "three"),
-                                        Achievement(rank: "rank", score: 20, reward: "four") ]
-    
-    
+                                        Achievement(rank: "PIG", score: 20, reward: "four"),
+                                        Achievement(rank: "Farmer", score: 25, reward: "five"),
+                                        Achievement(rank: "Agricultural Scientist", score: 30, reward: "six"),
+                                        Achievement(rank: "God", score: 100, reward: "seven")]
     
     override func viewDidLoad() {
         super.viewDidLoad()

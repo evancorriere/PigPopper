@@ -24,7 +24,7 @@ class AchievementCell: UITableViewCell {
     }
 
     override func setSelected(_ selected: Bool, animated: Bool) {
-        super.setSelected(selected, animated: animated)
+//        super.setSelected(selected, animated: animated)
 
         // Configure the view for the selected state
     }
@@ -34,7 +34,16 @@ class AchievementCell: UITableViewCell {
         self.achievement = achievement
         rankLabel.text = achievement.rank
         requirementLabel.text = "Goal: \(achievement.requiredScore)"
-        // TODO : setup progress bar
+        let highscore = DataHelper.getHighscore()
+        if highscore >= achievement.requiredScore {
+            requirementLabel.textColor = .green
+            progressBar.setProgress(1.0, animated: false)
+        } else {
+            requirementLabel.textColor = .systemRed
+            progressBar.setProgress(Float(highscore) / Float(achievement.requiredScore), animated: false)
+        }
+        
+        
     }
     
 

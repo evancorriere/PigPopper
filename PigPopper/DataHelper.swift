@@ -13,6 +13,7 @@ enum UserDefaultKeys: String, CaseIterable { // TODO: how does this work
     case coins
     case setupDone
     case selectedWeapon
+    case username
 }
 
 final class DataHelper {
@@ -61,5 +62,9 @@ final class DataHelper {
     
     static func setSelectedWeapon(weaponName: String) {
         setData(value: weaponName, key: .selectedWeapon)
+    }
+    
+    static func getUsername() -> String? {
+        return getData(type: String.self, forKey: .username)
     }
 }

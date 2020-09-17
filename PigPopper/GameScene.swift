@@ -54,7 +54,7 @@ class GameScene: SKScene {
     var lastUpdateTime: TimeInterval = 0
     var velocity = CGPoint.zero
     var velocityMultiplier: CGFloat = 1.0
-    let pigBoundingBox: CGRect!
+    var pigBoundingBox: CGRect!
     
    
     override init(size: CGSize) {
@@ -75,12 +75,12 @@ class GameScene: SKScene {
         
         fork = SpriteFactory.getSelectedWeaponSprite()
         homeButton = SpriteFactory.getHomeButton()
-        
-        // setup pig bounding box - full width, ~60 % height
-        let minY = size.height * 0.40
-        pigBoundingBox = CGRect(x: 0, y: minY, width: size.width, height: size.height * 0.60)
-        
+            
         super.init(size: size)
+        
+        let playableHeight = size.height * 0.60
+        let minY = size.height - playableHeight - (view?.safeAreaInsets.top ?? 0)
+        pigBoundingBox = CGRect(x: 0, y: minY, width: size.width, height: playableHeight)
         
         pig.gameScene = self
     }
@@ -94,10 +94,13 @@ class GameScene: SKScene {
         physicsWorld.contactDelegate = self
         backgroundColor = .white
         
+        
+        
         let backgroundSprite = SpriteFactory.getBackgroundSprite(size: size)
         backgroundSprite.xScale = -1 // flip so the transition looks nice
         addChild(backgroundSprite)
         
+
         addChild(pig)
         resetPig()
         
@@ -117,6 +120,16 @@ class GameScene: SKScene {
         addChild(homeButton)
         addChild(SpriteFactory.getHomeLabel())
     }
+    
+    func viewSafeAreaInsetsDidChange() {
+        let playableHeight = size.height * 0.60
+        let minY = size.height - playableHeight - (self.view?.safeAreaInsets.top ?? 0) * 0.7
+        print("from GS: \(self.view?.safeAreaInsets.left ?? -1)")
+        pigBoundingBox = CGRect(x: 0, y: minY, width: size.width, height: playableHeight)
+    
+    }
+    
+    
     
     func setupLabels() {
         highScore = DataHelper.getHighscore()
@@ -177,14 +190,14 @@ class GameScene: SKScene {
         
         // left side, top, right side
         var position: CGPoint
-        if randomLocation < pigBoundingBox.height {
-            position = CGPoint(x: 0, y: pigBoundingBox.minY + randomLocation)
-        } else if randomLocation < pigBoundingBox.height + pigBoundingBox.width {
+        if randomLocation < pigBoundingBox.height { // left side
+            position = CGPoint(x: -pig.physicsNode.frame.width, y: pigBoundingBox.minY + randomLocation)
+        } else if randomLocation < pigBoundingBox.height + pigBoundingBox.width { // top
             let x = randomLocation - pigBoundingBox.height
-            position = CGPoint(x: x, y: pigBoundingBox.maxY)
+            position = CGPoint(x: x, y: pigBoundingBox.maxY + pig.physicsNode.frame.height)
         } else {
             let y = pigBoundingBox.minY + (validPerimeter - randomLocation)
-            position = CGPoint(x: pigBoundingBox.maxX, y: y)
+            position = CGPoint(x: pigBoundingBox.maxX + pig.physicsNode.frame.width, y: y)
         }
         
         return position
@@ -418,28 +431,24 @@ class GameScene: SKScene {
     }
     
     func boundsCheckPig() {
-        let bottomLeft = CGPoint(x: pigBoundingBox.minX, y: pigBoundingBox.minY)
-          let topRight = CGPoint(x: pigBoundingBox.maxX, y: pigBoundingBox.maxY)
-          
-          if pig.position.x <= bottomLeft.x {
-              pig.position.x = bottomLeft.x
-              velocity.x = abs(velocity.x)
-          }
         
-          if pig.position.x >= topRight.x {
-              pig.position.x = topRight.x
-              velocity.x = -velocity.x
-          }
+        let widthOffset = (pig.physicsNode.frame.width / 2) * 0.75
         
-          if pig.position.y <= bottomLeft.y {
-              pig.position.y = bottomLeft.y
-              velocity.y = -velocity.y
-          }
-          
-          if pig.position.y >= topRight.y {
-              pig.position.y = topRight.y
-              velocity.y = -velocity.y
-          }
+        if pig.position.x - widthOffset <= pigBoundingBox.minX && velocity.x < 0 {
+            velocity.x = -velocity.x
+        }
+        
+        if pig.position.x + widthOffset >= pigBoundingBox.maxX && velocity.x > 0 {
+            velocity.x = -velocity.x
+        }
+        
+        if pig.position.y + pig.physicsNode.frame.minY <= pigBoundingBox.minY && velocity.y < 0 {
+            velocity.y = -velocity.y
+        }
+        
+        if pig.position.y + pig.physicsNode.frame.maxY >= pigBoundingBox.maxY && velocity.y > 0 {
+            velocity.y = -velocity.y
+        }
     }
     
     override func update(_ currentTime: TimeInterval) {

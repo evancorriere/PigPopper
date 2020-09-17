@@ -21,6 +21,7 @@ class MainMenuViewController: UIViewController {
         self.navigationController?.setNavigationBarHidden(true, animated: false)
         
         imageView.transform = CGAffineTransform(rotationAngle: CGFloat.pi / 4)
+        updateData()
     }
     
     override func viewDidLoad() {
@@ -28,16 +29,11 @@ class MainMenuViewController: UIViewController {
         let scene = MainMenuScene(size: view.bounds.size)
         let skView = self.view as! SKView
         scene.viewController = self
-        
-//        skView.showsNodeCount = true
-//        skView.showsFPS = true
-//        skView.showsPhysics = true
-        
+ 
         skView.ignoresSiblingOrder = true
         scene.scaleMode = .aspectFill
         skView.presentScene(scene)
         
-        updateLabels()
     }
 
     override var shouldAutorotate: Bool {
@@ -48,7 +44,7 @@ class MainMenuViewController: UIViewController {
         return true
     }
     
-    private func updateLabels() {
+    private func updateData() {
         highscoreLabel.text = "Highscore: \(DataHelper.getHighscore())"
         baconLabel.text = "Bacon: \(DataHelper.getBacon())"
         imageView.image = UIImage(named: DataHelper.getSelectedWeapon())
