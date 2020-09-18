@@ -36,6 +36,26 @@ final class DataHelper {
         defaults.removeObject(forKey: key.rawValue)
     }
     
+    
+    /*
+     * Item ownership. All purchaseable items are named based on the image name
+     * stored with key owns_item
+     * these keys are NOT in the key enum
+     */
+    
+    static func getItemOwned(itemName: String) -> Bool {
+        let ownsItemKey = "" + itemName
+        return UserDefaults.standard.bool(forKey: ownsItemKey)
+    }
+    
+    static func setItemOwned(itemName: String, bool: Bool) {
+        let ownsItemKey = "owns_" + itemName
+        UserDefaults.standard.set(bool, forKey: ownsItemKey)
+    }
+    
+    
+    
+    
     /*
      * Convenience functions
      */
@@ -67,4 +87,6 @@ final class DataHelper {
     static func getUsername() -> String? {
         return getData(type: String.self, forKey: .username)
     }
+    
+    
 }

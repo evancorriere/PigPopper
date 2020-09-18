@@ -24,20 +24,20 @@ class ShopItem {
     }
     
     func isOwned() -> Bool {
-        return UserDefaults.standard.bool(forKey: ownsKey)
+        return DataHelper.getItemOwned(itemName: name)
     }
     
     func markOwned() {
-        UserDefaults.standard.set(true, forKey: ownsKey)
+        DataHelper.setItemOwned(itemName: name, bool: true)
     }
     
     func isSelected() -> Bool {
-        let selected = UserDefaults.standard.string(forKey: selectedWeaponKey)
+        let selected = DataHelper.getSelectedWeapon()
         return name == selected
     }
     
     func select() {
-        UserDefaults.standard.set(name, forKey: selectedWeaponKey)
+        DataHelper.setSelectedWeapon(weaponName: name)
     }
     
     func isAffordable(totalCoins: Int) -> Bool {

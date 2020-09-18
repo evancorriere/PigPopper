@@ -158,6 +158,7 @@ class GameScene: SKScene {
     func resetPig() {
         pig.isHidden = true
         pig.position = getPigStartPosition()
+        rotatePig()
         velocity = getRandomVelocity()
         pig.startJetpackAnimation()
         pig.isHidden = false
@@ -236,6 +237,13 @@ class GameScene: SKScene {
             highScore = score
             DataHelper.setHighscore(highscore: highScore)
             updateHighScoreLabel()
+            let achievements = AchievementManager.updatedAchievements(highscore: highScore)
+            if achievements.count > 0 {
+                print("Achivements unlocked!")
+                for achievement in achievements {
+                    print(achievement.rank)
+                }
+            }
         }
         updateScoreLabel()
         updateCoinsLabel()
@@ -436,10 +444,12 @@ class GameScene: SKScene {
         
         if pig.position.x - widthOffset <= pigBoundingBox.minX && velocity.x < 0 {
             velocity.x = -velocity.x
+            rotatePig()
         }
         
         if pig.position.x + widthOffset >= pigBoundingBox.maxX && velocity.x > 0 {
             velocity.x = -velocity.x
+            rotatePig()
         }
         
         if pig.position.y + pig.physicsNode.frame.minY <= pigBoundingBox.minY && velocity.y < 0 {
@@ -462,7 +472,7 @@ class GameScene: SKScene {
         
         movePig()
         boundsCheckPig()
-        rotatePig()
+        
 
     }
     

@@ -37,10 +37,22 @@ class ShopViewController: UIViewController {
                   
     ]
     
+    let hats = [    ShopItem(name: "gold_sword", price: 100),
+                    ShopItem(name: "axe", price: 1000),
+                    ShopItem(name: "axe", price: 1500),
+                    ShopItem(name: "axe_gold", price: 2000),
+                    ShopItem(name: "gold_sword", price: 3000),
+                    ShopItem(name: "dagger", price: 4000),
+                    ShopItem(name: "trident", price: 5000),
+    ]
+    
+    
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var coinsLabel: UILabel!
+    @IBOutlet weak var toggleItemButton: UIButton!
     
     var coins = 0
+    var selectedItemType = "weapons"
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -63,6 +75,21 @@ class ShopViewController: UIViewController {
         dismiss(animated: true, completion: nil)
     }
     
+    @IBAction func itemsButtonTapped(_ sender: Any) {
+        if selectedItemType == "weapons" {
+            selectedItemType = "hats"
+            toggleItemButton.setTitle("Weapons", for: .normal)
+            toggleItemButton.backgroundColor = .systemBlue
+            tableView.reloadData()
+        } else if selectedItemType == "hats" {
+            tableView.reloadData()
+            selectedItemType = "weapons"
+            toggleItemButton.setTitle("Hats", for: .normal)
+            toggleItemButton.backgroundColor = .systemPurple
+        }
+    }
+    
+    
     func updateLabels() {
         coins = DataHelper.getBacon()
         coinsLabel.text = "Bacon: \(self.coins)"
@@ -84,13 +111,21 @@ extension ShopViewController: UITableViewDelegate {
 extension ShopViewController: UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        if selectedItemType == "hats" {
+            return hats.count
+        }
         return items.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "shopCell", for: indexPath) as! ShopCell
         let item = items[indexPath.row]
-        cell.setupWithItem(item: item)
+        if selectedItemType == "hats" {
+            cell.setupWithItem(item: hats[indexPath.row])
+        } else {
+            cell.setupWithItem(item: item)
+        }
+        
         cell.shopViewController = self
         cell.selectionStyle = .none
         cell.layoutMargins = UIEdgeInsets.zero

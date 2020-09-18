@@ -14,18 +14,26 @@ class Achievement {
     let rank: String
     let requiredScore: Int
     let reward: String
-    let completed: Bool
+    var completed: Bool
     
     
     init(rank: String, score: Int, reward: String) {
         self.rank = rank
         self.requiredScore = score
         self.reward = reward
-        self.completed = false
         
-        // TODO : if highscore > required -> self.completed = true
+        let highscore = DataHelper.getHighscore()
+        self.completed = highscore >= self.requiredScore ? true : false
     }
     
+    
+    func isCompletedBy(highscore: Int) -> Bool {
+        if !completed && highscore >= requiredScore {
+            completed = true
+            return true
+        }
+        return false
+    }
     
     
     

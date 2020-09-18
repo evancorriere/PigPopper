@@ -13,6 +13,7 @@ class Pig: SKNode {
 
     let imageNode = SKSpriteNode(imageNamed: "Jetpack_000")
     let physicsNode = SKShapeNode(rect: CGRect(x: -20, y: -40, width: 40, height: 80))
+    let hatNode = SKSpriteNode(imageNamed: "policeHat")
     
     let jetpackAnimation: SKAction
     let jetpackAnimationKey = "jetpackAnimation"
@@ -49,6 +50,13 @@ class Pig: SKNode {
         physicsNode.position = CGPoint(x: 0, y: -10)
         physicsNode.alpha = 0.0
         addChild(physicsNode)
+        
+        
+        hatNode.position = CGPoint(x: 32, y: 10)
+        hatNode.size = CGSize(width: 40, height: 40)
+        hatNode.zRotation = -CGFloat.pi / 8.0
+        hatNode.zPosition = imageNode.zPosition + 1
+        addChild(hatNode)
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -56,13 +64,22 @@ class Pig: SKNode {
     }
     
     func flipLeft() {
+        print("here")
         imageNode.xScale = -1.0
+        hatNode.xScale = -1.0
+        let oldPos = hatNode.position
+        hatNode.position = CGPoint(x: -abs(oldPos.x), y: oldPos.y)
+        hatNode.zRotation = CGFloat.pi / 8.0
         physicsNode.zRotation = CGFloat.pi / 4.0
         
     }
     
     func flipRight() {
         imageNode.xScale = 1.0
+        hatNode.xScale = 1.0
+        let oldPos = hatNode.position
+        hatNode.position = CGPoint(x: abs(oldPos.x), y: oldPos.y)
+        hatNode.zRotation = -CGFloat.pi / 8.0
         physicsNode.zRotation = -CGFloat.pi / 4.0
     }
     
