@@ -15,6 +15,10 @@ class MainMenuViewController: UIViewController {
     @IBOutlet weak var imageView: UIImageView!
     @IBOutlet weak var highscoreLabel: MenuLabel!
     @IBOutlet weak var baconLabel: MenuLabel!
+    @IBOutlet weak var soundButton: UIButton!
+    
+    let musicOnImage = UIImage(systemName: "speaker.3.fill")
+    let musicOffImage = UIImage(systemName: "speaker.slash.fill")
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
@@ -25,6 +29,8 @@ class MainMenuViewController: UIViewController {
         initBackgroundMusicPlayer()
         if DataHelper.getData(type: Bool.self, forKey: .settingsMusic) ?? false {
             playBackgroundMusic()
+        } else {
+            soundButton.setBackgroundImage(musicOffImage, for: .normal)
         }
         
         imageView.transform = CGAffineTransform(rotationAngle: CGFloat.pi / 4)
@@ -64,9 +70,19 @@ class MainMenuViewController: UIViewController {
         present(leaderboardViewController, animated: true, completion: nil)
     }
     
-      @IBAction func muteTapped(_ sender: Any) {
-          print("mute")
-      }
+    @IBAction func muteTapped(_ sender: Any) {
+        if DataHelper.getData(type: Bool.self, forKey: .settingsMusic)! {
+            DataHelper.setData(value: false, key: .settingsMusic)
+            DataHelper.setData(value: false, key: .settingsSoundEffects)
+            pauseBackgroundMusic()
+            
+            soundButton.setBackgroundImage(musicOffImage, for: .normal)
+        } else {
+            DataHelper.setData(value: true, key: .settingsMusic)
+            playBackgroundMusic()
+            soundButton.setBackgroundImage(musicOnImage, for: .normal)
+        }
+    }
       
     
     @IBAction func leaderboardTapped(_ sender: Any) {
@@ -134,6 +150,7 @@ class MainMenuViewController: UIViewController {
             DataHelper.setData(value: true, key: .settingsMusic)
             DataHelper.setData(value: true, key: .settingsNotification)
             DataHelper.setData(value: true, key: .settingsNotification)
+            UserDefaults.standard.set(true, forKey: "setupDone2")
         }
     }
     
