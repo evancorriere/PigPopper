@@ -11,66 +11,66 @@ import Foundation
 import CoreGraphics
 
 func + (left: CGPoint, right: CGPoint) -> CGPoint {
-  return CGPoint(x: left.x + right.x, y: left.y + right.y)
+    return CGPoint(x: left.x + right.x, y: left.y + right.y)
 }
 
 func += (left: inout CGPoint, right: CGPoint) {
-  left = left + right
+    left = left + right
 }
 
 func - (left: CGPoint, right: CGPoint) -> CGPoint {
-  return CGPoint(x: left.x - right.x, y: left.y - right.y)
+    return CGPoint(x: left.x - right.x, y: left.y - right.y)
 }
 
 func -= (left: inout CGPoint, right: CGPoint) {
-  left = left - right
+    left = left - right
 }
 
 func * (left: CGPoint, right: CGPoint) -> CGPoint {
-  return CGPoint(x: left.x * right.x, y: left.y * right.y)
+    return CGPoint(x: left.x * right.x, y: left.y * right.y)
 }
 
 func *= (left: inout CGPoint, right: CGPoint) {
-  left = left * right
+    left = left * right
 }
 
 func * (point: CGPoint, scalar: CGFloat) -> CGPoint {
-  return CGPoint(x: point.x * scalar, y: point.y * scalar)
+    return CGPoint(x: point.x * scalar, y: point.y * scalar)
 }
 
 func *= (point: inout CGPoint, scalar: CGFloat) {
-  point = point * scalar
+    point = point * scalar
 }
 
 func / (left: CGPoint, right: CGPoint) -> CGPoint {
-  return CGPoint(x: left.x / right.x, y: left.y / right.y)
+    return CGPoint(x: left.x / right.x, y: left.y / right.y)
 }
 
 func /= ( left: inout CGPoint, right: CGPoint) {
-  left = left / right
+    left = left / right
 }
 
 func / (point: CGPoint, scalar: CGFloat) -> CGPoint {
-  return CGPoint(x: point.x / scalar, y: point.y / scalar)
+    return CGPoint(x: point.x / scalar, y: point.y / scalar)
 }
 
 func /= (point: inout CGPoint, scalar: CGFloat) {
-  point = point / scalar
+    point = point / scalar
 }
 
 extension CGPoint {
-  
-  func length() -> CGFloat {
-    return sqrt(x*x + y*y)
-  }
-  
-  func normalized() -> CGPoint {
-    return self / length()
-  }
-  
-  var angle: CGFloat {
-    return atan2(y, x)
-  }
+    
+    func length() -> CGFloat {
+        return sqrt(x*x + y*y)
+    }
+    
+    func normalized() -> CGPoint {
+        return self / length()
+    }
+    
+    var angle: CGFloat {
+        return atan2(y, x)
+    }
 }
 
 let π = CGFloat.pi
@@ -82,22 +82,22 @@ func vectorFromAngle(angle: CGFloat) -> CGPoint {
 
 func shortestAngleBetween(angle1: CGFloat,
                           angle2: CGFloat) -> CGFloat {
-  let twoπ = π * 2.0
-  var angle = (angle2 - angle1)
-    .truncatingRemainder(dividingBy: twoπ)
-  if angle >= π {
-    angle = angle - twoπ
-  }
-  if angle <= -π {
-    angle = angle + twoπ
-  }
-  return angle
+    let twoπ = π * 2.0
+    var angle = (angle2 - angle1)
+        .truncatingRemainder(dividingBy: twoπ)
+    if angle >= π {
+        angle = angle - twoπ
+    }
+    if angle <= -π {
+        angle = angle + twoπ
+    }
+    return angle
 }
 
 extension CGFloat {
-  func sign() -> CGFloat {
-    return self >= 0.0 ? 1.0 : -1.0
-  }
+    func sign() -> CGFloat {
+        return self >= 0.0 ? 1.0 : -1.0
+    }
 }
 
 extension CGFloat {
@@ -113,31 +113,40 @@ extension CGFloat {
 
 import AVFoundation
 
-var backgroundMusicPlayer: AVAudioPlayer!
-var playing = false
+var backgroundMusicPlayer: AVAudioPlayer?
 
-func playBackgroundMusic(filename: String) {
-    if playing {
+func initBackgroundMusicPlayer() {
+    
+    
+    if backgroundMusicPlayer != nil {
         return
     }
     
-  let resourceUrl = Bundle.main.url(forResource:
-    filename, withExtension: nil)
-  guard let url = resourceUrl else {
-    print("Could not find file: \(filename)")
-    return
-  }
+    let resourceUrl = Bundle.main.url(forResource: "background_music.mp3", withExtension: nil)
+    guard let url = resourceUrl else {
+        print("Could not find file background_music.mp3")
+        return
+    }
+    
+    do {
+        try backgroundMusicPlayer = AVAudioPlayer(contentsOf: url)
+        backgroundMusicPlayer!.numberOfLoops = -1
+        backgroundMusicPlayer!.volume = 0.5
+        backgroundMusicPlayer!.prepareToPlay()
+    } catch {
+        print("Could not create audio player!")
+        return
+    }
+}
 
-  do {
-    try backgroundMusicPlayer =
-      AVAudioPlayer(contentsOf: url)
-    backgroundMusicPlayer.numberOfLoops = -1
-    backgroundMusicPlayer.volume = 0.5
-    backgroundMusicPlayer.prepareToPlay()
-    backgroundMusicPlayer.play()
-    playing = true
-  } catch {
-    print("Could not create audio player!")
-    return
-  }
+func playBackgroundMusic() {
+    guard let musicPlayer = backgroundMusicPlayer else { return }
+    if !musicPlayer.isPlaying {
+        musicPlayer.play()
+    }
+}
+
+func pauseBackgroundMusic() {
+    guard let musicPlayer = backgroundMusicPlayer else { return }
+    musicPlayer.pause()
 }

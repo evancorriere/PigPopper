@@ -13,7 +13,16 @@ enum UserDefaultKeys: String, CaseIterable { // TODO: how does this work
     case coins
     case setupDone
     case selectedWeapon
+    case selectedHat
     case username
+    
+    
+    /*
+     * Settings keys
+     */
+    case settingsMusic
+    case settingsSoundEffects
+    case settingsNotification
 }
 
 final class DataHelper {
@@ -86,6 +95,14 @@ final class DataHelper {
     
     static func getUsername() -> String? {
         return getData(type: String.self, forKey: .username)
+    }
+    
+    static func getSelectedHat() -> String? {
+        return getData(type: String.self, forKey: .selectedHat)
+    }
+    
+    static func setSelectedHat(hatName: String) {
+        setData(value: hatName, key: .selectedHat)
     }
     
     

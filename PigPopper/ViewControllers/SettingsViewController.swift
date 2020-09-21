@@ -105,13 +105,13 @@ extension SettingsViewController: UITableViewDataSource {
         
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         if indexPath.section == 0 {
-            if indexPath.row == 0 { // Sound
+            if indexPath.row == 0 { // Music
                 let cell = tableView.dequeueReusableCell(withIdentifier: "SwitchCell", for: indexPath) as! SwitchCell
                 cell.setupWith(switchType: .music)
                 return cell
-            } else if indexPath.row == 1 { // Notifications
+            } else if indexPath.row == 1 { // Sound Effects
                 let cell = tableView.dequeueReusableCell(withIdentifier: "SwitchCell", for: indexPath) as! SwitchCell
-                cell.setupWith(switchType: .notifications)
+                cell.setupWith(switchType: .soundEffects)
                 return cell
             } else if indexPath.row == 2 { // About
                 let cell = tableView.dequeueReusableCell(withIdentifier: "ButtonCell", for: indexPath) as! ButtonCell

@@ -49,12 +49,6 @@ class GameScene: SKScene {
     var finalTouchLocation:CGPoint!
     var finalTouchTime: TimeInterval!
     
-    // Pig movement - update loop
-    var dt: TimeInterval = 0
-    var lastUpdateTime: TimeInterval = 0
-    var velocity = CGPoint.zero
-    var velocityMultiplier: CGFloat = 1.0
-    var pigBoundingBox: CGRect!
     
    
     override init(size: CGSize) {
@@ -80,7 +74,7 @@ class GameScene: SKScene {
         
         let playableHeight = size.height * 0.60
         let minY = size.height - playableHeight - (view?.safeAreaInsets.top ?? 0)
-        pigBoundingBox = CGRect(x: 0, y: minY, width: size.width, height: playableHeight)
+        pig.setBoundingBox(boundingBox: CGRect(x: 0, y: minY, width: size.width, height: playableHeight))
         
         pig.gameScene = self
     }
@@ -124,9 +118,7 @@ class GameScene: SKScene {
     func viewSafeAreaInsetsDidChange() {
         let playableHeight = size.height * 0.60
         let minY = size.height - playableHeight - (self.view?.safeAreaInsets.top ?? 0) * 0.7
-        print("from GS: \(self.view?.safeAreaInsets.left ?? -1)")
-        pigBoundingBox = CGRect(x: 0, y: minY, width: size.width, height: playableHeight)
-    
+        pig.setBoundingBox(boundingBox: CGRect(x: 0, y: minY, width: size.width, height: playableHeight))
     }
     
     
@@ -156,10 +148,9 @@ class GameScene: SKScene {
     }
     
     func resetPig() {
+        
         pig.isHidden = true
-        pig.position = getPigStartPosition()
-        rotatePig()
-        velocity = getRandomVelocity()
+        pig.reset()
         pig.startJetpackAnimation()
         pig.isHidden = false
         forkLaunchable = true
@@ -184,32 +175,7 @@ class GameScene: SKScene {
     func startExplosionAnimation() {
         pig.explode()
     }
-    
-    func getPigStartPosition() -> CGPoint {
-        let validPerimeter = pigBoundingBox.height * 2 + pigBoundingBox.width
-        let randomLocation = CGFloat.random(min: 0, max: validPerimeter)
         
-        // left side, top, right side
-        var position: CGPoint
-        if randomLocation < pigBoundingBox.height { // left side
-            position = CGPoint(x: -pig.physicsNode.frame.width, y: pigBoundingBox.minY + randomLocation)
-        } else if randomLocation < pigBoundingBox.height + pigBoundingBox.width { // top
-            let x = randomLocation - pigBoundingBox.height
-            position = CGPoint(x: x, y: pigBoundingBox.maxY + pig.physicsNode.frame.height)
-        } else {
-            let y = pigBoundingBox.minY + (validPerimeter - randomLocation)
-            position = CGPoint(x: pigBoundingBox.maxX + pig.physicsNode.frame.width, y: y)
-        }
-        
-        return position
-    }
-    
-    func getRandomVelocity() -> CGPoint {
-        let randomAngle = CGFloat.random(min: 0, max: 2 * CGFloat.pi)
-        let unitVelocity = vectorFromAngle(angle: randomAngle)
-        return unitVelocity * 200
-    }
-    
     func resetFork() {
         fork.removeAction(forKey: forkMoveAnimationKey)
         fork.position = forkLaunchPosition
@@ -226,9 +192,9 @@ class GameScene: SKScene {
         self.shouldResetFork = true
         self.shouldResetPig = true
         
-        velocity = CGPoint.zero
+        pig.velocity = CGPoint.zero
         pig.stopJetpackAnimation()
-        velocityMultiplier += 0.1
+        pig.velocityMultiplier += 0.1
         score += 1
         coins += hitValue
         totalCoins += hitValue
@@ -307,8 +273,8 @@ class GameScene: SKScene {
     }
     
     func getRandomShieldPosition() -> CGPoint {
-        let x = CGFloat.random(min: pigBoundingBox.minX + 25, max: pigBoundingBox.maxX - 25)
-        let y = CGFloat.random(min: pigBoundingBox.minY + 50, max: pigBoundingBox.maxY - 25)
+        let x = CGFloat.random(min: pig.boundingBox.minX + 25, max: pig.boundingBox.maxX - 25)
+        let y = CGFloat.random(min: pig.boundingBox.minY + 50, max: pig.boundingBox.maxY - 25)
         return CGPoint(x: x, y: y)
     }
     
@@ -317,7 +283,7 @@ class GameScene: SKScene {
         print("game over")
         resetFork()
         score = 0
-        velocityMultiplier = 1.0
+        pig.velocityMultiplier = 1.0
         hitValue = 1
         coins = 0
         
@@ -422,56 +388,11 @@ class GameScene: SKScene {
         handleForkSwiped()
     }
     
-    func movePig() {
-        let adjustedVelocity = velocity * velocityMultiplier
-        let amountToMove = adjustedVelocity * CGFloat(dt)
-        pig.position += amountToMove
-    }
     
-    func rotatePig() {
-        if velocity.x > 0 {
-            pig.flipRight()
-        } else {
-            pig.flipLeft()
-            
-        }
-        
-    }
-    
-    func boundsCheckPig() {
-        
-        let widthOffset = (pig.physicsNode.frame.width / 2) * 0.75
-        
-        if pig.position.x - widthOffset <= pigBoundingBox.minX && velocity.x < 0 {
-            velocity.x = -velocity.x
-            rotatePig()
-        }
-        
-        if pig.position.x + widthOffset >= pigBoundingBox.maxX && velocity.x > 0 {
-            velocity.x = -velocity.x
-            rotatePig()
-        }
-        
-        if pig.position.y + pig.physicsNode.frame.minY <= pigBoundingBox.minY && velocity.y < 0 {
-            velocity.y = -velocity.y
-        }
-        
-        if pig.position.y + pig.physicsNode.frame.maxY >= pigBoundingBox.maxY && velocity.y > 0 {
-            velocity.y = -velocity.y
-        }
-    }
-    
+
     override func update(_ currentTime: TimeInterval) {
         // Called before each frame is rendered
-        if lastUpdateTime > 0 {
-            dt = currentTime - lastUpdateTime
-        } else {
-            dt = 0
-        }
-        lastUpdateTime = currentTime
-        
-        movePig()
-        boundsCheckPig()
+        pig.update(currentTime)
         
 
     }

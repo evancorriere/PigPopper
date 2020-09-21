@@ -26,5 +26,8 @@ class MenuButton: UIButton {
         titleLabel?.font = UIFont(name: defaultFont, size: 18)
         layer.cornerRadius = 5
         setTitleColor(.white, for: .normal)
+        titleLabel?.adjustsFontSizeToFitWidth = true
+        titleEdgeInsets = UIEdgeInsets(top: 0, left: 5, bottom: 0, right: 5)
     }
+
 }

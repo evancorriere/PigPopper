@@ -20,6 +20,13 @@ class MainMenuViewController: UIViewController {
         super.viewWillAppear(animated)
         self.navigationController?.setNavigationBarHidden(true, animated: false)
         
+        dataSetupAndMigration()
+        
+        initBackgroundMusicPlayer()
+        if DataHelper.getData(type: Bool.self, forKey: .settingsMusic) ?? false {
+            playBackgroundMusic()
+        }
+        
         imageView.transform = CGAffineTransform(rotationAngle: CGFloat.pi / 4)
         updateData()
     }
@@ -115,6 +122,21 @@ class MainMenuViewController: UIViewController {
         }
         return true
     }
+    
+    func dataSetupAndMigration() {
+        if !UserDefaults.standard.bool(forKey: "setupDone") {
+            UserDefaults.standard.set(true, forKey: "owns_\(SpriteFactory.defaultWeapon)")
+            UserDefaults.standard.set(SpriteFactory.defaultWeapon, forKey: SpriteFactory.selectedWeaponKey)
+            UserDefaults.standard.set(true, forKey: "setupDone")
+        }
+        
+        if !UserDefaults.standard.bool(forKey: "setupDone2") {
+            DataHelper.setData(value: true, key: .settingsMusic)
+            DataHelper.setData(value: true, key: .settingsNotification)
+            DataHelper.setData(value: true, key: .settingsNotification)
+        }
+    }
+    
     
 }
 

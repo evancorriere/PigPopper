@@ -37,7 +37,7 @@ class ShopViewController: UIViewController {
                   
     ]
     
-    let hats = [    ShopItem(name: "gold_sword", price: 100),
+    let hats = [    ShopItem(name: "pirateHat", price: 1),
                     ShopItem(name: "axe", price: 1000),
                     ShopItem(name: "axe", price: 1500),
                     ShopItem(name: "axe_gold", price: 2000),

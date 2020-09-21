@@ -15,28 +15,9 @@ class MainMenuScene: SKScene {
     
     weak var viewController: MainMenuViewController?
     
-    let highScoreLabel = SKLabelNode(text: "High Score: 0")
-    
-    let pig = SKSpriteNode(imageNamed: "idle_000")
-    
-    let pigWalkAnimation: SKAction
-    let pigWalkAnimationKey = "walkAnim"
-    let pigIdleAnimation: SKAction
-    let pigIdleAnimationKey = "idleAnim"
+    let flyingPig = SpriteFactory.getPig()
     
     override init(size: CGSize) {
-        var pigWalkTextures:[SKTexture] = []
-        var pigIdleTextures:[SKTexture] = []
-        
-        for i in 0...9 {
-            pigWalkTextures.append(SKTexture(imageNamed: "walk_00\(i)"))
-            pigIdleTextures.append(SKTexture(imageNamed: "idle_00\(i)"))
-        }
-        
-        pigWalkAnimation = SKAction.animate(with: pigWalkTextures, timePerFrame: 0.1)
-        pigIdleAnimation = SKAction.animate(with: pigIdleTextures, timePerFrame: 0.1)
-        
-
         super.init(size: size)
     }
     
@@ -46,50 +27,25 @@ class MainMenuScene: SKScene {
     
     
     override func didMove(to view: SKView) {
-        playBackgroundMusic(filename: "background_music.mp3")
-//        backgroundColor = .blue
-//        
         let backgroundSprite = SpriteFactory.getBackgroundSprite(size: size)
         addChild(backgroundSprite)
-//        
-//
-        print("CHECK")
         
-        if !UserDefaults.standard.bool(forKey: "setupDone") {
-            UserDefaults.standard.set(true, forKey: "owns_\(SpriteFactory.defaultWeapon)")
-            UserDefaults.standard.set(SpriteFactory.defaultWeapon, forKey: SpriteFactory.selectedWeaponKey)
-            UserDefaults.standard.set(true, forKey: "setupDone")
-        }
-        
-       
-        //TODO: add to spriteFactiory (pig factory?)
-        pig.size = CGSize(width: 80, height: 80)
-        pig.position = CGPoint(x: 30, y: 80)
-        pig.zPosition = 25
-        addChild(pig)
-        startPigAnimation()
-        
+    
+        let playableHeight = size.height * 0.90
+        let minY = size.height - playableHeight - view.safeAreaInsets.top
+        flyingPig.setBoundingBox(boundingBox: CGRect(x: 0, y: minY, width: size.width, height: playableHeight))
+        flyingPig.reset()
+        flyingPig.velocityMultiplier = 0.6
+        addChild(flyingPig)
     }
     
-    func startPigAnimation() {
-        let walkDistance = size.width - 90
-        let walkRepeatCount = 3
-        let walkDuration = 3.0
-        let idleRepeatCount = 5
-
-        let pigBehavior = SKAction.sequence([
-            SKAction.repeat(pigIdleAnimation, count: idleRepeatCount),
-            SKAction.group([
-                SKAction.repeat(pigWalkAnimation, count: walkRepeatCount),
-                SKAction.moveBy(x: walkDistance, y: 0, duration: walkDuration) ]),
-            SKAction.scaleX(by: -1, y: 1, duration: 0),
-            SKAction.repeat(pigIdleAnimation, count: idleRepeatCount),
-            SKAction.group([SKAction.repeat(pigWalkAnimation, count: walkRepeatCount),
-                               SKAction.moveBy(x: -walkDistance, y: 0, duration: walkDuration)]),
-            SKAction.scaleX(by: -1, y: 1, duration: 0)
-        ])
-        pig.run(SKAction.repeatForever(pigBehavior))
-        
-        
+    func viewSafeAreaInsetsDidChange() {
+        let playableHeight = size.height * 0.90
+        let minY = size.height - playableHeight - (self.view?.safeAreaInsets.top ?? 0) * 0.7
+        flyingPig.setBoundingBox(boundingBox: CGRect(x: 0, y: minY, width: size.width, height: playableHeight))
+    }
+    
+    override func update(_ currentTime: TimeInterval) {
+        flyingPig.update(currentTime)
     }
 }
