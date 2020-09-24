@@ -16,6 +16,7 @@ class GameScene: SKScene {
     let fork: SKSpriteNode
     let woodSign = SignNode()
     var shields: [SKNode] = []
+    var playSoundEffects = true
     
     let explosionSound: SKAction = SKAction.playSoundFileNamed("explosion2.wav", waitForCompletion: false)
     let shootSound: SKAction = SKAction.playSoundFileNamed("shoot2.wav", waitForCompletion: false)
@@ -188,7 +189,10 @@ class GameScene: SKScene {
         
         runHitMessage()
         
-        run(explosionSound)
+        if playSoundEffects {
+            run(explosionSound)
+        }
+        
         self.shouldResetFork = true
         self.shouldResetPig = true
         
@@ -202,6 +206,7 @@ class GameScene: SKScene {
         if score > highScore {
             highScore = score
             DataHelper.setHighscore(highscore: highScore)
+            DynamoDBHelper.sendLeaderboardData()
             updateHighScoreLabel()
             let achievements = AchievementManager.updatedAchievements(highscore: highScore)
             if achievements.count > 0 {
@@ -356,7 +361,11 @@ class GameScene: SKScene {
             fork.zRotation = theta - CGFloat.pi / 2
             let moveBySwipe = SKAction.move(by: swipeVector, duration: dt)
             forkLaunchable = false
-            run(shootSound)
+            
+            if playSoundEffects {
+                run(shootSound)
+            }
+            
             fork.run(SKAction.repeatForever(moveBySwipe), withKey: forkMoveAnimationKey)
         }
     }

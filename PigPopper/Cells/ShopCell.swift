@@ -11,12 +11,11 @@ import UIKit
 class ShopCell: UITableViewCell {
 
     
-    @IBOutlet weak var itemImageView: UIView!
+    @IBOutlet weak var itemImageView: UIImageView!
     @IBOutlet weak var statusLabel: UILabel!
     @IBOutlet weak var actionButton: UIButton!
     
     weak var shopViewController: ShopViewController?
-    
     var shopItem: ShopItem?
     
     override func awakeFromNib() {
@@ -35,16 +34,15 @@ class ShopCell: UITableViewCell {
         guard let item = shopItem else {
             return
         }
-        
+
         let coins = DataHelper.getBacon()
         
         if item.isOwned() {
             item.select()
-            statusLabel.text = "Selected"
             shopViewController?.tableView.reloadData()
         } else if item.isAffordable(totalCoins: coins) {
             item.markOwned()
-            DataHelper.setBacon(bacon: coins - item.price)
+            DataHelper.setBacon(bacon: coins - item.price!)
             statusLabel.text = "Owned"
             shopViewController?.updateLabels()
             actionButton.setTitle("Equip", for: .normal)
@@ -53,17 +51,28 @@ class ShopCell: UITableViewCell {
     
     func setupWithItem(item: ShopItem) {
         self.shopItem = item
-        imageView?.image = UIImage(named: item.name)
+        itemImageView.image = UIImage(named: item.name) // how did this work
+//        imageView?.image = UIImage(named: item.name)
+
+        
         if item.isOwned() {
             if item.isSelected() {
-                statusLabel.text = "Selected"
+                statusLabel.text = "Unlocked"
+                actionButton.setTitle("Eqipped", for: .normal)
             } else {
-                statusLabel.text = "Owned"
+                statusLabel.text = "Unlocked"
+                actionButton.setTitle("Equip", for: .normal)
             }
-            actionButton.setTitle("Equip", for: .normal)
         } else {
-            statusLabel.text = "Cost: " + String(item.price)
-            actionButton.setTitle("Buy", for: .normal)
+            switch item.unlockMethod {
+            case .bacon:
+                statusLabel.text = "Cost: " + String(item.price!)
+                actionButton.setTitle("Buy", for: .normal)
+                // TODO: specify if can afford the item
+            case .achievement:
+                statusLabel.numberOfLines = 2
+                statusLabel.text = "Reach a highscore of \(item.achievement!.requiredScore)"
+            }
         }
     }
     

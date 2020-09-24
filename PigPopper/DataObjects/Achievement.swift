@@ -35,6 +35,9 @@ class Achievement {
         return false
     }
     
+    func isCompleted() -> Bool {
+        return self.completed
+    }
     
     
     

@@ -118,4 +118,100 @@ class SpriteFactory {
         return backgroundSprite
     }
     
+    
+    
+    
+    /*
+     * Hat setup. Each requires a specific size and position
+     */
+    
+    static func getSelectedHat() -> SKSpriteNode? {
+        guard var selectedHat = DataHelper.getSelectedHat() else {
+            return nil
+        }
+        selectedHat = "antlersHat"
+        let hatNode = SKSpriteNode(imageNamed: selectedHat)
+
+        switch selectedHat {
+        case "antlersHat":
+            hatNode.position = CGPoint(x: 25, y: 18)
+            hatNode.size = CGSize(width: 40, height: 40)
+            hatNode.zRotation = -CGFloat.pi / 4.0
+        case "armyHat":
+            hatNode.position = CGPoint(x: 25, y: 12)
+            hatNode.size = CGSize(width: 43, height: 43)
+            hatNode.zRotation = -CGFloat.pi / 6.0
+        case "beanieHat":
+            hatNode.position = CGPoint(x: 10, y: 18)
+            hatNode.size = CGSize(width: 45, height: 45)
+            hatNode.zRotation = -CGFloat.pi / 5.0
+        case "birthdayHat":
+            hatNode.position = CGPoint(x: 19, y: 19)
+            hatNode.size = CGSize(width: 40, height: 40)
+            hatNode.zRotation = -CGFloat.pi / 5.0
+        case "bunnyHat":
+            hatNode.position = CGPoint(x: 20, y: 17)
+            hatNode.size = CGSize(width: 45, height: 45)
+            hatNode.zRotation = -CGFloat.pi / 5.0
+        case "cowboyHat":
+            hatNode.position = CGPoint(x: 22, y: 14)
+            hatNode.size = CGSize(width: 50, height: 50)
+            hatNode.zRotation = -CGFloat.pi / 8.0
+        case "crownHat":
+            hatNode.position = CGPoint(x: 20, y: 18)
+            hatNode.size = CGSize(width: 45, height: 45)
+            hatNode.zRotation = -CGFloat.pi / 8.0
+        case "firemanHat":
+            hatNode.position = CGPoint(x: 22, y: 14)
+            hatNode.size = CGSize(width: 45, height: 45)
+            hatNode.zRotation = -CGFloat.pi / 12.0
+        case "horseHeadHat":
+            hatNode.position = CGPoint(x: 24, y: 0)
+            hatNode.size = CGSize(width: 70, height: 70)
+            hatNode.zRotation = -CGFloat.pi / 5.0
+        case "hotdogHat":
+            hatNode.position = CGPoint(x: 26, y: 17)
+            hatNode.size = CGSize(width: 50, height: 50)
+            hatNode.zRotation = -CGFloat.pi / 4.5
+        case "leprechaunHat":
+            hatNode.position = CGPoint(x: 18, y: 20)
+            hatNode.size = CGSize(width: 50, height: 50)
+            hatNode.zRotation = -CGFloat.pi / 12.0
+        case "militaryHat":
+            hatNode.position = CGPoint(x: 23, y: 14)
+            hatNode.size = CGSize(width: 35, height: 35)
+            hatNode.zRotation = -CGFloat.pi / 12.0
+        case "nurseHat":
+            hatNode.position = CGPoint(x: 23, y: 14)
+            hatNode.size = CGSize(width: 35, height: 35)
+            hatNode.zRotation = -CGFloat.pi / 12.0
+        case "pinwheelHat":
+            hatNode.position = CGPoint(x: 14, y: 18)
+            hatNode.size = CGSize(width: 40, height: 40)
+            hatNode.zRotation = -CGFloat.pi / 10.0
+        case "pirateHat":
+            hatNode.position = CGPoint(x: 18, y: 13)
+            hatNode.size = CGSize(width: 60, height: 60)
+            hatNode.zRotation = -CGFloat.pi / 6.0
+        case "policeHat":
+            hatNode.position = CGPoint(x: 32, y: 10)
+            hatNode.size = CGSize(width: 40, height: 40)
+            hatNode.zRotation = -CGFloat.pi / 8.0
+        case "sharkHat":
+            hatNode.position = CGPoint(x: 8, y: 28)
+            hatNode.size = CGSize(width: 70, height: 70)
+            hatNode.zRotation = -CGFloat.pi / 6.0
+        case "sunHat":
+            hatNode.position = CGPoint(x: 22, y: 14)
+            hatNode.size = CGSize(width: 45, height: 45)
+            hatNode.zRotation = -CGFloat.pi / 6.0
+            
+//        case "vikingHat":
+        default:
+            return nil
+        }
+        
+        return hatNode
+    }
+    
 }

@@ -22,16 +22,13 @@ class GameViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-  
-        
-
         gameScene = GameScene(size: view.bounds.size)
         gameScene?.viewController = self
         
         gameScene?.scaleMode = .aspectFill
       
         let skView = self.view as! SKView
-        skView.showsPhysics = true
+        skView.showsPhysics = false
         skView.presentScene(gameScene!)
         
         
@@ -42,6 +39,11 @@ class GameViewController: UIViewController {
         baconLabelView.layer.cornerRadius = 10
         baconLabelView.backgroundColor = UIColor.darkGray.withAlphaComponent(0.80)
         
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        let playSoundEffects = DataHelper.getData(type: Bool.self, forKey: .settingsSoundEffects) ?? true
+        gameScene?.playSoundEffects = playSoundEffects
     }
     
     func updateBacon(bacon: Int) {

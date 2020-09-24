@@ -141,7 +141,7 @@ extension SettingsViewController: UITableViewDataSource {
                 return cell
             } else if indexPath.row == 1 { // remove from leaderboard
                 let cell = tableView.dequeueReusableCell(withIdentifier: "ButtonCell", for: indexPath) as! ButtonCell
-                cell.setupWith(label: "Remove from leaderboard", button: .deleteData)
+                cell.setupWith(label: "Delete score", button: .deleteData)
                 cell.selectionStyle = .none
                 return cell
             } else if indexPath.row == 2 {

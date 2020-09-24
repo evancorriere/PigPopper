@@ -23,7 +23,7 @@ class MenuButton: UIButton {
     }
     
     private func setup() {
-        titleLabel?.font = UIFont(name: defaultFont, size: 18)
+        titleLabel?.font = UIFont(name: defaultFont, size: 22)
         layer.cornerRadius = 5
         setTitleColor(.white, for: .normal)
         titleLabel?.adjustsFontSizeToFitWidth = true

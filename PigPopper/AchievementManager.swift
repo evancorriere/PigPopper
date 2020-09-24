@@ -21,7 +21,7 @@ class AchievementManager {
     
     // achievement completed set at init, here we have functions to update them
     
-    // Precondition: this is the same high score as userdefaults
+    // Preconditison: this is the same high score as userdefaults
     // not checking to precent calling every time
     // returns list of newly completed achievements
     static func updatedAchievements(highscore: Int) -> [Achievement] {
@@ -34,6 +34,10 @@ class AchievementManager {
         
         return completed
     }
+    
+
+    
+    
     
     
     

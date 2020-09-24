@@ -58,13 +58,11 @@ class Pig: SKNode {
         physicsNode.alpha = 0.0
         addChild(physicsNode)
         
-
-        DataHelper.setSelectedHat(hatName: "pirateHat")
-        if let selectedHat = DataHelper.getSelectedHat() {
-            hatNode = SKSpriteNode(imageNamed: selectedHat)
-            hatNode?.position = CGPoint(x: 32, y: 10)
-            hatNode?.size = CGSize(width: 40, height: 40)
-            hatNode?.zRotation = -CGFloat.pi / 8.0
+        
+        
+        DataHelper.setSelectedHat(hatName: "horseHeadHat")
+        hatNode = SpriteFactory.getSelectedHat()
+        if hatNode != nil {
             hatNode?.zPosition = imageNode.zPosition + 1
             addChild(hatNode!)
         }
@@ -96,7 +94,7 @@ class Pig: SKNode {
             hatNode!.xScale = -1.0
             let oldPos = hatNode!.position
             hatNode!.position = CGPoint(x: -abs(oldPos.x), y: oldPos.y)
-            hatNode!.zRotation = CGFloat.pi / 8.0
+            hatNode!.zRotation = abs(hatNode!.zRotation)
         }
         
     }
@@ -107,7 +105,7 @@ class Pig: SKNode {
             hatNode!.xScale = 1.0
             let oldPos = hatNode!.position
             hatNode!.position = CGPoint(x: abs(oldPos.x), y: oldPos.y)
-            hatNode!.zRotation = -CGFloat.pi / 8.0
+            hatNode!.zRotation = -abs(hatNode!.zRotation)
         }
         physicsNode.zRotation = -CGFloat.pi / 4.0
     }

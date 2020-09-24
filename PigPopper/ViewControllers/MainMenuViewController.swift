@@ -33,7 +33,7 @@ class MainMenuViewController: UIViewController {
             soundButton.setBackgroundImage(musicOffImage, for: .normal)
         }
         
-        imageView.transform = CGAffineTransform(rotationAngle: CGFloat.pi / 4)
+    
         updateData()
     }
     
@@ -47,6 +47,7 @@ class MainMenuViewController: UIViewController {
         scene.scaleMode = .aspectFill
         skView.presentScene(scene)
         
+        imageView.transform = CGAffineTransform(rotationAngle: CGFloat.pi / 4)
     }
 
     override var shouldAutorotate: Bool {
@@ -61,6 +62,8 @@ class MainMenuViewController: UIViewController {
         highscoreLabel.text = "Highscore: \(DataHelper.getHighscore())"
         baconLabel.text = "Bacon: \(DataHelper.getBacon())"
         imageView.image = UIImage(named: DataHelper.getSelectedWeapon())
+        let musicOn = DataHelper.getData(type: Bool.self, forKey: .settingsMusic) ?? true
+        soundButton.setBackgroundImage(musicOn ? musicOnImage : musicOffImage, for: .normal)
     }
     
     func displayLeaderboard() {
@@ -105,7 +108,7 @@ class MainMenuViewController: UIViewController {
         alertController.addAction(UIAlertAction(title: "Cancel", style: .cancel))
         alertController.addAction(UIAlertAction(title: "Submit", style: .default, handler: { (action) in
             guard let text = alertController.textFields?.first else { return }
-            if self.validateUsername(username: text.text) {
+            if DynamoDBHelper.validateUsername(username: text.text) {
                 self.leaderboardTapped(self)
             } else {
                 self.showUsernamePrompt(isRetry: true)
@@ -115,29 +118,6 @@ class MainMenuViewController: UIViewController {
         present(alertController, animated: true)
     }
     
-    func validateUsername(username: String?) -> Bool {
-        guard let username = username else {
-            return false
-        }
-        
-        let highscore = UserDefaults.standard.integer(forKey: "highScore")
-        let leaderboardItem = LeaderboardItem(username: username, highscore: highscore).dynamoDBItem()
-        
-        let accessKey = "AKIAZDPKIW43E5RR3A7S" // TODO: remove
-        let secretKey = "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"
-        let tableName = "leaderboard"
-        let dynamoDB = DynamoDB(accessKeyId: accessKey, secretAccessKey: secretKey, region: .uswest1)
-        
-        let putInput = DynamoDB.PutItemInput(conditionExpression: "attribute_not_exists(username)", item: leaderboardItem, tableName: tableName)
-        do {
-            let _ = try dynamoDB.putItem(putInput).wait()
-            UserDefaults.standard.set(username, forKey: "username")
-        } catch {
-            print("error with db")
-            return false
-        }
-        return true
-    }
     
     func dataSetupAndMigration() {
         if !UserDefaults.standard.bool(forKey: "setupDone") {
