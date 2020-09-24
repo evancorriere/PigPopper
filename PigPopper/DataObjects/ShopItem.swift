@@ -62,16 +62,16 @@ class ShopItem {
         case .weapon:
             return DataHelper.getSelectedWeapon() == name
         case .hat:
-            return DataHelper.getSelectedWeapon() == name
+            return DataHelper.getSelectedHat() == name
         }
     }
     
     func select() {
         switch itemType {
         case .weapon:
-            return DataHelper.setSelectedWeapon(weaponName: name)
+            DataHelper.setSelectedWeapon(weaponName: name)
         case .hat:
-            return DataHelper.setSelectedHat(hatName: name)
+            DataHelper.setSelectedHat(hatName: name)
         }
     }
     

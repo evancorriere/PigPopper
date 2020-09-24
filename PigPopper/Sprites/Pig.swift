@@ -60,7 +60,7 @@ class Pig: SKNode {
         
         
         
-        DataHelper.setSelectedHat(hatName: "horseHeadHat")
+        
         hatNode = SpriteFactory.getSelectedHat()
         if hatNode != nil {
             hatNode?.zPosition = imageNode.zPosition + 1
@@ -71,17 +71,29 @@ class Pig: SKNode {
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
+        
     func setBoundingBox(boundingBox: CGRect) {
         self.boundingBox = boundingBox
     }
     
     func reset() {
-        velocity = getRandomVelocity()
-        position = getRandomStartPosition()
+        setRandomPositionAndVelocity()
         if velocity.x > 0 {
             flipRight()
         } else {
+            flipLeft()
+        }
+    }
+    
+    func resetSettings() {
+        hatNode?.removeFromParent()
+        hatNode = SpriteFactory.getSelectedHat()
+        if hatNode != nil {
+            hatNode?.zPosition = imageNode.zPosition + 1
+            addChild(hatNode!)
+        }
+        
+        if velocity.x < 0 {
             flipLeft()
         }
     }
@@ -194,13 +206,12 @@ class Pig: SKNode {
         }
     }
     
-    private func getRandomVelocity() -> CGPoint {
-        let randomAngle = CGFloat.random(min: 0, max: 2 * CGFloat.pi)
-        let unitVelocity = vectorFromAngle(angle: randomAngle)
-        return unitVelocity * 200
-    }
-    
-    private func getRandomStartPosition() -> CGPoint {
+    private func setRandomPositionAndVelocity() {
+        // Goal: make it so top -> not very horizontal velocity.
+        // left and right -> not super veritcal
+        // Pi / 8 deadzones (so pi/8 missing from two spots)
+        
+        var spawningOnSides = false
         let validPerimeter = boundingBox.height * 2 + boundingBox.width
         let randomLocation = CGFloat.random(min: 0, max: validPerimeter)
         
@@ -208,14 +219,42 @@ class Pig: SKNode {
         var position: CGPoint
         if randomLocation < boundingBox.height { // left side
             position = CGPoint(x: -physicsNode.frame.width, y: boundingBox.minY + randomLocation)
+            spawningOnSides = true
         } else if randomLocation < boundingBox.height + boundingBox.width { // top
             let x = randomLocation - boundingBox.height
             position = CGPoint(x: x, y: boundingBox.maxY + physicsNode.frame.height)
+            spawningOnSides = false
         } else {
             let y = boundingBox.minY + (validPerimeter - randomLocation)
             position = CGPoint(x: boundingBox.maxX + physicsNode.frame.width, y: y)
+            spawningOnSides = true
         }
         
-        return position
+        // based on spawn location, find velocity angle and set velocity
+        let deadzoneSize = CGFloat.pi / 8.0
+        var randomAngle = CGFloat.random(min: 0, max: 2 * CGFloat.pi - 2 * deadzoneSize)
+        
+        // shift angle out of deadzones
+        if spawningOnSides {
+            // deadzoneas are at pi / 2 and 3pi / 2
+            if randomAngle > (CGFloat.pi / 2) - deadzoneSize / 2 {
+                randomAngle += deadzoneSize
+            }
+            
+            if randomAngle > 3.0 * CGFloat.pi / 2.0 - deadzoneSize / 2.0 {
+                randomAngle += deadzoneSize
+            }
+        } else {
+            // spawning on top, deadzones are around 0 and pi
+            randomAngle += deadzoneSize / 2.0
+            if randomAngle > CGFloat.pi  - deadzoneSize / 2 {
+                randomAngle += deadzoneSize
+            }
+            
+        }
+        
+        let unitVelocity = vectorFromAngle(angle: randomAngle)
+        self.velocity = unitVelocity * 200
+        self.position = position
     }
 }

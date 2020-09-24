@@ -43,24 +43,30 @@ class ShopCell: UITableViewCell {
         } else if item.isAffordable(totalCoins: coins) {
             item.markOwned()
             DataHelper.setBacon(bacon: coins - item.price!)
-            statusLabel.text = "Owned"
             shopViewController?.updateLabels()
+            
+            // just bought item
+            statusLabel.text = "Owned"
             actionButton.setTitle("Equip", for: .normal)
         }
     }
     
     func setupWithItem(item: ShopItem) {
         self.shopItem = item
-        itemImageView.image = UIImage(named: item.name) // how did this work
+        itemImageView.image = UIImage(named: item.name)
+        
+        
+        // how did this work
 //        imageView?.image = UIImage(named: item.name)
-
+        actionButton.isHidden = false
         
         if item.isOwned() {
             if item.isSelected() {
-                statusLabel.text = "Unlocked"
-                actionButton.setTitle("Eqipped", for: .normal)
+                statusLabel.text = "Selected"
+                actionButton.isHidden = true
+                actionButton.setTitle("Equipped", for: .normal)
             } else {
-                statusLabel.text = "Unlocked"
+                statusLabel.text = "Owned"
                 actionButton.setTitle("Equip", for: .normal)
             }
         } else {

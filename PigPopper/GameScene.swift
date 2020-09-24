@@ -145,7 +145,7 @@ class GameScene: SKScene {
         levelUpLabel.zPosition = 25
         levelUpLabel.verticalAlignmentMode = .center
         levelUpLabel.horizontalAlignmentMode = .left
-        levelUpLabel.text = "Level up!"
+        levelUpLabel.text = "Bacon++"
     }
     
     func resetPig() {

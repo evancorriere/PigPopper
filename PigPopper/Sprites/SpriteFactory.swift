@@ -126,10 +126,10 @@ class SpriteFactory {
      */
     
     static func getSelectedHat() -> SKSpriteNode? {
-        guard var selectedHat = DataHelper.getSelectedHat() else {
+        guard let selectedHat = DataHelper.getSelectedHat() else {
             return nil
         }
-        selectedHat = "antlersHat"
+
         let hatNode = SKSpriteNode(imageNamed: selectedHat)
 
         switch selectedHat {

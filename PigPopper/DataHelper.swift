@@ -53,7 +53,7 @@ final class DataHelper {
      */
     
     static func getItemOwned(itemName: String) -> Bool {
-        let ownsItemKey = "" + itemName
+        let ownsItemKey = "owns_" + itemName
         return UserDefaults.standard.bool(forKey: ownsItemKey)
     }
     

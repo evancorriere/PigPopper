@@ -177,7 +177,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="lW2-RW-wOH">
-                                <rect key="frame" x="20" y="44" width="159" height="35"/>
+                                <rect key="frame" x="10" y="54" width="159" height="35"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Highscore: 10" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="QwK-1u-BoA">
                                         <rect key="frame" x="10" y="5" width="139" height="25"/>
@@ -195,12 +195,12 @@
                                 </constraints>
                             </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="O9x-Zn-6yG">
-                                <rect key="frame" x="248" y="44" width="146" height="35"/>
+                                <rect key="frame" x="258" y="54" width="146" height="35"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Bacon: 5000" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="yV1-fD-fPr">
                                         <rect key="frame" x="10" y="5" width="126" height="25"/>
                                         <fontDescription key="fontDescription" name="AmericanTypewriter-Bold" family="American Typewriter" pointSize="20"/>
-                                        <color key="textColor" systemColor="tertiarySystemGroupedBackgroundColor"/>
+                                        <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                 </subviews>
@@ -216,10 +216,10 @@
                         <viewLayoutGuide key="safeArea" id="WP2-yq-22q"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
-                            <constraint firstItem="lW2-RW-wOH" firstAttribute="leading" secondItem="WP2-yq-22q" secondAttribute="leading" constant="20" id="2AV-YQ-Wz8"/>
-                            <constraint firstItem="O9x-Zn-6yG" firstAttribute="top" secondItem="WP2-yq-22q" secondAttribute="top" id="3QY-wA-MO9"/>
-                            <constraint firstItem="lW2-RW-wOH" firstAttribute="top" secondItem="WP2-yq-22q" secondAttribute="top" id="EIz-JX-k05"/>
-                            <constraint firstItem="O9x-Zn-6yG" firstAttribute="trailing" secondItem="WP2-yq-22q" secondAttribute="trailing" constant="-20" id="yjY-PD-XUm"/>
+                            <constraint firstItem="lW2-RW-wOH" firstAttribute="leading" secondItem="WP2-yq-22q" secondAttribute="leading" constant="10" id="2AV-YQ-Wz8"/>
+                            <constraint firstItem="O9x-Zn-6yG" firstAttribute="top" secondItem="WP2-yq-22q" secondAttribute="top" constant="10" id="3QY-wA-MO9"/>
+                            <constraint firstItem="lW2-RW-wOH" firstAttribute="top" secondItem="WP2-yq-22q" secondAttribute="top" constant="10" id="EIz-JX-k05"/>
+                            <constraint firstItem="O9x-Zn-6yG" firstAttribute="trailing" secondItem="WP2-yq-22q" secondAttribute="trailing" constant="-10" id="yjY-PD-XUm"/>
                         </constraints>
                     </view>
                     <connections>
@@ -231,7 +231,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="WkL-DC-ogY" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="254" y="1120"/>
+            <point key="canvasLocation" x="253.62318840579712" y="1119.6428571428571"/>
         </scene>
         <!--Leaderboard View Controller-->
         <scene sceneID="CQp-7R-rYG">
@@ -412,8 +412,7 @@
                                         </tableViewCellContentView>
                                         <connections>
                                             <outlet property="actionButton" destination="YQR-QK-ckR" id="f99-p0-WG7"/>
-                                            <outlet property="imageView" destination="4GU-MF-Klc" id="AiH-cV-rHt"/>
-                                            <outlet property="itemImageView" destination="SL7-8f-vVe" id="hZy-uv-v8Y"/>
+                                            <outlet property="itemImageView" destination="4GU-MF-Klc" id="kjy-N0-qpg"/>
                                             <outlet property="statusLabel" destination="d9r-Ra-BTG" id="KCc-gx-1jO"/>
                                         </connections>
                                     </tableViewCell>
@@ -819,9 +818,6 @@
         </systemColor>
         <systemColor name="systemGrayColor">
             <color red="0.55686274509803924" green="0.55686274509803924" blue="0.57647058823529407" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-        </systemColor>
-        <systemColor name="tertiarySystemGroupedBackgroundColor">
-            <color red="0.94901960784313721" green="0.94901960784313721" blue="0.96862745098039216" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
     </resources>
 </document>

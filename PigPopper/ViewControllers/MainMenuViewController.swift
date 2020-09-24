@@ -17,16 +17,15 @@ class MainMenuViewController: UIViewController {
     @IBOutlet weak var baconLabel: MenuLabel!
     @IBOutlet weak var soundButton: UIButton!
     
+    var mainMenuScene: MainMenuScene?
+    
     let musicOnImage = UIImage(systemName: "speaker.3.fill")
     let musicOffImage = UIImage(systemName: "speaker.slash.fill")
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         self.navigationController?.setNavigationBarHidden(true, animated: false)
-        
-        dataSetupAndMigration()
-        
-        initBackgroundMusicPlayer()
+                
         if DataHelper.getData(type: Bool.self, forKey: .settingsMusic) ?? false {
             playBackgroundMusic()
         } else {
@@ -39,15 +38,21 @@ class MainMenuViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        let scene = MainMenuScene(size: view.bounds.size)
+        initBackgroundMusicPlayer()
+        
+        dataSetupAndMigration()
+        
+        mainMenuScene = MainMenuScene(size: view.bounds.size)
         let skView = self.view as! SKView
-        scene.viewController = self
+        mainMenuScene!.viewController = self
  
         skView.ignoresSiblingOrder = true
-        scene.scaleMode = .aspectFill
-        skView.presentScene(scene)
+        mainMenuScene!.scaleMode = .aspectFill
+        skView.presentScene(mainMenuScene)
         
         imageView.transform = CGAffineTransform(rotationAngle: CGFloat.pi / 4)
+        
+        DataHelper.setBacon(bacon: 1000000)
     }
 
     override var shouldAutorotate: Bool {
@@ -64,6 +69,7 @@ class MainMenuViewController: UIViewController {
         imageView.image = UIImage(named: DataHelper.getSelectedWeapon())
         let musicOn = DataHelper.getData(type: Bool.self, forKey: .settingsMusic) ?? true
         soundButton.setBackgroundImage(musicOn ? musicOnImage : musicOffImage, for: .normal)
+        mainMenuScene?.flyingPig.resetSettings()
     }
     
     func displayLeaderboard() {

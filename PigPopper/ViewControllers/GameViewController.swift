@@ -34,10 +34,10 @@ class GameViewController: UIViewController {
         
         highscoreLabelView.layer.masksToBounds = true
         highscoreLabelView.layer.cornerRadius = 10
-        highscoreLabelView.backgroundColor = UIColor.darkGray.withAlphaComponent(0.80)
+        highscoreLabelView.backgroundColor = UIColor.darkGray.withAlphaComponent(0.70)
         baconLabelView.layer.masksToBounds = true
         baconLabelView.layer.cornerRadius = 10
-        baconLabelView.backgroundColor = UIColor.darkGray.withAlphaComponent(0.80)
+        baconLabelView.backgroundColor = UIColor.darkGray.withAlphaComponent(0.70)
         
     }
     
