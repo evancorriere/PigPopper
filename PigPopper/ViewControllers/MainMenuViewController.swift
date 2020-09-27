@@ -88,6 +88,7 @@ class MainMenuViewController: UIViewController {
             soundButton.setBackgroundImage(musicOffImage, for: .normal)
         } else {
             DataHelper.setData(value: true, key: .settingsMusic)
+            DataHelper.setData(value: true, key: .settingsSoundEffects)
             playBackgroundMusic()
             soundButton.setBackgroundImage(musicOnImage, for: .normal)
         }

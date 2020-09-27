@@ -26,7 +26,6 @@ class GameScene: SKScene {
     let forkMoveAnimationKey = "forkMoveAnimationKey"
     let defaultFont = "AmericanTypewriter"
     let forkLaunchPosition: CGPoint!
-    let homeButton: SKSpriteNode
     let hitMessages = ["Great Shot!", "Nice!", "Perfect", "HIT", "BOOM", "Five Stars!"]
     
     let highScoreLabel = SKLabelNode()
@@ -69,7 +68,6 @@ class GameScene: SKScene {
         forkLaunchPosition = CGPoint(x: size.width / 2, y: 100)
         
         fork = SpriteFactory.getSelectedWeaponSprite()
-        homeButton = SpriteFactory.getHomeButton()
             
         super.init(size: size)
         
@@ -111,9 +109,6 @@ class GameScene: SKScene {
         
         
         setupLabels()
-        
-        addChild(homeButton)
-        addChild(SpriteFactory.getHomeLabel())
     }
     
     func viewSafeAreaInsetsDidChange() {
@@ -313,14 +308,6 @@ class GameScene: SKScene {
         gameOver()
     }
     
-    func handleHomeTapped() {
-        guard let controller = viewController else {
-            return
-        }
-        controller.dismiss(animated: true, completion: nil)
-    }
-    
-    
     func shieldHit() -> Bool {
         var hit = false
         enumerateChildNodes(withName: "shield") { shield, _ in
@@ -375,10 +362,6 @@ class GameScene: SKScene {
         initialTouchLocation = touches.first!.location(in: view)
         initialTouchLocation = CGPoint(x: initialTouchLocation.x, y: view!.bounds.height - initialTouchLocation.y)
         initialTouchTime = touches.first!.timestamp
-        
-        if homeButton.contains(initialTouchLocation) {
-            handleHomeTapped()
-        }
     }
 
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {

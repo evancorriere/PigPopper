@@ -32,6 +32,7 @@
 		1E5FAA8D24F3654700F0BF5E /* ShopViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E5FAA8C24F3654700F0BF5E /* ShopViewController.swift */; };
 		1E5FAA8F24F9804700F0BF5E /* PhysicsValues.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E5FAA8E24F9804700F0BF5E /* PhysicsValues.swift */; };
 		1E5FAA9124FAE39C00F0BF5E /* Pig.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E5FAA9024FAE39B00F0BF5E /* Pig.swift */; };
+		1E7DBAD7251C98D8009AF561 /* Colors.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1E7DBAD6251C98D8009AF561 /* Colors.xcassets */; };
 		1EB323D324A32659008BEAF8 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EB323D224A32659008BEAF8 /* AppDelegate.swift */; };
 		1EB323D924A3265A008BEAF8 /* GameScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EB323D824A3265A008BEAF8 /* GameScene.swift */; };
 		1EB323DB24A3265A008BEAF8 /* MainMenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EB323DA24A3265A008BEAF8 /* MainMenuViewController.swift */; };
@@ -70,6 +71,7 @@
 		1E5FAA8C24F3654700F0BF5E /* ShopViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShopViewController.swift; sourceTree = "<group>"; };
 		1E5FAA8E24F9804700F0BF5E /* PhysicsValues.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhysicsValues.swift; sourceTree = "<group>"; };
 		1E5FAA9024FAE39B00F0BF5E /* Pig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Pig.swift; sourceTree = "<group>"; };
+		1E7DBAD6251C98D8009AF561 /* Colors.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Colors.xcassets; sourceTree = "<group>"; };
 		1EB323CF24A32659008BEAF8 /* PigPopper.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PigPopper.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		1EB323D224A32659008BEAF8 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		1EB323D824A3265A008BEAF8 /* GameScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameScene.swift; sourceTree = "<group>"; };
@@ -180,6 +182,7 @@
 			isa = PBXGroup;
 			children = (
 				1EB323DF24A3265F008BEAF8 /* Assets.xcassets */,
+				1E7DBAD6251C98D8009AF561 /* Colors.xcassets */,
 				1EEFF97424C183BF006791EE /* sounds */,
 				1E1047E8250B25330016E508 /* Scenes */,
 				1E1047E7250B250B0016E508 /* ViewControllers */,
@@ -276,6 +279,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1E7DBAD7251C98D8009AF561 /* Colors.xcassets in Resources */,
 				1EB323E024A3265F008BEAF8 /* Assets.xcassets in Resources */,
 				1EEFF97C24C19DA6006791EE /* background_music.mp3 in Resources */,
 				1E5FAA7424C54F5E00F0BF5E /* shoot2.wav in Resources */,

@@ -12,7 +12,7 @@ class AchievementsViewController: UIViewController {
 
     
     @IBOutlet weak var tableView: UITableView!
-    
+    @IBOutlet weak var menuButton: UIButton!
     
     
     let achievements: [Achievement] = [ Achievement(rank: "Rookie", score: 5, reward: "one"),
@@ -27,12 +27,22 @@ class AchievementsViewController: UIViewController {
         super.viewDidLoad()
 
          // Do any additional setup after loading the view.
+        tableView.sectionHeaderHeight = 0.0
+        tableView.sectionFooterHeight = 0.0
+        
         tableView.delegate = self
         tableView.dataSource = self
         tableView.tableFooterView = UIView()
        
         tableView.layoutMargins = UIEdgeInsets.zero
         tableView.separatorInset = UIEdgeInsets.zero
+        
+        var frame = CGRect.zero
+        frame.size.height = .leastNormalMagnitude
+        tableView.tableHeaderView = UIView(frame: frame)
+        tableView.tableFooterView = UIView(frame: frame)
+        
+        menuButton.layer.cornerRadius = 25.0
     }
     
     @IBAction func menuButtonTapped(_ sender: Any) {
@@ -47,7 +57,14 @@ extension AchievementsViewController: UITableViewDelegate {
     func numberOfSections(in tableView: UITableView) -> Int {
         1
     }
-    
+//
+//    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+//        if section == 0 {
+//            return "Higher Scores = More Rewards!"
+//        }
+//        return nil
+//    }
+//
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return CGFloat(100)
     }

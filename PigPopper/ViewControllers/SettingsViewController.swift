@@ -11,10 +11,13 @@ import UIKit
 class SettingsViewController: UIViewController {
 
     @IBOutlet weak var tableView: UITableView!
+    let sectionHeaderHeight = CGFloat(50)
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        
+        tableView.sectionFooterHeight = 0.0
         tableView.delegate = self
         tableView.dataSource = self
         tableView.tableFooterView = UIView()
@@ -52,27 +55,29 @@ extension SettingsViewController: UITableViewDelegate {
 //    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
 //        <#code#>
 //    }
+
     
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         let headerFrame = tableView.frame
         
         let title = UILabel()
-        title.font = UIFont(name: "AmericanTypewriter", size: 20)
+        title.font = UIFont(name: "AmericanTypewriter-Bold", size: 20)
         title.text = self.tableView(self.tableView, titleForHeaderInSection: section)
-        title.textColor = UIColor.white
+//        title.textColor = UIColor.white
         title.baselineAdjustment = .alignCenters
+        title.textAlignment = .center
   
         
-        title.frame = CGRect(x: 10, y: 0, width: headerFrame.size.width - 10, height: 30)
+        title.frame = CGRect(x: 0, y: 0, width: headerFrame.size.width, height: sectionHeaderHeight)
 
         let headerView:UIView = UIView(frame: CGRect(x: 0, y: 0, width: headerFrame.size.width, height: headerFrame.size.height))
-        headerView.backgroundColor = .darkGray
+//        headerView.backgroundColor = .darkGray
         headerView.addSubview(title)
         return headerView
     }
 //
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        return 30
+        return sectionHeaderHeight
     }
     
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
@@ -85,10 +90,7 @@ extension SettingsViewController: UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
-    }
-    
-    
-    
+    }    
 }
 
 extension SettingsViewController: UITableViewDataSource {
