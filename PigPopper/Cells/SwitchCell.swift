@@ -12,6 +12,7 @@ enum SettingsSwitch: CaseIterable {
     case music
     case soundEffects
     case notifications
+    case participateInLeaderboard
 }
 
 
@@ -49,6 +50,8 @@ class SwitchCell: UITableViewCell {
         case .soundEffects:
             label.text = "Sound Effects"
             initialSwitchValue = DataHelper.getData(type: Bool.self, forKey: .settingsSoundEffects)
+        case .participateInLeaderboard:
+            initialSwitchValue = DataHelper.getData(type: Bool.self, forKey: .settingsLeaderboard)
         }
     
         self.selection.setOn(initialSwitchValue ?? true, animated: false)
@@ -70,6 +73,14 @@ class SwitchCell: UITableViewCell {
                 DataHelper.setData(value: true, key: .settingsSoundEffects)
             } else {
                 DataHelper.setData(value: false, key: .settingsSoundEffects)
+            }
+        case .participateInLeaderboard:
+            if sender.isOn {
+                DataHelper.setData(value: true, key: .settingsLeaderboard)
+                DynamoDBHelper.sendLeaderboardData()
+            } else {
+                DataHelper.setData(value: false, key: .settingsLeaderboard)
+                DynamoDBHelper.sendLeaderboardData()
             }
         case .notifications:
             print("hi")

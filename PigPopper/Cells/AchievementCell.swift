@@ -40,6 +40,7 @@ class AchievementCell: UITableViewCell {
         self.achievement = achievement
         rankLabel.text = "Rank: " + achievement.rank
         requirementLabel.text = "Goal: \(achievement.requiredScore)"
+        rewardImage.image = UIImage(named: achievement.reward)
         let highscore = DataHelper.getHighscore()
         if highscore >= achievement.requiredScore {
             requirementLabel.textColor = .systemGreen

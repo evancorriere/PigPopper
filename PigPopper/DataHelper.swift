@@ -23,6 +23,7 @@ enum UserDefaultKeys: String, CaseIterable { // TODO: how does this work
     case settingsMusic
     case settingsSoundEffects
     case settingsNotification
+    case settingsLeaderboard
 }
 
 final class DataHelper {

@@ -41,6 +41,36 @@ class SettingsViewController: UIViewController {
         dismiss(animated: true, completion: nil)
     }
     
+    
+    func promptForNewUsername(isRetry: Bool) {
+        
+        let username = DataHelper.getUsername()
+        let message = isRetry ? "Invalid username. Please try again"
+            : username == nil ? "Selected a unique username to be used in the global leaderboard"
+            : "Your current username is \(username!), what would you like it to be?"
+     
+
+        let alertController = UIAlertController(title: "Create a username", message: message, preferredStyle: .alert)
+
+        alertController.addTextField { (textField) in
+            textField.placeholder = "Username..."
+        }
+        
+        alertController.addAction(UIAlertAction(title: "Cancel", style: .cancel))
+        alertController.addAction(UIAlertAction(title: "Change", style: .default, handler: { (action) in
+            guard let text = alertController.textFields?.first else { return }
+            if DynamoDBHelper.updateUsername(newUsername: text.text) {
+                self.tableView.reloadData()
+                return
+            } else {
+                self.promptForNewUsername(isRetry: true)
+            }
+        }))
+        
+        present(alertController, animated: true)
+        
+    }
+    
 
 }
 
@@ -137,13 +167,14 @@ extension SettingsViewController: UITableViewDataSource {
             if indexPath.row == 0 { // change username
                 let cell = tableView.dequeueReusableCell(withIdentifier: "ButtonCell", for: indexPath) as! ButtonCell
                 let username = DataHelper.getUsername()
-                let labelText = username == nil ? "Set name" : "Username: \(username!)"
+                let labelText = username == nil ? "No username set" : "Username: \(username!)"
                 cell.setupWith(label: labelText, button: .changeName)
+                cell.viewController = self
                 cell.selectionStyle = .none
                 return cell
             } else if indexPath.row == 1 { // remove from leaderboard
-                let cell = tableView.dequeueReusableCell(withIdentifier: "ButtonCell", for: indexPath) as! ButtonCell
-                cell.setupWith(label: "Delete score", button: .deleteData)
+                let cell = tableView.dequeueReusableCell(withIdentifier: "SwitchCell", for: indexPath) as! SwitchCell
+                cell.setupWith(switchType: .participateInLeaderboard)
                 cell.selectionStyle = .none
                 return cell
             } else if indexPath.row == 2 {

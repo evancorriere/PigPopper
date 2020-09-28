@@ -35,6 +35,8 @@ class LeaderboardViewController: UIViewController {
         tableView.delegate = self
         tableView.dataSource = self
         tableView.tableFooterView = UIView()
+        tableView.layoutMargins = UIEdgeInsets.zero
+        tableView.separatorInset = UIEdgeInsets.zero
     }
     
     @IBAction func menuButtonTapped(_ sender: Any) {

@@ -11,6 +11,12 @@ import UIKit
 class ShopViewController: UIViewController {
 
     let weapons = [
+        // the first weapons are earned via currency
+        ShopItem(achievement: AchievementManager.achievements[1], itemType: .weapon),
+        ShopItem(achievement: AchievementManager.achievements[4], itemType: .weapon),
+        ShopItem(achievement: AchievementManager.achievements[7], itemType: .weapon),
+        
+        // the rest via bacon
         ShopItem(name: "dessert_fork", price: 0, itemType: .weapon),
         ShopItem(name: "cook_fork", price: 50, itemType: .weapon),
         ShopItem(name: "bread_knife", price: 100, itemType: .weapon),
@@ -35,13 +41,17 @@ class ShopViewController: UIViewController {
     ]
     
     let hats = [
+        // the first hats are earned via achievement
+        ShopItem(achievement: AchievementManager.achievements[0], itemType: .hat),
+        ShopItem(achievement: AchievementManager.achievements[3], itemType: .hat),
+        ShopItem(achievement: AchievementManager.achievements[6], itemType: .hat),
+        
+        // the rest via bacon
         ShopItem(name: "antlersHat", price: 10, itemType: .hat),
         ShopItem(name: "armyHat", price: 20, itemType: .hat),
         ShopItem(name: "beanieHat", price: 30, itemType: .hat),
         ShopItem(name: "birthdayHat", price: 40, itemType: .hat),
-        ShopItem(name: "bunnyHat", price: 50, itemType: .hat),
         ShopItem(name: "cowboyHat", price: 60, itemType: .hat),
-        ShopItem(name: "crownHat", price: 70, itemType: .hat),
         ShopItem(name: "firemanHat", price: 80, itemType: .hat),
         ShopItem(name: "horseHeadHat", price: 90, itemType: .hat),
         ShopItem(name: "hotdogHat", price: 100, itemType: .hat),
@@ -66,12 +76,6 @@ class ShopViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        // UI changes
-        
-        menuButton.layer.masksToBounds = true
-        menuButton.layer.cornerRadius = 25
-        
         
         // setup
         coins = DataHelper.getBacon()

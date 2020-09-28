@@ -14,7 +14,6 @@ enum SettingsButton: CaseIterable {
     case credits
     case changeName
     case support
-    case deleteData
 }
 
 
@@ -24,6 +23,7 @@ class ButtonCell: UITableViewCell {
     @IBOutlet weak var button: UIButton!
     
     var buttonType: SettingsButton?
+    var viewController: SettingsViewController?
     
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -44,7 +44,7 @@ class ButtonCell: UITableViewCell {
         self.buttonType = button
         self.label.text = label
         
-        if button == .deleteData {
+        if button == .changeName {
             self.button.layer.borderColor = UIColor.red.cgColor
             self.button.setTitleColor(.red, for: .normal)
         } else {
@@ -52,9 +52,7 @@ class ButtonCell: UITableViewCell {
             self.button.setTitleColor(.link, for: .normal)
         }
         
-        if button == .deleteData {
-            self.button.setTitle("Delete", for: .normal)
-        } else if button == .changeName {
+        if button == .changeName {
             self.button.setTitle("Change", for: .normal)
         } else if button == .support {
             self.button.setTitle("Contact", for: .normal)
@@ -74,9 +72,18 @@ class ButtonCell: UITableViewCell {
                 UIApplication.shared.open(url)
             }
         case .changeName:
-            print("change name")
-        default:
-            print("should not happen")
+            viewController?.promptForNewUsername(isRetry: false)
+        case .support:
+            let email = "evancorriere@gmail.com"
+            if let url = URL(string: "mailto:\(email)") {
+                if #available(iOS 10.0, *) {
+                    UIApplication.shared.open(url)
+                } else {
+                    UIApplication.shared.openURL(url)
+                }
+            }
+        case .none:
+            print("button type is none")
         }
         
     }

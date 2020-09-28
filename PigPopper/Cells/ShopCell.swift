@@ -59,25 +59,42 @@ class ShopCell: UITableViewCell {
         // how did this work
 //        imageView?.image = UIImage(named: item.name)
         actionButton.isHidden = false
+        actionButton.isEnabled = true
+        actionButton.alpha = 1.0
         
         if item.isOwned() {
             if item.isSelected() {
                 statusLabel.text = "Selected"
                 actionButton.isHidden = true
                 actionButton.setTitle("Equipped", for: .normal)
-            } else {
+            } else if item.unlockMethod == .bacon {
                 statusLabel.text = "Owned"
+                actionButton.setTitle("Equip", for: .normal)
+            } else {
+                statusLabel.text = "Unlocked"
                 actionButton.setTitle("Equip", for: .normal)
             }
         } else {
             switch item.unlockMethod {
             case .bacon:
+                statusLabel.font = UIFont(name: "AmericanTypeWriter ", size: 17)
                 statusLabel.text = "Cost: " + String(item.price!)
                 actionButton.setTitle("Buy", for: .normal)
+                actionButton.isEnabled = true
+                actionButton.alpha = 1.0
+                if !item.isAffordable(totalCoins: DataHelper.getBacon()) {
+                    actionButton.isEnabled = false
+                    actionButton.alpha = 0.4
+                }
                 // TODO: specify if can afford the item
             case .achievement:
                 statusLabel.numberOfLines = 2
-                statusLabel.text = "Reach a highscore of \(item.achievement!.requiredScore)"
+                statusLabel.font = UIFont(name: "AmericanTypeWriter ", size: 11)
+                statusLabel.text = "Reach a score of \(item.achievement!.requiredScore)"
+                actionButton.setTitle("Equip", for: .normal)
+                actionButton.isEnabled = false
+                actionButton.alpha = 0.4
+                
             }
         }
     }

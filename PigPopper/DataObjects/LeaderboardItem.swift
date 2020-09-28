@@ -22,8 +22,11 @@ public class LeaderboardItem {
     
     func dynamoDBItem() -> [String: DynamoDB.AttributeValue] {
         var item: [String: DynamoDB.AttributeValue] = [:]
+        
+        let useHighscore = DataHelper.getData(type: Bool.self, forKey: .settingsLeaderboard)!
+        
         item["username"] = DynamoDB.AttributeValue(s: username)
-        item["highscore"] = DynamoDB.AttributeValue(n: String(highscore))
+        item["highscore"] = DynamoDB.AttributeValue(n: String(useHighscore ? self.highscore : -1))
         item["gsihash"] = DynamoDB.AttributeValue(s: gsiHashKey)
         return item
     }

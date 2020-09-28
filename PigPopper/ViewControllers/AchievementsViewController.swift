@@ -14,14 +14,16 @@ class AchievementsViewController: UIViewController {
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var menuButton: UIButton!
     
+    // Rewards at 5, 10, 15, 25, 35, 50, 75, 100
     
-    let achievements: [Achievement] = [ Achievement(rank: "Rookie", score: 5, reward: "one"),
-                                        Achievement(rank: "Piggy", score: 10, reward: "two"),
-                                        Achievement(rank: "Oinker", score: 15, reward: "three"),
-                                        Achievement(rank: "PIG", score: 20, reward: "four"),
-                                        Achievement(rank: "Farmer", score: 25, reward: "five"),
-                                        Achievement(rank: "Agricultural Scientist", score: 30, reward: "six"),
-                                        Achievement(rank: "God", score: 100, reward: "seven")]
+    let achievements: [Achievement] = [ Achievement(rank: "Rookie", score: 5, reward: "bunnyHat"), // hat - bunny
+                                        Achievement(rank: "Piggy", score: 10, reward: "frozenBar"), // fork - frozenDessert
+                                        Achievement(rank: "Oinker", score: 15, reward: "bacon"), // bacon - 500
+                                        Achievement(rank: "PIG", score: 25, reward: "appleHat"), // hat - apple
+                                        Achievement(rank: "Farmer", score: 35, reward: "arrow"), // fork - arrow
+                                        Achievement(rank: "Agricultural Scientist", score: 50, reward: "bacon"), // bacon
+                                        Achievement(rank: "Master", score: 75, reward: "crownHat"), // hat - crown
+                                        Achievement(rank: "God", score: 100, reward: "darkSword") ] // fork - mega sword
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -41,8 +43,6 @@ class AchievementsViewController: UIViewController {
         frame.size.height = .leastNormalMagnitude
         tableView.tableHeaderView = UIView(frame: frame)
         tableView.tableFooterView = UIView(frame: frame)
-        
-        menuButton.layer.cornerRadius = 25.0
     }
     
     @IBAction func menuButtonTapped(_ sender: Any) {

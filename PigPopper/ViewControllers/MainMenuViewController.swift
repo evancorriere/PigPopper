@@ -52,7 +52,7 @@ class MainMenuViewController: UIViewController {
         
         imageView.transform = CGAffineTransform(rotationAngle: CGFloat.pi / 4)
         
-        DataHelper.setBacon(bacon: 1000000)
+        DataHelper.setBacon(bacon: 200)
     }
 
     override var shouldAutorotate: Bool {
@@ -84,7 +84,6 @@ class MainMenuViewController: UIViewController {
             DataHelper.setData(value: false, key: .settingsMusic)
             DataHelper.setData(value: false, key: .settingsSoundEffects)
             pauseBackgroundMusic()
-            
             soundButton.setBackgroundImage(musicOffImage, for: .normal)
         } else {
             DataHelper.setData(value: true, key: .settingsMusic)
@@ -104,13 +103,12 @@ class MainMenuViewController: UIViewController {
         }
     }
   
-    
     func showUsernamePrompt(isRetry: Bool) {
         let message = isRetry ? "Invalid username. Please try again" : "Select a unique username to be used in the global leaderboard"
         
         let alertController = UIAlertController(title: "Create a username", message: message, preferredStyle: .alert)
         alertController.addTextField { (textField) in
-            textField.text = "Username..."
+            textField.placeholder = "Username..."
         }
         alertController.addAction(UIAlertAction(title: "Cancel", style: .cancel))
         alertController.addAction(UIAlertAction(title: "Submit", style: .default, handler: { (action) in
@@ -124,24 +122,21 @@ class MainMenuViewController: UIViewController {
         
         present(alertController, animated: true)
     }
-    
-    
+        
     func dataSetupAndMigration() {
         if !UserDefaults.standard.bool(forKey: "setupDone") {
             UserDefaults.standard.set(true, forKey: "owns_\(SpriteFactory.defaultWeapon)")
             UserDefaults.standard.set(SpriteFactory.defaultWeapon, forKey: SpriteFactory.selectedWeaponKey)
             UserDefaults.standard.set(true, forKey: "setupDone")
         }
-        
+        DataHelper.setData(value: true, key: .settingsLeaderboard)
         if !UserDefaults.standard.bool(forKey: "setupDone2") {
             DataHelper.setData(value: true, key: .settingsMusic)
             DataHelper.setData(value: true, key: .settingsNotification)
-            DataHelper.setData(value: true, key: .settingsNotification)
+            DataHelper.setData(value: true, key: .settingsLeaderboard)
             UserDefaults.standard.set(true, forKey: "setupDone2")
         }
     }
-    
-    
 }
 
 extension MainMenuViewController: UIPopoverPresentationControllerDelegate {

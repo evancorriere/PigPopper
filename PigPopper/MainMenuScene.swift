@@ -36,6 +36,7 @@ class MainMenuScene: SKScene {
         flyingPig.setBoundingBox(boundingBox: CGRect(x: 0, y: minY, width: size.width, height: playableHeight))
         flyingPig.reset()
         flyingPig.velocityMultiplier = 0.6
+        flyingPig.startJetpackAnimation()
         addChild(flyingPig)
     }
     
