@@ -11,9 +11,9 @@ import Foundation
 class AchievementManager {
     
     static let achievements: [Achievement] = [
-        Achievement(rank: "Rookie", score: 1, itemReward: "bunnyHat", itemType: .hat), // hat - bunny
-        Achievement(rank: "Piggy", score: 2, itemReward: "frozenBar", itemType: .weapon), // fork - frozenDessert
-        Achievement(rank: "Oinker", score: 3, baconAmount: 1000), // bacon
+        Achievement(rank: "Rookie", score: 2, itemReward: "bunnyHat", itemType: .hat), // hat - bunny
+        Achievement(rank: "Piggy", score: 3, itemReward: "frozenBar", itemType: .weapon), // fork - frozenDessert
+        Achievement(rank: "Oinker", score: 15, baconAmount: 1000), // bacon
         Achievement(rank: "PIG", score: 25, itemReward: "appleHat", itemType: .hat), // hat - apple
         Achievement(rank: "Farmer", score: 35, itemReward: "arrow", itemType: .weapon), // fork - arrow
         Achievement(rank: "Agricultural Scientist", score: 50, baconAmount: 50000), // bacon

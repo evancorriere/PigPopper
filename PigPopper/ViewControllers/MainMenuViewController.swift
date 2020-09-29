@@ -135,6 +135,8 @@ class MainMenuViewController: UIViewController {
             DataHelper.setData(value: true, key: .settingsNotification)
             DataHelper.setData(value: true, key: .settingsLeaderboard)
             UserDefaults.standard.set(true, forKey: "setupDone2")
+            
+            // TODO: present any new achivements (filter which are done, since any completed are new 
         }
     }
 }

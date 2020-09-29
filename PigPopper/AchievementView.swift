@@ -13,8 +13,10 @@ class AchievementView: UIView {
     static let instance = AchievementView()
     
     // UI
+    @IBOutlet weak var achievementView: UIView!
     @IBOutlet var parentView: UIView!
     @IBOutlet weak var titleLbl: UILabel!
+    @IBOutlet weak var rankLbl: UILabel!
     @IBOutlet weak var rewardLbl: UILabel!
     @IBOutlet weak var rewardImg: UIImageView!
     @IBOutlet weak var continueBtn: UIButton!
@@ -47,7 +49,10 @@ class AchievementView: UIView {
         
         parentView.frame = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height)
         parentView.autoresizingMask = [.flexibleHeight, .flexibleWidth]
-
+     
+        
+        achievementView.layer.masksToBounds = true
+        achievementView.layer.cornerRadius = 10
     }
     
     func displayAchievements(achievements: [Achievement], callback: (() -> Void)?) {
@@ -67,6 +72,7 @@ class AchievementView: UIView {
     private func setupAchievementData() {
         equipBtn.isHidden = false
         rewardImg.image = UIImage(named: achievements[index].reward)
+        rankLbl.text = "Rank: \(achievements[index].rank)"
         
         if let itemType = achievements[index].itemType {
             switch itemType {
