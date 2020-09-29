@@ -10,14 +10,15 @@ import Foundation
 
 class AchievementManager {
     
-    static let achievements: [Achievement] = [ Achievement(rank: "Rookie", score: 5, reward: "bunnyHat"), // hat - bunny
-                                               Achievement(rank: "Piggy", score: 10, reward: "frozenBar"), // fork - frozenDessert
-                                               Achievement(rank: "Oinker", score: 15, reward: "bacon"), // bacon - 500
-                                               Achievement(rank: "PIG", score: 25, reward: "appleHat"), // hat - apple
-                                               Achievement(rank: "Farmer", score: 35, reward: "arrow"), // fork - arrow
-                                               Achievement(rank: "Agricultural Scientist", score: 50, reward: "bacon"), // bacon
-                                               Achievement(rank: "Master", score: 75, reward: "crownHat"), // hat - crown
-                                               Achievement(rank: "God", score: 100, reward: "darkSword") ] // fork - mega sword
+    static let achievements: [Achievement] = [
+        Achievement(rank: "Rookie", score: 1, itemReward: "bunnyHat", itemType: .hat), // hat - bunny
+        Achievement(rank: "Piggy", score: 2, itemReward: "frozenBar", itemType: .weapon), // fork - frozenDessert
+        Achievement(rank: "Oinker", score: 3, baconAmount: 1000), // bacon
+        Achievement(rank: "PIG", score: 25, itemReward: "appleHat", itemType: .hat), // hat - apple
+        Achievement(rank: "Farmer", score: 35, itemReward: "arrow", itemType: .weapon), // fork - arrow
+        Achievement(rank: "Agricultural Scientist", score: 50, baconAmount: 50000), // bacon
+        Achievement(rank: "Master", score: 75, itemReward: "crownHat", itemType: .hat), // hat - crown
+        Achievement(rank: "God", score: 100, itemReward: "darkSword", itemType: .weapon) ] // fork - mega sword
            
     // achievement completed set at init, here we have functions to update them
     

@@ -13,7 +13,7 @@ class GameScene: SKScene {
    
     weak var viewController: GameViewController?
     let pig: Pig = SpriteFactory.getPig()
-    let fork: SKSpriteNode
+    var fork: SKSpriteNode
     let woodSign = SignNode()
     var shields: [SKNode] = []
     var playSoundEffects = true
@@ -42,6 +42,7 @@ class GameScene: SKScene {
     var shouldResetPig = false
     var forkLaunchable = true
     var forkHitObject = false
+    var checkAchievements = false
     
     var initialTouchLocation: CGPoint!
     var initialTouchTime: TimeInterval!
@@ -203,13 +204,7 @@ class GameScene: SKScene {
             DataHelper.setHighscore(highscore: highScore)
             DynamoDBHelper.sendLeaderboardData()
             updateHighScoreLabel()
-            let achievements = AchievementManager.updatedAchievements(highscore: highScore)
-            if achievements.count > 0 {
-                print("Achivements unlocked!")
-                for achievement in achievements {
-                    print(achievement.rank)
-                }
-            }
+            checkAchievements = true
         }
         updateScoreLabel()
         updateCoinsLabel()
@@ -292,12 +287,34 @@ class GameScene: SKScene {
         }
         
         shields = []
-        
+        if checkAchievements {
+            print("checking achievements")
+            let achievements = AchievementManager.updatedAchievements(highscore: highScore)
+            if achievements.count > 0 {
+                print("displaying")
+                totalCoins = DataHelper.getBacon()
+                AchievementView.instance.displayAchievements(achievements: achievements, callback: self.achievementsDidDisplay)
+            }
+            
+            checkAchievements = false
+        }
+    
         updateScoreLabel()
         updateCoinsLabel()
         updateTotalCoinsLabel()
         updateHighScoreLabel()
         forkLaunchable = true
+        
+    }
+    
+    func achievementsDidDisplay() {
+        fork.removeFromParent()
+        fork = SpriteFactory.getSelectedWeaponSprite()
+        fork.position = forkLaunchPosition
+        fork.zPosition = 5
+        fork.zRotation = 0.0
+        addChild(fork)
+        pig.resetSettings()
     }
     
     func handleForkOffScreen() {

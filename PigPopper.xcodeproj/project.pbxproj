@@ -32,6 +32,8 @@
 		1E5FAA8D24F3654700F0BF5E /* ShopViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E5FAA8C24F3654700F0BF5E /* ShopViewController.swift */; };
 		1E5FAA8F24F9804700F0BF5E /* PhysicsValues.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E5FAA8E24F9804700F0BF5E /* PhysicsValues.swift */; };
 		1E5FAA9124FAE39C00F0BF5E /* Pig.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E5FAA9024FAE39B00F0BF5E /* Pig.swift */; };
+		1E76C01E2523017A006D8918 /* AchievementView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1E76C01D25230179006D8918 /* AchievementView.xib */; };
+		1E76C021252301AE006D8918 /* AchievementView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E76C020252301AE006D8918 /* AchievementView.swift */; };
 		1E7DBAD7251C98D8009AF561 /* Colors.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1E7DBAD6251C98D8009AF561 /* Colors.xcassets */; };
 		1EB323D324A32659008BEAF8 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EB323D224A32659008BEAF8 /* AppDelegate.swift */; };
 		1EB323D924A3265A008BEAF8 /* GameScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EB323D824A3265A008BEAF8 /* GameScene.swift */; };
@@ -71,6 +73,8 @@
 		1E5FAA8C24F3654700F0BF5E /* ShopViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShopViewController.swift; sourceTree = "<group>"; };
 		1E5FAA8E24F9804700F0BF5E /* PhysicsValues.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhysicsValues.swift; sourceTree = "<group>"; };
 		1E5FAA9024FAE39B00F0BF5E /* Pig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Pig.swift; sourceTree = "<group>"; };
+		1E76C01D25230179006D8918 /* AchievementView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = AchievementView.xib; sourceTree = "<group>"; };
+		1E76C020252301AE006D8918 /* AchievementView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AchievementView.swift; sourceTree = "<group>"; };
 		1E7DBAD6251C98D8009AF561 /* Colors.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Colors.xcassets; sourceTree = "<group>"; };
 		1EB323CF24A32659008BEAF8 /* PigPopper.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PigPopper.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		1EB323D224A32659008BEAF8 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -199,6 +203,8 @@
 				1E26BF972510B976004FA82E /* DataHelper.swift */,
 				1E26BF992514A19E004FA82E /* AchievementManager.swift */,
 				1E3EC6842519E1C500B78CA1 /* DynamoDBHelper.swift */,
+				1E76C01D25230179006D8918 /* AchievementView.xib */,
+				1E76C020252301AE006D8918 /* AchievementView.swift */,
 			);
 			path = PigPopper;
 			sourceTree = "<group>";
@@ -283,6 +289,7 @@
 				1EB323E024A3265F008BEAF8 /* Assets.xcassets in Resources */,
 				1EEFF97C24C19DA6006791EE /* background_music.mp3 in Resources */,
 				1E5FAA7424C54F5E00F0BF5E /* shoot2.wav in Resources */,
+				1E76C01E2523017A006D8918 /* AchievementView.xib in Resources */,
 				1E1047F8250DD1240016E508 /* Main.storyboard in Resources */,
 				1EEFF97624C183E3006791EE /* explosion.wav in Resources */,
 				1E5FAA7624C54FB600F0BF5E /* explosion2.wav in Resources */,
@@ -302,6 +309,7 @@
 				1E26BF982510B976004FA82E /* DataHelper.swift in Sources */,
 				1E1047EA250B289E0016E508 /* ButtonCell.swift in Sources */,
 				1EB323D924A3265A008BEAF8 /* GameScene.swift in Sources */,
+				1E76C021252301AE006D8918 /* AchievementView.swift in Sources */,
 				1EEFF97E24C19DD9006791EE /* MyUtil.swift in Sources */,
 				1E5FAA8924F30D8100F0BF5E /* ShopItem.swift in Sources */,
 				1E1047FA250F4A800016E508 /* GameViewController.swift in Sources */,

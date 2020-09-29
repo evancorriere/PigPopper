@@ -15,16 +15,6 @@ class AchievementsViewController: UIViewController {
     @IBOutlet weak var menuButton: UIButton!
     
     // Rewards at 5, 10, 15, 25, 35, 50, 75, 100
-    
-    let achievements: [Achievement] = [ Achievement(rank: "Rookie", score: 5, reward: "bunnyHat"), // hat - bunny
-                                        Achievement(rank: "Piggy", score: 10, reward: "frozenBar"), // fork - frozenDessert
-                                        Achievement(rank: "Oinker", score: 15, reward: "bacon"), // bacon - 500
-                                        Achievement(rank: "PIG", score: 25, reward: "appleHat"), // hat - apple
-                                        Achievement(rank: "Farmer", score: 35, reward: "arrow"), // fork - arrow
-                                        Achievement(rank: "Agricultural Scientist", score: 50, reward: "bacon"), // bacon
-                                        Achievement(rank: "Master", score: 75, reward: "crownHat"), // hat - crown
-                                        Achievement(rank: "God", score: 100, reward: "darkSword") ] // fork - mega sword
-    
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -74,12 +64,12 @@ extension AchievementsViewController: UITableViewDelegate {
  extension AchievementsViewController: UITableViewDataSource {
      
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return achievements.count
+        return AchievementManager.achievements.count
      }
      
      func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "achievementCell", for: indexPath) as! AchievementCell
-        cell.setupWith(achievement: achievements[indexPath.row])
+        cell.setupWith(achievement: AchievementManager.achievements[indexPath.row])
         return cell
      }
  }
