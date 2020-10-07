@@ -119,6 +119,26 @@ class SpriteFactory {
     }
     
     
+    // returns an array of bacon sprites that will be
+    // exploding out of pig.
+    static func getBaconSprites(count: Int) -> [SKSpriteNode] {
+        var baconSprites: [SKSpriteNode] = []
+        for _ in 0..<count {
+            let sprite = SKSpriteNode(imageNamed: "bacon")
+            sprite.size = CGSize(width: 15, height: 40)
+            sprite.zPosition = 9
+            sprite.physicsBody = SKPhysicsBody(rectangleOf: sprite.size)
+            sprite.physicsBody?.affectedByGravity = true
+            sprite.physicsBody?.collisionBitMask = CollisionTypes.none.rawValue
+            sprite.physicsBody?.contactTestBitMask = CollisionTypes.none.rawValue
+            sprite.physicsBody?.categoryBitMask = CollisionTypes.none.rawValue
+            baconSprites.append(sprite)
+        }
+        
+        return baconSprites
+    }
+    
+    
     
     
     /*

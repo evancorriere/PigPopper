@@ -272,14 +272,14 @@
                                         <color key="separatorColor" systemColor="systemGrayColor"/>
                                         <prototypes>
                                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="cell" id="l50-10-AUX" customClass="ScoreboardCell" customModule="PigPopper" customModuleProvider="target">
-                                                <rect key="frame" x="0.0" y="28" width="314" height="43.5"/>
+                                                <rect key="frame" x="0.0" y="28" width="314" height="43"/>
                                                 <autoresizingMask key="autoresizingMask"/>
                                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="l50-10-AUX" id="BSs-Qt-Jee">
-                                                    <rect key="frame" x="0.0" y="0.0" width="314" height="43.5"/>
+                                                    <rect key="frame" x="0.0" y="0.0" width="314" height="43"/>
                                                     <autoresizingMask key="autoresizingMask"/>
                                                     <subviews>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="NameLabel" lineBreakMode="tailTruncation" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="BWv-3f-0ET">
-                                                            <rect key="frame" x="16" y="11" width="248" height="21.5"/>
+                                                            <rect key="frame" x="16" y="11" width="248" height="21"/>
                                                             <constraints>
                                                                 <constraint firstAttribute="width" constant="258" id="E5f-Ef-USK"/>
                                                             </constraints>
@@ -288,7 +288,7 @@
                                                             <nil key="highlightedColor"/>
                                                         </label>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="36s-ku-5ID">
-                                                            <rect key="frame" x="264" y="0.0" width="40" height="43.5"/>
+                                                            <rect key="frame" x="264" y="0.0" width="40" height="43"/>
                                                             <constraints>
                                                                 <constraint firstAttribute="width" constant="40" id="CmV-Nm-sQF" userLabel="width = 60"/>
                                                             </constraints>

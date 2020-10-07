@@ -50,6 +50,8 @@ class GameScene: SKScene {
     var finalTouchLocation:CGPoint!
     var finalTouchTime: TimeInterval!
     
+    var baconSprites: [SKSpriteNode] = []
+    
     
    
     override init(size: CGSize) {
@@ -198,6 +200,9 @@ class GameScene: SKScene {
         score += 1
         coins += hitValue
         totalCoins += hitValue
+        
+        addBaconSprites(count: hitValue, position: pig.position)
+        
         DataHelper.setBacon(bacon: totalCoins)
         if score > highScore {
             highScore = score
@@ -215,6 +220,20 @@ class GameScene: SKScene {
         }
         
         resetFork()
+    }
+    
+    func addBaconSprites(count: Int, position: CGPoint) {
+        let newBaconSprites = SpriteFactory.getBaconSprites(count: count)
+        for baconSprite in newBaconSprites {
+            
+            baconSprite.position = position
+            addChild(baconSprite)
+            let randX = CGFloat.random(min: -200, max: 200)
+            let randY = CGFloat.random(min: 0, max: 120)
+            baconSprite.physicsBody?.velocity = CGVector(dx: randX, dy: randY)
+        }
+        
+        baconSprites.append(contentsOf: newBaconSprites)
     }
     
     func runHitMessage() {
@@ -402,6 +421,14 @@ class GameScene: SKScene {
     override func update(_ currentTime: TimeInterval) {
         // Called before each frame is rendered
         pig.update(currentTime)
+        
+        
+        // check if any shield is off screen and if so remove it
+        // sly opt: call once every x times
+        
+        baconSprites.removeAll { (baconSprite) -> Bool in
+            return baconSprite.position.y < -20
+        }
         
 
     }
