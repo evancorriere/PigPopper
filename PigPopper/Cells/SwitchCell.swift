@@ -51,6 +51,7 @@ class SwitchCell: UITableViewCell {
             label.text = "Sound Effects"
             initialSwitchValue = DataHelper.getData(type: Bool.self, forKey: .settingsSoundEffects)
         case .participateInLeaderboard:
+            label.text = "Send score to leaderboard"
             initialSwitchValue = DataHelper.getData(type: Bool.self, forKey: .settingsLeaderboard)
         }
     

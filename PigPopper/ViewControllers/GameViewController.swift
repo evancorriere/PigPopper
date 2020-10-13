@@ -28,7 +28,8 @@ class GameViewController: UIViewController {
         gameScene?.scaleMode = .aspectFill
       
         let skView = self.view as! SKView
-        skView.showsPhysics = false
+//        skView.showsPhysics = true
+//        skView.showsNodeCount = true
         skView.presentScene(gameScene!)
         
         
@@ -67,6 +68,6 @@ class GameViewController: UIViewController {
     }
 
     @IBAction func menuButtonTapped(_ sender: Any) {
-        dismiss(animated: true, completion: nil)
+        dismiss(animated: false, completion: nil)
     }
 }

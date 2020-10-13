@@ -19,7 +19,7 @@ class MainMenuViewController: UIViewController {
     
     var mainMenuScene: MainMenuScene?
     
-    let musicOnImage = UIImage(systemName: "speaker.3.fill")
+    let musicOnImage = UIImage(systemName: "speaker.wave.3.fill")
     let musicOffImage = UIImage(systemName: "speaker.slash.fill")
     
     override func viewWillAppear(_ animated: Bool) {
@@ -138,7 +138,21 @@ class MainMenuViewController: UIViewController {
             DataHelper.setData(value: true, key: .settingsLeaderboard)
             UserDefaults.standard.set(true, forKey: "setupDone2")
             
-            // TODO: present any new achivements (filter which are done, since any completed are new 
+            // TODO: present any new achivements (filter which are done, since any completed are new
+            let completedAchievements = AchievementManager.achievements.filter { (achievement) -> Bool in
+                achievement.isCompleted()
+            }
+            
+            var reward = 0
+            
+            for achievement in completedAchievements {
+                if achievement.baconAmount != nil {
+                    reward += achievement.baconAmount!
+                }
+            }
+            
+            DataHelper.setBacon(bacon: DataHelper.getBacon() + reward)
+            AchievementView.instance.displayAchievements(achievements: completedAchievements, callback: self.updateData)
         }
     }
 }

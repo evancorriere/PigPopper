@@ -11,7 +11,7 @@ import GameplayKit
 
 class TutorialScene: SKScene {
     
-    weak var viewController: NewTutorialViewController?
+    weak var viewController: TutorialViewController?
     let pig: Pig = SpriteFactory.getPig()
     var fork: SKSpriteNode
     var baconSprites: [SKSpriteNode] = []
@@ -84,7 +84,6 @@ class TutorialScene: SKScene {
         backgroundColor = .white
         
         let backgroundSprite = SpriteFactory.getBackgroundSprite(size: size)
-        backgroundSprite.xScale = -1 // flip so the transition looks nice
         addChild(backgroundSprite)
         
         addChild(pig)
@@ -112,8 +111,6 @@ class TutorialScene: SKScene {
         pig.startJetpackAnimation()
         pig.flipRight()
     
-        print("here, index = \(index)")
-        
         
         if index < 2 {
             pig.velocity = CGPoint(x: 150, y: 0)
@@ -298,7 +295,6 @@ extension TutorialScene: SKPhysicsContactDelegate {
             let otherNode = nodeA.name == fork.name ? nodeB : nodeA
             
             if otherNode.name == pig.name {
-                print("hit pig")
                 handlePigHit()
             } else if shield != nil && otherNode.name == shield?.name {
                 shouldResetFork = true

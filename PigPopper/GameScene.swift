@@ -93,7 +93,7 @@ class GameScene: SKScene {
         
         
         let backgroundSprite = SpriteFactory.getBackgroundSprite(size: size)
-        backgroundSprite.xScale = -1 // flip so the transition looks nice
+//        backgroundSprite.xScale = -1 // flip so the transition looks nice
         addChild(backgroundSprite)
         
 
@@ -294,7 +294,6 @@ class GameScene: SKScene {
     
     func gameOver() {
         self.shouldResetFork = true
-        print("game over")
         resetFork()
         score = 0
         pig.velocityMultiplier = 1.0
@@ -307,10 +306,8 @@ class GameScene: SKScene {
         
         shields = []
         if checkAchievements {
-            print("checking achievements")
             let achievements = AchievementManager.updatedAchievements(highscore: highScore)
             if achievements.count > 0 {
-                print("displaying")
                 totalCoins = DataHelper.getBacon()
                 AchievementView.instance.displayAchievements(achievements: achievements, callback: self.achievementsDidDisplay)
             }
@@ -427,7 +424,11 @@ class GameScene: SKScene {
         // sly opt: call once every x times
         
         baconSprites.removeAll { (baconSprite) -> Bool in
-            return baconSprite.position.y < -20
+            if baconSprite.position.y < -20 {
+                baconSprite.removeFromParent()
+                return true
+            }
+            return false
         }
         
 
@@ -466,10 +467,8 @@ extension GameScene: SKPhysicsContactDelegate {
             let otherNode = nodeA.name == fork.name ? nodeB : nodeA
             
             if otherNode.name == "shield" {
-                print("hit shield")
                 handleShieldHit()
             } else if otherNode.name == pig.name {
-                print("hit pig")
                 handlePigHit()
             }
         }

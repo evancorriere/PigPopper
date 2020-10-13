@@ -74,13 +74,16 @@ class ButtonCell: UITableViewCell {
         case .changeName:
             viewController?.promptForNewUsername(isRetry: false)
         case .support:
-            let email = "evancorriere@gmail.com"
-            if let url = URL(string: "mailto:\(email)") {
-                if #available(iOS 10.0, *) {
-                    UIApplication.shared.open(url)
-                } else {
-                    UIApplication.shared.openURL(url)
-                }
+//            let email = "evancorriere@gmail.com"
+//            if let url = URL(string: "mailto:\(email)") {
+//                if #available(iOS 10.0, *) {
+//                    UIApplication.shared.open(url)
+//                } else {
+//                    UIApplication.shared.openURL(url)
+//                }
+//            }
+            if let url = URL(string: "https://forms.gle/AWNPYgJeYPHJVZxKA") {
+                UIApplication.shared.open(url)
             }
         case .none:
             print("button type is none")

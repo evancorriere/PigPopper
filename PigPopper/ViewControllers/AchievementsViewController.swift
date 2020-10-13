@@ -47,14 +47,7 @@ extension AchievementsViewController: UITableViewDelegate {
     func numberOfSections(in tableView: UITableView) -> Int {
         1
     }
-//
-//    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-//        if section == 0 {
-//            return "Higher Scores = More Rewards!"
-//        }
-//        return nil
-//    }
-//
+    
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return CGFloat(100)
     }

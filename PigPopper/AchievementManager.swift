@@ -16,7 +16,7 @@ class AchievementManager {
         Achievement(rank: "Oinker", score: 15, baconAmount: 1000), // bacon
         Achievement(rank: "Farmer", score: 20, itemReward: "appleHat", itemType: .hat), // hat - apple
         Achievement(rank: "Hunter", score: 25, itemReward: "arrow", itemType: .weapon), // fork - arrow
-        Achievement(rank: "Swineherd", score: 35, baconAmount: 50000), // bacon
+        Achievement(rank: "Swineherd", score: 35, baconAmount: 3000), // bacon
         Achievement(rank: "Boar Borer", score: 50, itemReward: "crownHat", itemType: .hat), // hat - crown
         Achievement(rank: "Pig Popper", score: 75, itemReward: "darkSword", itemType: .weapon) ] // fork - mega sword
            

@@ -177,8 +177,6 @@ extension SettingsViewController: UITableViewDataSource {
                 cell.setupWith(switchType: .participateInLeaderboard)
                 cell.selectionStyle = .none
                 return cell
-            } else if indexPath.row == 2 {
-                
             }
         }
         return UITableViewCell()

@@ -9,7 +9,7 @@
 import UIKit
 import SpriteKit
 
-class NewTutorialViewController: UIViewController {
+class TutorialViewController: UIViewController {
   
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var infoLabel: UILabel!

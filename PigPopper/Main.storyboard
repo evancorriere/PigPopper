@@ -38,7 +38,7 @@
                                     <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 </state>
                                 <connections>
-                                    <segue destination="Oyc-IL-Dti" kind="presentation" animates="NO" modalPresentationStyle="fullScreen" id="h9l-Cv-3u2"/>
+                                    <segue destination="Oyc-IL-Dti" kind="modal" animates="NO" modalPresentationStyle="fullScreen" id="h9l-Cv-3u2"/>
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" showsTouchWhenHighlighted="YES" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="81Q-Yy-zkH" customClass="MenuButton" customModule="PigPopper" customModuleProvider="target">
@@ -124,8 +124,8 @@
                                     <action selector="muteTapped:" destination="BV1-FR-VrT" eventType="touchUpInside" id="Ps0-iG-Skq"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" showsTouchWhenHighlighted="YES" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="IJi-Tk-fBm">
-                                <rect key="frame" x="364" y="664.5" width="40" height="38.5"/>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" showsTouchWhenHighlighted="YES" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="IJi-Tk-fBm">
+                                <rect key="frame" x="364" y="663" width="40" height="37.5"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="40" id="h6j-9O-5ve"/>
                                     <constraint firstAttribute="height" constant="40" id="woM-ot-tAe"/>
@@ -133,7 +133,7 @@
                                 <color key="tintColor" white="0.33333333329999998" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <state key="normal" backgroundImage="questionmark.square" catalog="system"/>
                                 <connections>
-                                    <segue destination="mjB-ct-Ptj" kind="presentation" identifier="tutorialSegue" modalPresentationStyle="fullScreen" id="3Bm-JO-B64"/>
+                                    <segue destination="mjB-ct-Ptj" kind="presentation" identifier="tutorialSegue" animates="NO" modalPresentationStyle="fullScreen" id="3Bm-JO-B64"/>
                                 </connections>
                             </button>
                         </subviews>
@@ -259,6 +259,7 @@
                             <constraint firstItem="O9x-Zn-6yG" firstAttribute="trailing" secondItem="WP2-yq-22q" secondAttribute="trailing" constant="-10" id="yjY-PD-XUm"/>
                         </constraints>
                     </view>
+                    <navigationItem key="navigationItem" id="6Yd-93-1lT"/>
                     <connections>
                         <outlet property="baconLabel" destination="yV1-fD-fPr" id="39s-RW-o15"/>
                         <outlet property="baconLabelView" destination="O9x-Zn-6yG" id="HZB-K1-UGe"/>
@@ -286,14 +287,14 @@
                                         <color key="separatorColor" systemColor="systemGrayColor"/>
                                         <prototypes>
                                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="cell" id="l50-10-AUX" customClass="ScoreboardCell" customModule="PigPopper" customModuleProvider="target">
-                                                <rect key="frame" x="0.0" y="28" width="314" height="43"/>
+                                                <rect key="frame" x="0.0" y="28" width="314" height="43.5"/>
                                                 <autoresizingMask key="autoresizingMask"/>
                                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="l50-10-AUX" id="BSs-Qt-Jee">
-                                                    <rect key="frame" x="0.0" y="0.0" width="314" height="43"/>
+                                                    <rect key="frame" x="0.0" y="0.0" width="314" height="43.5"/>
                                                     <autoresizingMask key="autoresizingMask"/>
                                                     <subviews>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="NameLabel" lineBreakMode="tailTruncation" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="BWv-3f-0ET">
-                                                            <rect key="frame" x="16" y="11" width="248" height="21"/>
+                                                            <rect key="frame" x="16" y="11" width="248" height="21.5"/>
                                                             <constraints>
                                                                 <constraint firstAttribute="width" constant="258" id="E5f-Ef-USK"/>
                                                             </constraints>
@@ -302,7 +303,7 @@
                                                             <nil key="highlightedColor"/>
                                                         </label>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="36s-ku-5ID">
-                                                            <rect key="frame" x="264" y="0.0" width="40" height="43"/>
+                                                            <rect key="frame" x="264" y="0.0" width="40" height="43.5"/>
                                                             <constraints>
                                                                 <constraint firstAttribute="width" constant="40" id="CmV-Nm-sQF" userLabel="width = 60"/>
                                                             </constraints>
@@ -455,7 +456,7 @@
                                     </tableViewCell>
                                 </prototypes>
                             </tableView>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Items are cosmetic only." textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="h0H-ac-HGa">
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Items are cosmetic only." textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="h0H-ac-HGa">
                                 <rect key="frame" x="109" y="736" width="196" height="20"/>
                                 <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
@@ -820,83 +821,18 @@
             </objects>
             <point key="canvasLocation" x="2771" y="1120"/>
         </scene>
-        <!--Tutorial Page View Controller-->
-        <scene sceneID="e6H-2k-zk7">
-            <objects>
-                <pageViewController autoresizesArchivedViewToFullSize="NO" transitionStyle="scroll" navigationOrientation="horizontal" spineLocation="none" id="C5i-Fq-pwB" customClass="TutorialPageViewController" customModule="PigPopper" customModuleProvider="target" sceneMemberID="viewController"/>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="8A6-Nc-eW8" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="2581" y="110"/>
-        </scene>
         <!--Tutorial View Controller-->
-        <scene sceneID="qIf-IC-DcA">
-            <objects>
-                <viewController storyboardIdentifier="TutorialViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="1Xs-Hv-ImC" customClass="TutorialViewController" customModule="PigPopper" customModuleProvider="target" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" id="p0y-tE-UHc">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <subviews>
-                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="background" translatesAutoresizingMaskIntoConstraints="NO" id="rMs-yE-JeV">
-                                <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
-                            </imageView>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Hit the pig" textAlignment="center" lineBreakMode="wordWrap" numberOfLines="0" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="p7Y-QH-zDH">
-                                <rect key="frame" x="15" y="424" width="384" height="48"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="40"/>
-                                <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="IiW-qJ-f2c" customClass="MenuButton" customModule="PigPopper" customModuleProvider="target">
-                                <rect key="frame" x="50" y="794" width="314" height="50"/>
-                                <color key="backgroundColor" name="PigPink"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="50" id="Pn7-0A-eQl"/>
-                                </constraints>
-                                <fontDescription key="fontDescription" type="system" pointSize="20"/>
-                                <state key="normal" title="Next">
-                                    <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                </state>
-                                <connections>
-                                    <action selector="buttonTapped:" destination="1Xs-Hv-ImC" eventType="touchUpInside" id="0hc-d5-FCi"/>
-                                </connections>
-                            </button>
-                        </subviews>
-                        <viewLayoutGuide key="safeArea" id="1GS-NJ-Oy1"/>
-                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
-                        <constraints>
-                            <constraint firstItem="1GS-NJ-Oy1" firstAttribute="trailing" secondItem="p7Y-QH-zDH" secondAttribute="trailing" constant="15" id="0E7-k5-wWG"/>
-                            <constraint firstItem="1GS-NJ-Oy1" firstAttribute="trailing" secondItem="IiW-qJ-f2c" secondAttribute="trailing" constant="50" id="70h-3m-uiD"/>
-                            <constraint firstItem="1GS-NJ-Oy1" firstAttribute="bottom" secondItem="IiW-qJ-f2c" secondAttribute="bottom" constant="18" id="EPP-iZ-7cC"/>
-                            <constraint firstItem="p7Y-QH-zDH" firstAttribute="centerY" secondItem="p0y-tE-UHc" secondAttribute="centerY" id="FdR-Sh-2NS"/>
-                            <constraint firstAttribute="bottom" secondItem="rMs-yE-JeV" secondAttribute="bottom" id="Kch-sw-eZt"/>
-                            <constraint firstItem="IiW-qJ-f2c" firstAttribute="leading" secondItem="1GS-NJ-Oy1" secondAttribute="leading" constant="50" id="Q84-CL-uTi"/>
-                            <constraint firstItem="p7Y-QH-zDH" firstAttribute="centerX" secondItem="p0y-tE-UHc" secondAttribute="centerX" id="TZX-j5-VaL"/>
-                            <constraint firstItem="p7Y-QH-zDH" firstAttribute="leading" secondItem="1GS-NJ-Oy1" secondAttribute="leading" constant="15" id="X48-Mr-FdH"/>
-                            <constraint firstAttribute="trailing" secondItem="rMs-yE-JeV" secondAttribute="trailing" id="cUd-ma-06P"/>
-                            <constraint firstItem="rMs-yE-JeV" firstAttribute="leading" secondItem="p0y-tE-UHc" secondAttribute="leading" id="fQN-vj-8mT"/>
-                            <constraint firstItem="rMs-yE-JeV" firstAttribute="top" secondItem="p0y-tE-UHc" secondAttribute="top" id="h65-PU-2ic"/>
-                        </constraints>
-                    </view>
-                    <connections>
-                        <outlet property="button" destination="IiW-qJ-f2c" id="ISq-T3-Wdf"/>
-                    </connections>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="FYZ-UQ-iBb" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="3496" y="110"/>
-        </scene>
-        <!--New Tutorial View Controller-->
         <scene sceneID="ZXA-8v-n6w">
             <objects>
-                <viewController id="mjB-ct-Ptj" customClass="NewTutorialViewController" customModule="PigPopper" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="mjB-ct-Ptj" customClass="TutorialViewController" customModule="PigPopper" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="81o-zq-PsW" customClass="SKView">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="How to Play" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="z9X-Fe-X9W">
-                                <rect key="frame" x="162" y="44" width="90" height="21"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <nil key="textColor"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="How to Play" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="z9X-Fe-X9W">
+                                <rect key="frame" x="138.5" y="44" width="137.5" height="30"/>
+                                <fontDescription key="fontDescription" type="boldSystem" pointSize="25"/>
+                                <color key="textColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="axR-jU-Pqa" customClass="MenuButton" customModule="PigPopper" customModuleProvider="target">
@@ -915,6 +851,7 @@
                             </button>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Swipe to launch the fork at the pig" textAlignment="center" lineBreakMode="wordWrap" numberOfLines="0" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="NI1-91-bZY">
                                 <rect key="frame" x="10" y="435" width="394" height="26.5"/>
+                                <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.44635595034246578" colorSpace="custom" customColorSpace="sRGB"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="22"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
@@ -928,6 +865,8 @@
                             <constraint firstItem="axR-jU-Pqa" firstAttribute="leading" secondItem="81o-zq-PsW" secondAttribute="leading" constant="50" id="Hew-CY-J1h"/>
                             <constraint firstItem="NI1-91-bZY" firstAttribute="centerX" secondItem="81o-zq-PsW" secondAttribute="centerX" id="M6x-i6-jUE"/>
                             <constraint firstItem="arc-lb-6Lf" firstAttribute="trailing" secondItem="NI1-91-bZY" secondAttribute="trailing" constant="10" id="Uwx-Tt-JLd"/>
+                            <constraint firstItem="z9X-Fe-X9W" firstAttribute="top" secondItem="arc-lb-6Lf" secondAttribute="top" id="d4n-KV-uus"/>
+                            <constraint firstItem="z9X-Fe-X9W" firstAttribute="centerX" secondItem="81o-zq-PsW" secondAttribute="centerX" id="du4-tk-4Dn"/>
                             <constraint firstItem="arc-lb-6Lf" firstAttribute="bottom" secondItem="axR-jU-Pqa" secondAttribute="bottom" constant="18" id="lut-3Y-dJr"/>
                             <constraint firstItem="NI1-91-bZY" firstAttribute="leading" secondItem="arc-lb-6Lf" secondAttribute="leading" constant="10" id="vUp-xZ-t7T"/>
                         </constraints>
@@ -940,7 +879,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="gp4-Wt-zu2" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2579.7101449275365" y="-763.39285714285711"/>
+            <point key="canvasLocation" x="2770" y="109"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="5aO-Cb-sgb">
@@ -963,7 +902,6 @@
     </scenes>
     <resources>
         <image name="axe_gold" width="350" height="581"/>
-        <image name="background" width="1722" height="2436"/>
         <image name="barn" width="96" height="96"/>
         <image name="dessert_fork" width="21" height="157"/>
         <image name="gear" catalog="system" width="128" height="119"/>
