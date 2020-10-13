@@ -32,7 +32,6 @@ class MainMenuViewController: UIViewController {
             soundButton.setBackgroundImage(musicOffImage, for: .normal)
         }
         
-    
         updateData()
     }
     
@@ -52,7 +51,10 @@ class MainMenuViewController: UIViewController {
         
         imageView.transform = CGAffineTransform(rotationAngle: CGFloat.pi / 4)
         
-        DataHelper.setBacon(bacon: 200)
+        
+        if !(DataHelper.getData(type: Bool.self, forKey: .tutorialCompleted) ?? false) {
+            performSegue(withIdentifier: "tutorialSegue", sender: self)
+        }
     }
 
     override var shouldAutorotate: Bool {

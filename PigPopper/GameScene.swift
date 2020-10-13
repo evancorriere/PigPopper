@@ -185,7 +185,7 @@ class GameScene: SKScene {
     
     func handlePigHit() {
         
-        runHitMessage()
+//        runHitMessage()
         
         if playSoundEffects {
             run(explosionSound)

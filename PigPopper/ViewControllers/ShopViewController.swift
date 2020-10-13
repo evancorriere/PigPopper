@@ -47,23 +47,25 @@ class ShopViewController: UIViewController {
         ShopItem(achievement: AchievementManager.achievements[6], itemType: .hat),
         
         // the rest via bacon
-        ShopItem(name: "antlersHat", price: 10, itemType: .hat),
-        ShopItem(name: "armyHat", price: 20, itemType: .hat),
-        ShopItem(name: "beanieHat", price: 30, itemType: .hat),
-        ShopItem(name: "birthdayHat", price: 40, itemType: .hat),
-        ShopItem(name: "cowboyHat", price: 60, itemType: .hat),
-        ShopItem(name: "firemanHat", price: 80, itemType: .hat),
-        ShopItem(name: "horseHeadHat", price: 90, itemType: .hat),
-        ShopItem(name: "hotdogHat", price: 100, itemType: .hat),
-        ShopItem(name: "leprechaunHat", price: 110, itemType: .hat),
-        ShopItem(name: "militaryHat", price: 120, itemType: .hat),
-        ShopItem(name: "nurseHat", price: 130, itemType: .hat),
-        ShopItem(name: "pinwheelHat", price: 140, itemType: .hat),
-        ShopItem(name: "pirateHat", price: 150, itemType: .hat),
-        ShopItem(name: "policeHat", price: 160, itemType: .hat),
-        ShopItem(name: "sharkHat", price: 170, itemType: .hat),
-        ShopItem(name: "sunHat", price: 180, itemType: .hat),
-        ShopItem(name: "vikingHat", price: 190, itemType: .hat),
+        ShopItem(name: "nurseHat", price: 30, itemType: .hat),
+        ShopItem(name: "sunHat", price: 50, itemType: .hat),
+        ShopItem(name: "militaryHat", price: 75, itemType: .hat),
+        ShopItem(name: "beanieHat", price: 100, itemType: .hat),
+        ShopItem(name: "antlersHat", price: 150, itemType: .hat),
+        
+        ShopItem(name: "policeHat", price: 200, itemType: .hat),
+        ShopItem(name: "birthdayHat", price: 250, itemType: .hat),
+        ShopItem(name: "pirateHat", price: 300, itemType: .hat),
+        ShopItem(name: "armyHat", price: 400, itemType: .hat),
+        ShopItem(name: "cowboyHat", price: 500, itemType: .hat),
+        ShopItem(name: "firemanHat", price: 600, itemType: .hat),
+       
+        ShopItem(name: "pinwheelHat", price: 800, itemType: .hat),
+        ShopItem(name: "hotdogHat", price: 1000, itemType: .hat),
+        ShopItem(name: "leprechaunHat", price: 1500, itemType: .hat),
+        ShopItem(name: "vikingHat", price: 2000, itemType: .hat),
+        ShopItem(name: "sharkHat", price: 2500, itemType: .hat),
+        ShopItem(name: "horseHeadHat", price: 3000, itemType: .hat)
     ]
     
     @IBOutlet weak var menuButton: UIButton!

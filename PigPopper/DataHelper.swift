@@ -15,7 +15,7 @@ enum UserDefaultKeys: String, CaseIterable { // TODO: how does this work
     case selectedWeapon
     case selectedHat
     case username
-    
+    case tutorialCompleted
     
     /*
      * Settings keys

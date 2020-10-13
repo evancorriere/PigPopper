@@ -60,15 +60,6 @@ class SpriteFactory {
     }
     
     static func getWeaponSprite(weaponName: String) -> SKSpriteNode {
-        let fork = SKSpriteNode(imageNamed: weaponName)
-        fork.name = "fork"
-        fork.size = forkSize
-        return fork
-        
-    }
-    
-    static func getSelectedWeaponSprite() -> SKSpriteNode{
-        let weaponName = DataHelper.getSelectedWeapon()
         let weapon = SKSpriteNode(imageNamed: weaponName)
         
         let h = weapon.size.height
@@ -89,12 +80,13 @@ class SpriteFactory {
         return weapon
     }
     
-    static func getPig() -> Pig {
-        return Pig()
+    static func getSelectedWeaponSprite() -> SKSpriteNode{
+        let selectedWeaponName = DataHelper.getSelectedWeapon()
+        return getWeaponSprite(weaponName: selectedWeaponName)
     }
     
-    static func getWeaponSprite(forIndex i: Int) -> SKSpriteNode {
-        return getWeaponSprite(weaponName: availableWeapons[i])
+    static func getPig() -> Pig {
+        return Pig()
     }
 
     static func getShield() -> SKSpriteNode {
@@ -149,14 +141,22 @@ class SpriteFactory {
         guard let selectedHat = DataHelper.getSelectedHat() else {
             return nil
         }
+        
+        return getHat(hatName: selectedHat)
+    }
+    
+    static func getHat(hatName: String) -> SKSpriteNode? {
+        let hatNode = SKSpriteNode(imageNamed: hatName)
 
-        let hatNode = SKSpriteNode(imageNamed: selectedHat)
-
-        switch selectedHat {
+        switch hatName {
         case "antlersHat":
             hatNode.position = CGPoint(x: 25, y: 18)
             hatNode.size = CGSize(width: 40, height: 40)
             hatNode.zRotation = -CGFloat.pi / 4.0
+        case "appleHat":
+            hatNode.position = CGPoint(x: 22, y: 18)
+            hatNode.size = CGSize(width: 28, height: 28)
+            hatNode.zRotation = 0.0
         case "armyHat":
             hatNode.position = CGPoint(x: 25, y: 12)
             hatNode.size = CGSize(width: 43, height: 43)
@@ -222,11 +222,13 @@ class SpriteFactory {
             hatNode.size = CGSize(width: 70, height: 70)
             hatNode.zRotation = -CGFloat.pi / 6.0
         case "sunHat":
-            hatNode.position = CGPoint(x: 22, y: 14)
-            hatNode.size = CGSize(width: 45, height: 45)
-            hatNode.zRotation = -CGFloat.pi / 6.0
-            
-//        case "vikingHat":
+            hatNode.position = CGPoint(x: 21, y: 13)
+            hatNode.size = CGSize(width: 55, height: 40)
+            hatNode.zRotation = -CGFloat.pi / 9.0
+        case "vikingHat":
+            hatNode.position = CGPoint(x: 20, y: 15)
+            hatNode.size = CGSize(width: 65, height: 65)
+            hatNode.zRotation = -CGFloat.pi / 12.0
         default:
             return nil
         }

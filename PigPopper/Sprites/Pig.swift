@@ -29,6 +29,7 @@ class Pig: SKNode {
     var velocityMultiplier: CGFloat = 1.0
     
     weak var gameScene: GameScene?
+    weak var tutorialScene: TutorialScene?
     
     override init() {
         var jetpackTextures:[SKTexture] = []
@@ -57,8 +58,6 @@ class Pig: SKNode {
         physicsNode.position = CGPoint(x: 0, y: -10)
         physicsNode.alpha = 0.0
         addChild(physicsNode)
-        
-        
         
         
         hatNode = SpriteFactory.getSelectedHat()
@@ -99,7 +98,6 @@ class Pig: SKNode {
     }
     
     func flipLeft() {
-        print("here")
         imageNode.xScale = -1.0
         physicsNode.zRotation = CGFloat.pi / 4.0
         if hatNode != nil {
@@ -133,24 +131,36 @@ class Pig: SKNode {
        }
     
     func explode() {
-        if gameScene == nil {
-            print("explode should not be called when gameScene is nil")
-            return
-        }
-        
-        if imageNode.action(forKey: explosionAnimationKey) == nil {
-            let action = SKAction.sequence([
-                explosionAnimation,
-                SKAction.run {
-                    [weak self] in self?.gameScene?.resetPig()
-                },
-                SKAction.run {
-                    [weak self] in self?.hatNode?.isHidden = false
-                }
-            
-            ])
-            hatNode?.isHidden = true
-            imageNode.run(action)
+        if gameScene != nil {
+            if imageNode.action(forKey: explosionAnimationKey) == nil {
+                let action = SKAction.sequence([
+                    explosionAnimation,
+                    SKAction.run {
+                        [weak self] in self?.gameScene?.resetPig()
+                    },
+                    SKAction.run {
+                        [weak self] in self?.hatNode?.isHidden = false
+                    }
+                
+                ])
+                hatNode?.isHidden = true
+                imageNode.run(action)
+            }
+        } else if tutorialScene != nil { // gross, refactor
+            if imageNode.action(forKey: explosionAnimationKey) == nil {
+                let action = SKAction.sequence([
+                    explosionAnimation,
+                    SKAction.run {
+                        [weak self] in self?.tutorialScene?.resetPig()
+                    },
+                    SKAction.run {
+                        [weak self] in self?.hatNode?.isHidden = false
+                    }
+                
+                ])
+                hatNode?.isHidden = true
+                imageNode.run(action)
+            }
         }
     }
     
@@ -256,5 +266,17 @@ class Pig: SKNode {
         let unitVelocity = vectorFromAngle(angle: randomAngle)
         self.velocity = unitVelocity * 200
         self.position = position
+    }
+    
+    func manuallySetHat(hat: String?) {
+        hatNode?.removeFromParent()
+        
+        if hat != nil {
+            let hatNode = SpriteFactory.getHat(hatName: hat!)
+            hatNode?.zPosition = imageNode.zPosition + 1
+            addChild(hatNode!)
+        } else {
+            hatNode = nil
+        }
     }
 }
