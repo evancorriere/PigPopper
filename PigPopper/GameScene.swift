@@ -13,9 +13,10 @@ class GameScene: SKScene {
    
     weak var viewController: GameViewController?
     let pig: Pig = SpriteFactory.getPig()
-    let fork: SKSpriteNode
+    var fork: SKSpriteNode
     let woodSign = SignNode()
     var shields: [SKNode] = []
+    var playSoundEffects = true
     
     let explosionSound: SKAction = SKAction.playSoundFileNamed("explosion2.wav", waitForCompletion: false)
     let shootSound: SKAction = SKAction.playSoundFileNamed("shoot2.wav", waitForCompletion: false)
@@ -25,7 +26,6 @@ class GameScene: SKScene {
     let forkMoveAnimationKey = "forkMoveAnimationKey"
     let defaultFont = "AmericanTypewriter"
     let forkLaunchPosition: CGPoint!
-    let homeButton: SKSpriteNode
     let hitMessages = ["Great Shot!", "Nice!", "Perfect", "HIT", "BOOM", "Five Stars!"]
     
     let highScoreLabel = SKLabelNode()
@@ -42,6 +42,7 @@ class GameScene: SKScene {
     var shouldResetPig = false
     var forkLaunchable = true
     var forkHitObject = false
+    var checkAchievements = false
     
     var initialTouchLocation: CGPoint!
     var initialTouchTime: TimeInterval!
@@ -49,12 +50,8 @@ class GameScene: SKScene {
     var finalTouchLocation:CGPoint!
     var finalTouchTime: TimeInterval!
     
-    // Pig movement - update loop
-    var dt: TimeInterval = 0
-    var lastUpdateTime: TimeInterval = 0
-    var velocity = CGPoint.zero
-    var velocityMultiplier: CGFloat = 1.0
-    let pigBoundingBox: CGRect!
+    var baconSprites: [SKSpriteNode] = []
+    
     
    
     override init(size: CGSize) {
@@ -74,13 +71,12 @@ class GameScene: SKScene {
         forkLaunchPosition = CGPoint(x: size.width / 2, y: 100)
         
         fork = SpriteFactory.getSelectedWeaponSprite()
-        homeButton = SpriteFactory.getHomeButton()
-        
-        // setup pig bounding box - full width, ~60 % height
-        let minY = size.height * 0.40
-        pigBoundingBox = CGRect(x: 0, y: minY, width: size.width, height: size.height * 0.60)
-        
+            
         super.init(size: size)
+        
+        let playableHeight = size.height * 0.60
+        let minY = size.height - playableHeight - (view?.safeAreaInsets.top ?? 0)
+        pig.setBoundingBox(boundingBox: CGRect(x: 0, y: minY, width: size.width, height: playableHeight))
         
         pig.gameScene = self
     }
@@ -94,10 +90,13 @@ class GameScene: SKScene {
         physicsWorld.contactDelegate = self
         backgroundColor = .white
         
+        
+        
         let backgroundSprite = SpriteFactory.getBackgroundSprite(size: size)
-        backgroundSprite.xScale = -1 // flip so the transition looks nice
+//        backgroundSprite.xScale = -1 // flip so the transition looks nice
         addChild(backgroundSprite)
         
+
         addChild(pig)
         resetPig()
         
@@ -113,34 +112,22 @@ class GameScene: SKScene {
         
         
         setupLabels()
-        
-        addChild(homeButton)
-        addChild(SpriteFactory.getHomeLabel())
     }
     
+    func viewSafeAreaInsetsDidChange() {
+        let playableHeight = size.height * 0.60
+        let minY = size.height - playableHeight - (self.view?.safeAreaInsets.top ?? 0) * 0.7
+        pig.setBoundingBox(boundingBox: CGRect(x: 0, y: minY, width: size.width, height: playableHeight))
+    }
+    
+    
+    
     func setupLabels() {
-        highScoreLabel.fontSize = 25
-        highScoreLabel.zPosition = 20
-        highScoreLabel.verticalAlignmentMode = .top
-        highScoreLabel.horizontalAlignmentMode = .left
-        highScoreLabel.fontName = defaultFont
-        highScoreLabel.position = CGPoint(x: view!.safeAreaInsets.left + 10, y: size.height - view!.safeAreaInsets.top - 10)
-        highScoreLabel.fontColor = .black
-        highScore = UserDefaults.standard.integer(forKey: "highScore")
+        highScore = DataHelper.getHighscore()
         updateHighScoreLabel()
-        addChild(highScoreLabel)
         
-        totalCoinsLabel.fontSize = 25
-        totalCoinsLabel.zPosition = 20
-        totalCoinsLabel.fontName = defaultFont
-        totalCoinsLabel.verticalAlignmentMode = .top
-        totalCoinsLabel.horizontalAlignmentMode = .right
-        totalCoinsLabel.fontColor = .black
-        totalCoinsLabel.position = CGPoint(x: size.width - view!.safeAreaInsets.right - 10, y: size.height - view!.safeAreaInsets.top - 10)
-        totalCoins = UserDefaults.standard.integer(forKey: "coins")
+        totalCoins = DataHelper.getBacon()
         updateTotalCoinsLabel()
-        addChild(totalCoinsLabel)
-        
         
         hitMessageLabel.fontSize = 20
         hitMessageLabel.zPosition = 20
@@ -156,13 +143,13 @@ class GameScene: SKScene {
         levelUpLabel.zPosition = 25
         levelUpLabel.verticalAlignmentMode = .center
         levelUpLabel.horizontalAlignmentMode = .left
-        levelUpLabel.text = "Level up!"
+        levelUpLabel.text = "Bacon++"
     }
     
     func resetPig() {
+        
         pig.isHidden = true
-        pig.position = getPigStartPosition()
-        velocity = getRandomVelocity()
+        pig.reset()
         pig.startJetpackAnimation()
         pig.isHidden = false
         forkLaunchable = true
@@ -173,7 +160,7 @@ class GameScene: SKScene {
     }
     
     func updateHighScoreLabel() {
-        highScoreLabel.text = "BEST: \(highScore)"
+        viewController?.updateHighscore(highscore: highScore)
     }
     
     func updateCoinsLabel() {
@@ -181,38 +168,13 @@ class GameScene: SKScene {
     }
     
     func updateTotalCoinsLabel() {
-        totalCoinsLabel.text = "TOTAL BACON: \(totalCoins)"
+        viewController?.updateBacon(bacon: totalCoins)
     }
     
     func startExplosionAnimation() {
         pig.explode()
     }
-    
-    func getPigStartPosition() -> CGPoint {
-        let validPerimeter = pigBoundingBox.height * 2 + pigBoundingBox.width
-        let randomLocation = CGFloat.random(min: 0, max: validPerimeter)
         
-        // left side, top, right side
-        var position: CGPoint
-        if randomLocation < pigBoundingBox.height {
-            position = CGPoint(x: 0, y: pigBoundingBox.minY + randomLocation)
-        } else if randomLocation < pigBoundingBox.height + pigBoundingBox.width {
-            let x = randomLocation - pigBoundingBox.height
-            position = CGPoint(x: x, y: pigBoundingBox.maxY)
-        } else {
-            let y = pigBoundingBox.minY + (validPerimeter - randomLocation)
-            position = CGPoint(x: pigBoundingBox.maxX, y: y)
-        }
-        
-        return position
-    }
-    
-    func getRandomVelocity() -> CGPoint {
-        let randomAngle = CGFloat.random(min: 0, max: 2 * CGFloat.pi)
-        let unitVelocity = vectorFromAngle(angle: randomAngle)
-        return unitVelocity * 200
-    }
-    
     func resetFork() {
         fork.removeAction(forKey: forkMoveAnimationKey)
         fork.position = forkLaunchPosition
@@ -223,23 +185,31 @@ class GameScene: SKScene {
     
     func handlePigHit() {
         
-        runHitMessage()
+//        runHitMessage()
         
-        run(explosionSound)
+        if playSoundEffects {
+            run(explosionSound)
+        }
+        
         self.shouldResetFork = true
         self.shouldResetPig = true
         
-        velocity = CGPoint.zero
+        pig.velocity = CGPoint.zero
         pig.stopJetpackAnimation()
-        velocityMultiplier += 0.1
+        pig.velocityMultiplier += 0.1
         score += 1
         coins += hitValue
         totalCoins += hitValue
-        UserDefaults.standard.set(totalCoins, forKey: "coins")
+        
+        addBaconSprites(count: hitValue, position: pig.position)
+        
+        DataHelper.setBacon(bacon: totalCoins)
         if score > highScore {
             highScore = score
-            UserDefaults.standard.set(highScore, forKey: "highScore")
+            DataHelper.setHighscore(highscore: highScore)
+            DynamoDBHelper.sendLeaderboardData()
             updateHighScoreLabel()
+            checkAchievements = true
         }
         updateScoreLabel()
         updateCoinsLabel()
@@ -250,6 +220,20 @@ class GameScene: SKScene {
         }
         
         resetFork()
+    }
+    
+    func addBaconSprites(count: Int, position: CGPoint) {
+        let newBaconSprites = SpriteFactory.getBaconSprites(count: count)
+        for baconSprite in newBaconSprites {
+            
+            baconSprite.position = position
+            addChild(baconSprite)
+            let randX = CGFloat.random(min: -200, max: 200)
+            let randY = CGFloat.random(min: 0, max: 120)
+            baconSprite.physicsBody?.velocity = CGVector(dx: randX, dy: randY)
+        }
+        
+        baconSprites.append(contentsOf: newBaconSprites)
     }
     
     func runHitMessage() {
@@ -303,17 +287,16 @@ class GameScene: SKScene {
     }
     
     func getRandomShieldPosition() -> CGPoint {
-        let x = CGFloat.random(min: pigBoundingBox.minX + 25, max: pigBoundingBox.maxX - 25)
-        let y = CGFloat.random(min: pigBoundingBox.minY + 50, max: pigBoundingBox.maxY - 25)
+        let x = CGFloat.random(min: pig.boundingBox.minX + 25, max: pig.boundingBox.maxX - 25)
+        let y = CGFloat.random(min: pig.boundingBox.minY + 50, max: pig.boundingBox.maxY - 25)
         return CGPoint(x: x, y: y)
     }
     
     func gameOver() {
         self.shouldResetFork = true
-        print("game over")
         resetFork()
         score = 0
-        velocityMultiplier = 1.0
+        pig.velocityMultiplier = 1.0
         hitValue = 1
         coins = 0
         
@@ -322,12 +305,32 @@ class GameScene: SKScene {
         }
         
         shields = []
-        
+        if checkAchievements {
+            let achievements = AchievementManager.updatedAchievements(highscore: highScore)
+            if achievements.count > 0 {
+                totalCoins = DataHelper.getBacon()
+                AchievementView.instance.displayAchievements(achievements: achievements, callback: self.achievementsDidDisplay)
+            }
+            
+            checkAchievements = false
+        }
+    
         updateScoreLabel()
         updateCoinsLabel()
         updateTotalCoinsLabel()
         updateHighScoreLabel()
         forkLaunchable = true
+        
+    }
+    
+    func achievementsDidDisplay() {
+        fork.removeFromParent()
+        fork = SpriteFactory.getSelectedWeaponSprite()
+        fork.position = forkLaunchPosition
+        fork.zPosition = 5
+        fork.zRotation = 0.0
+        addChild(fork)
+        pig.resetSettings()
     }
     
     func handleForkOffScreen() {
@@ -337,15 +340,6 @@ class GameScene: SKScene {
     func handleShieldHit() {
         gameOver()
     }
-    
-    func handleHomeTapped() {
-        let menuScene = MainMenuScene(size: size)
-        menuScene.viewController = self.viewController
-        menuScene.scaleMode = scaleMode
-        let transition = SKTransition.push(with: .right, duration: 1.0)
-        view?.presentScene(menuScene, transition: transition)
-    }
-    
     
     func shieldHit() -> Bool {
         var hit = false
@@ -387,7 +381,11 @@ class GameScene: SKScene {
             fork.zRotation = theta - CGFloat.pi / 2
             let moveBySwipe = SKAction.move(by: swipeVector, duration: dt)
             forkLaunchable = false
-            run(shootSound)
+            
+            if playSoundEffects {
+                run(shootSound)
+            }
+            
             fork.run(SKAction.repeatForever(moveBySwipe), withKey: forkMoveAnimationKey)
         }
     }
@@ -397,10 +395,6 @@ class GameScene: SKScene {
         initialTouchLocation = touches.first!.location(in: view)
         initialTouchLocation = CGPoint(x: initialTouchLocation.x, y: view!.bounds.height - initialTouchLocation.y)
         initialTouchTime = touches.first!.timestamp
-        
-        if homeButton.contains(initialTouchLocation) {
-            handleHomeTapped()
-        }
     }
 
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
@@ -419,59 +413,24 @@ class GameScene: SKScene {
         handleForkSwiped()
     }
     
-    func movePig() {
-        let adjustedVelocity = velocity * velocityMultiplier
-        let amountToMove = adjustedVelocity * CGFloat(dt)
-        pig.position += amountToMove
-    }
     
-    func rotatePig() {
-        if velocity.x > 0 {
-            pig.flipRight()
-        } else {
-            pig.flipLeft()
-            
-        }
-        
-    }
-    
-    func boundsCheckPig() {
-        let bottomLeft = CGPoint(x: pigBoundingBox.minX, y: pigBoundingBox.minY)
-          let topRight = CGPoint(x: pigBoundingBox.maxX, y: pigBoundingBox.maxY)
-          
-          if pig.position.x <= bottomLeft.x {
-              pig.position.x = bottomLeft.x
-              velocity.x = abs(velocity.x)
-          }
-        
-          if pig.position.x >= topRight.x {
-              pig.position.x = topRight.x
-              velocity.x = -velocity.x
-          }
-        
-          if pig.position.y <= bottomLeft.y {
-              pig.position.y = bottomLeft.y
-              velocity.y = -velocity.y
-          }
-          
-          if pig.position.y >= topRight.y {
-              pig.position.y = topRight.y
-              velocity.y = -velocity.y
-          }
-    }
-    
+
     override func update(_ currentTime: TimeInterval) {
         // Called before each frame is rendered
-        if lastUpdateTime > 0 {
-            dt = currentTime - lastUpdateTime
-        } else {
-            dt = 0
-        }
-        lastUpdateTime = currentTime
+        pig.update(currentTime)
         
-        movePig()
-        boundsCheckPig()
-        rotatePig()
+        
+        // check if any shield is off screen and if so remove it
+        // sly opt: call once every x times
+        
+        baconSprites.removeAll { (baconSprite) -> Bool in
+            if baconSprite.position.y < -20 {
+                baconSprite.removeFromParent()
+                return true
+            }
+            return false
+        }
+        
 
     }
     
@@ -508,10 +467,8 @@ extension GameScene: SKPhysicsContactDelegate {
             let otherNode = nodeA.name == fork.name ? nodeB : nodeA
             
             if otherNode.name == "shield" {
-                print("hit shield")
                 handleShieldHit()
             } else if otherNode.name == pig.name {
-                print("hit pig")
                 handlePigHit()
             }
         }
