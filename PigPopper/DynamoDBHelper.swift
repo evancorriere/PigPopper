@@ -11,8 +11,8 @@ import DynamoDB
 
 public class DynamoDBHelper {
     
-    private static let accessKey = "AKIAZDPKIW43E5RR3A7S"
-    private static let secretKey = "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"
+    private static let accessKey = "accessKey"
+    private static let secretKey = "secretKey"
     private static let tableName = "leaderboard"
     private static let gsiHashKey = "gsihash"
     
